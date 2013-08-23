@@ -17,7 +17,7 @@ import goldeneagle.*;
 
 public class SceneManager {
 	
-	public static final PixelFormat PIXEL_FORMAT = new PixelFormat(8, 24, 8, 16);
+	public static final PixelFormat PIXEL_FORMAT = new PixelFormat(8, 24, 8, 4);
 	public static final ContextAttribs CONTEXT_ATTRIBS = new ContextAttribs(2, 1);
 	
 	private static boolean is_inited = false;
