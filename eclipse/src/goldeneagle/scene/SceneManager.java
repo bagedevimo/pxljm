@@ -3,6 +3,8 @@ package goldeneagle.scene;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.DoubleBuffer;
+import java.util.Iterator;
+
 import org.lwjgl.opengl.*;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -12,7 +14,6 @@ import static org.lwjgl.opengl.GL14.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL21.*;
-
 import goldeneagle.*;
 
 public class SceneManager {
@@ -44,14 +45,20 @@ public class SceneManager {
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		glBegin(GL_POLYGON);
-		glColor3d(1, 0, 0);
-		glNormal3d(0, 0, 1);
-		glVertex3d(0, -1, -1);
-		glVertex3d(1, 0, -1);
-		glVertex3d(0, 1, -1);
-		glVertex3d(-1, 0, -1);
-		glEnd();
+		for(Iterator<Entity> i = s.iterator(); i.hasNext();)
+		{
+			Entity e = i.next();
+			e.Draw();
+		}
+		
+//		glBegin(GL_POLYGON);
+//		glColor3d(1, 0, 0);
+//		glNormal3d(0, 0, 1);
+//		glVertex3d(0, -1, -1);
+//		glVertex3d(1, 0, -1);
+//		glVertex3d(0, 1, -1);
+//		glVertex3d(-1, 0, -1);
+//		glEnd();
 		
 		glFinish();
 		
