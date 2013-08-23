@@ -1,4 +1,4 @@
-package nz.net.initial3d;
+package goldeneagle;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ package nz.net.initial3d;
  * <code>NullPointerException</code> if called with any argument equal to
  * <code>null</code>.
  * </p>
- *
+ * 
  * @author Ben Allen
  */
 
@@ -63,7 +63,7 @@ public final class Vec3 {
 
 	/**
 	 * Construct a Vec3 from components.
-	 *
+	 * 
 	 * @param x_
 	 *            X component.
 	 * @param y_
@@ -78,11 +78,23 @@ public final class Vec3 {
 	}
 
 	/**
+	 * Construct a Vec3 from components, with z = 0.
+	 * 
+	 * @param x_
+	 *            X component.
+	 * @param y_
+	 *            Y component.
+	 */
+	public Vec3(double x_, double y_) {
+		this(x_, y_, 0);
+	}
+
+	/**
 	 * Randomly generate a Vec3, with each component between the respective
 	 * minimum (inclusive) and maximum (exclusive) of the input vectors.
 	 * Returned values are chosen pseudorandomly with (approximately) uniform
 	 * distribution from that range.
-	 *
+	 * 
 	 * @param a
 	 *            A Vec3.
 	 * @param b
@@ -100,7 +112,7 @@ public final class Vec3 {
 
 	/**
 	 * Construct the normal of a plane from 3 points on it.
-	 *
+	 * 
 	 * @param p0
 	 *            First point on the plane.
 	 * @param p1
@@ -125,7 +137,8 @@ public final class Vec3 {
 	 *         of <code>a</code> and <code>b</code>.
 	 */
 	public static final Vec3 positiveExtremes(Vec3 a, Vec3 b) {
-		return new Vec3(Math.max(a.x, b.x), Math.max(a.y, b.y), Math.max(a.z, b.z));
+		return new Vec3(Math.max(a.x, b.x), Math.max(a.y, b.y), Math.max(a.z,
+				b.z));
 	}
 
 	/**
@@ -137,12 +150,13 @@ public final class Vec3 {
 	 *         of <code>a</code> and <code>b</code>.
 	 */
 	public static final Vec3 negativeExtremes(Vec3 a, Vec3 b) {
-		return new Vec3(Math.min(a.x, b.x), Math.min(a.y, b.y), Math.min(a.z, b.z));
+		return new Vec3(Math.min(a.x, b.x), Math.min(a.y, b.y), Math.min(a.z,
+				b.z));
 	}
 
 	/**
 	 * Add this Vec3 to another.
-	 *
+	 * 
 	 * @param rhs
 	 *            Right-hand-side of the addition.
 	 * @return The sum.
@@ -153,7 +167,7 @@ public final class Vec3 {
 
 	/**
 	 * Add this Vec3 to another given as components.
-	 *
+	 * 
 	 * @param rightx
 	 *            X component of the right-hand-side of the addition.
 	 * @param righty
@@ -168,7 +182,7 @@ public final class Vec3 {
 
 	/**
 	 * Subtract a Vec3 from this one.
-	 *
+	 * 
 	 * @param rhs
 	 *            Right-hand-side of the subtraction.
 	 * @return The difference.
@@ -179,7 +193,7 @@ public final class Vec3 {
 
 	/**
 	 * Subtract a Vec3 given as components from this one.
-	 *
+	 * 
 	 * @param rightx
 	 *            X component of the right-hand-side of the subtraction.
 	 * @param righty
@@ -199,15 +213,17 @@ public final class Vec3 {
 	public Vec3 neg() {
 		Vec3 negvec = new Vec3(-x, -y, -z);
 		// if mag and/or invmag are known, set
-		if (m > 0) negvec.m = m;
-		if (im > 0) negvec.im = im;
+		if (m > 0)
+			negvec.m = m;
+		if (im > 0)
+			negvec.im = im;
 		return negvec;
 	}
 
 	/**
 	 * Get the distance from this Vec3 to another, defined as the magnitude of
 	 * their difference.
-	 *
+	 * 
 	 * @param v
 	 *            Other Vec3.
 	 * @return The distance.
@@ -221,7 +237,7 @@ public final class Vec3 {
 
 	/**
 	 * Compute the dot product of this Vec3 and another.
-	 *
+	 * 
 	 * @param rhs
 	 *            Right-hand-side of the dot product.
 	 * @return The dot product.
@@ -232,30 +248,32 @@ public final class Vec3 {
 
 	/**
 	 * Compute the cross product of this Vec3 and another.
-	 *
+	 * 
 	 * @param rhs
 	 *            Right-hand-side of the cross product.
 	 * @return The cross product.
 	 */
 	public Vec3 cross(Vec3 rhs) {
-		return new Vec3(y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z, x * rhs.y - y * rhs.x);
+		return new Vec3(y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z, x * rhs.y
+				- y * rhs.x);
 	}
 
 	/**
 	 * Compute the magnitude of the cross product of this Vec3 and another.
-	 *
+	 * 
 	 * @param rhs
 	 *            Right-hand-side of the cross product.
 	 * @return The magnitude of the cross product.
 	 */
 	public double crossMag(Vec3 rhs) {
-		return Math.sqrt(Math.pow(y * rhs.z - z * rhs.y, 2) + Math.pow(z * rhs.x - x * rhs.z, 2)
+		return Math.sqrt(Math.pow(y * rhs.z - z * rhs.y, 2)
+				+ Math.pow(z * rhs.x - x * rhs.z, 2)
 				+ Math.pow(x * rhs.y - y * rhs.x, 2));
 	}
 
 	/**
 	 * Compute the included angle between this Vec3 and another.
-	 *
+	 * 
 	 * @param vec
 	 *            A Vec3.
 	 * @return The included angle, in radians.
@@ -266,7 +284,7 @@ public final class Vec3 {
 
 	/**
 	 * Multiply this Vec3 by a scale factor.
-	 *
+	 * 
 	 * @param f
 	 *            Scale factor.
 	 * @return A new Vec3, parallel to this Vec3 and with magnitude
@@ -275,13 +293,14 @@ public final class Vec3 {
 	public Vec3 mul(double f) {
 		Vec3 scalevec = new Vec3(x * f, y * f, z * f);
 		// if mag was already calculated, scale that as well
-		if (m > 0) scalevec.m = m * f;
+		if (m > 0)
+			scalevec.m = m * f;
 		return scalevec;
 	}
 
 	/**
 	 * Scale this Vec3 to a specified magnitude.
-	 *
+	 * 
 	 * @param m
 	 *            Magnitude to scale to.
 	 * @return A new Vec3, parallel to this Vec3 and with magnitude as close to
@@ -292,7 +311,9 @@ public final class Vec3 {
 	public Vec3 withMag(double m) {
 		Vec3 v = mul(invMag() * m);
 		v.m = m;
-		if (Double.isNaN(v.x + v.y + v.z)) throw new IllegalStateException("NaN bug intercepted in Vec3 scaling.");
+		if (Double.isNaN(v.x + v.y + v.z))
+			throw new IllegalStateException(
+					"NaN bug intercepted in Vec3 scaling.");
 		return v;
 	}
 
@@ -300,7 +321,8 @@ public final class Vec3 {
 	 * @return The magnitude of this Vec3.
 	 */
 	public double mag() {
-		if (m < 0) m = Math.sqrt(x * x + y * y + z * z);
+		if (m < 0)
+			m = Math.sqrt(x * x + y * y + z * z);
 		return m;
 	}
 
@@ -308,13 +330,14 @@ public final class Vec3 {
 	 * @return The multiplicative inverse of the magnitude of this Vec3.
 	 */
 	public double invMag() {
-		if (im < 0) im = 1d / mag();
+		if (im < 0)
+			im = 1d / mag();
 		return im;
 	}
 
 	/**
 	 * Normalise this Vec3.
-	 *
+	 * 
 	 * @return A new Vec3, parallel to this Vec3 and with magnitude as close to
 	 *         1 as possible.
 	 * @throws IllegalStateException
@@ -325,7 +348,8 @@ public final class Vec3 {
 		v.m = 1;
 		v.im = 1;
 		if (Double.isNaN(v.x + v.y + v.z))
-			throw new IllegalStateException("NaN bug intercepted in Vec3 normalisation.");
+			throw new IllegalStateException(
+					"NaN bug intercepted in Vec3 normalisation.");
 		return v;
 	}
 
@@ -333,7 +357,7 @@ public final class Vec3 {
 	 * Compute the vector projection of this Vec3 onto another Vec3. If the
 	 * other Vec3 is a plane normal, this will result in the rejection of this
 	 * Vec3 from that plane.
-	 *
+	 * 
 	 * @param vec
 	 *            Vec3 to project onto.
 	 * @return The projection.
@@ -346,7 +370,7 @@ public final class Vec3 {
 	 * Compute the vector rejection of this Vec3 from another Vec3. If the other
 	 * Vec3 is a plane normal, this will result in the projection of this Vec3
 	 * onto that plane.
-	 *
+	 * 
 	 * @param vec
 	 *            Vec3 to reject from.
 	 * @return The rejection.
@@ -406,13 +430,19 @@ public final class Vec3 {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		Vec3 other = (Vec3) obj;
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)) return false;
-		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y)) return false;
-		if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z)) return false;
+		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
+			return false;
+		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
+			return false;
+		if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z))
+			return false;
 		return true;
 	}
 
