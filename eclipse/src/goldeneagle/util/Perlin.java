@@ -1,4 +1,4 @@
-package goldeneagle;
+package goldeneagle.util;
 
 import java.util.Random;
 
