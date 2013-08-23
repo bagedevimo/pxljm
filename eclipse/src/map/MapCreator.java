@@ -111,18 +111,6 @@ public class MapCreator {
 			}
 		}
 	}
-	
-	//desinty bettwen 0 and 1;
-	public static void placeTrees(double density){
-		int numTrees = (int)(width * height * density);
-		ArrayList<BoundingSphere> trees = new ArrayList<BoundingSphere>();
-		
-		double posX = plantRandom.nextDouble()*width;
-		double posY = plantRandom.nextDouble()*height;
-		for(int i = 0; i < numTrees; i++){
-			trees.add(new BoundingSphere(new Vec3(posX, posY, heights[(int)width][(int)height]), 0.9));
-		}
-	}
 
 	public static void main(String[] args) {
 //	

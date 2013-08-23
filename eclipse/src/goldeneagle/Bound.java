@@ -26,10 +26,10 @@ public abstract class Bound {
 		throw new UnsupportedOperationException("Cannot collide these 2 implementations of bound");
 	}
 	
-	public abstract boolean contains(Vec3 v);
+	public abstract boolean contains(double x, double y);
 	
 	public abstract Vec3 intersects(BoundingBox b);
 	public abstract Vec3 intersects(BoundingSphere b);
+	
 	public abstract Vec3 getPosition();
-	public abstract Bound setPosition(Vec3 v);
 }
