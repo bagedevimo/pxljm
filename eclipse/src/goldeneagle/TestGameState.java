@@ -5,11 +5,12 @@ public class TestGameState extends GameState {
 	
 	@Override
 	protected void Init() {
-		
+		System.out.println("here");
 	}
 
 	@Override
 	protected void Update(double deltaTime) {
+		
 	}
 
 	@Override
