@@ -1,9 +1,16 @@
 package goldeneagle;
 
+import goldeneagle.clock.*;
+
 public abstract class GameState {
-	private double initTime = -1;
 	protected boolean isDone = false;
 	protected GameState nextState = null;
+	
+	private final ManualClock clock = new ManualClock(PxlGame.sysclock, 0);
+	
+	public Clock getClock() {
+		return clock;
+	}
 	
 	public GameState() {
 		this.doInit();
@@ -17,28 +24,42 @@ public abstract class GameState {
 		return retState;
 	}
 	
-	public boolean checkIsDone() {
+	public final boolean isDone() {
 		return this.isDone;
 	}
 	
-	private void doInit() {
-		this.initTime = (System.nanoTime() / 1e9d);
-		
-		this.Init();
-		
+	private final void doInit() {
+		clock.set(0);
+		this.init();
 	}
 	
-	public void doUpdate() {
-		double deltaTime = (System.nanoTime() / 1e9d) - initTime;
-		this.Update(deltaTime);
+	public final void doUpdate() {
+		clock.update();
+		this.update();
 	}
 	
-	public void doDraw() {
-		double deltaTime = (System.nanoTime() / 1e9d) - initTime;
-		this.Draw(deltaTime);
+	public final void doDraw() {
+		this.draw();
 	}
 	
-	protected abstract void Init();
-	protected abstract void Update(double deltaTime);
-	protected abstract void Draw(double detlaTime);
+	public void doPause() {
+		onPause();
+	}
+	
+	public void doResume() {
+		clock.reset();
+		onResume();
+	}
+	
+	protected abstract void init();
+	protected abstract void update();
+	protected abstract void draw();
+	
+	protected void onPause() {
+		// state paused because another is pushed onto the stack
+	}
+	
+	protected void onResume() {
+		// state resumed because it has become the stack top again
+	}
 }

@@ -1,19 +1,21 @@
 package goldeneagle;
 
+import goldeneagle.scene.Scene;
+
 public class TestGameState extends GameState {
-	private Scene scene = new Scene();
+	private Scene scene = new Scene(getClock());
 	
 	@Override
-	protected void Init() {
+	protected void init() {
 		
 	}
 
 	@Override
-	protected void Update(double deltaTime) {
+	protected void update() {
 	}
 
 	@Override
-	protected void Draw(double deltaTime) {
+	protected void draw() {
 		// Something like this?
 		// SceneManager.DrawScene(scene);
 	}
