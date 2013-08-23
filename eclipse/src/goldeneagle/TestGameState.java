@@ -1,6 +1,7 @@
 package goldeneagle;
 
 import goldeneagle.scene.Scene;
+import goldeneagle.scene.SceneManager;
 
 public class TestGameState extends GameState {
 	private Scene scene = new Scene(getClock());
@@ -12,11 +13,12 @@ public class TestGameState extends GameState {
 
 	@Override
 	protected void update() {
+
 	}
 
 	@Override
 	protected void draw() {
-		// Something like this?
-		// SceneManager.DrawScene(scene);
+		// hello, world!
+		SceneManager.doFrame(null, null);
 	}
 }
