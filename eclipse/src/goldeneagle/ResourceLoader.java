@@ -55,7 +55,7 @@ public class ResourceLoader extends Thread {
 					case JPG:
 					case PNG:
 							BufferedImage image = this.loadImage(rlu.Path);
-							ResourceCache.AddTexture(this.loadTexture(image), image.getWidth(), image.getHeight());
+							ResourceCache.AddTexture(rlu.Path, this.loadTexture(image), image.getWidth(), image.getHeight());
 					break;
 				}
 				
