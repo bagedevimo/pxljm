@@ -1,7 +1,7 @@
 package map;
 
 import goldeneagle.BoundingSphere;
-import goldeneagle.Perlin;
+import goldeneagle.util.Perlin;
 import goldeneagle.Vec3;
 
 import java.awt.BorderLayout;

@@ -50,7 +50,7 @@ import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import goldeneagle.Perlin;
+import goldeneagle.util.Perlin;
 import map.voronoi.*;
 
 public class MapGenerator {
@@ -996,7 +996,7 @@ public class MapGenerator {
 				q.water = !inside(q.point);
 			}
 
-			Perlin noise = new goldeneagle.Perlin(SEED);
+			Perlin noise = new goldeneagle.util.Perlin(SEED);
 
 			for (Corner s : corners) {
 
