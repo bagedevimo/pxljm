@@ -6,27 +6,24 @@ import java.util.Queue;
 
 import org.newdawn.slick.opengl.TextureLoader;
 
+enum ResourceType {
+	PNG,
+	JPG
+}
+
 public class ResourceLoader extends Thread {
 	private Queue<ResourceLoadUnit> loadQueue = new LinkedList<ResourceLoadUnit>();
 	private Thread threadHandle = null;
 	
 	public void Add(String path) {
 		String[] pathParts = path.split(".");
-		String ext = pathParts[pathParts.length-1];
-		switch(ext.toLowerCase()) {
-			case "jpg":
-			case "jpeg":
-				this.loadQueue.add(new ResourceLoadUnit("JPG", path));
-			break;
-			
-			case "png":
-				this.loadQueue.add(new ResourceLoadUnit("PNG", path));
-			break;
-				
-			default:
-				System.err.printf("Unknown extension: %s", ext);
-				break;
-		}
+		String ext = pathParts[pathParts.length-1].toUpperCase();
+		if(ext == "JPG" || ext == "JPEG")
+			this.loadQueue.add(new ResourceLoadUnit(ResourceType.JPG, path));
+		else if(ext == "PNG")
+			this.loadQueue.add(new ResourceLoadUnit(ResourceType.PNG, path));
+		else
+			System.err.printf("Unknown extension: %s", ext);
 	}
 	
 	public void Start() {
@@ -40,10 +37,9 @@ public class ResourceLoader extends Thread {
 			ResourceLoadUnit rlu = this.loadQueue.remove();
 			try {
 				switch(rlu.Type) {
-					case "JPG":
-					case "PNG":
-							ResourceCache.AddTexture(TextureLoader.getTexture(rlu.Type, org.newdawn.slick.util.ResourceLoader.getResourceAsStream(rlu.Path)));
-	
+					case JPG:
+					case PNG:
+							ResourceCache.AddTexture(TextureLoader.getTexture(rlu.Type.toString(), org.newdawn.slick.util.ResourceLoader.getResourceAsStream(rlu.Path)));
 					break;
 				}
 				
