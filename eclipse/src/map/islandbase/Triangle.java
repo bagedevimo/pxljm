@@ -5,8 +5,9 @@ import goldeneagle.Vec3;
 public class Triangle {
 
 	private final Vec3[] ver = new Vec3[3];
+	public final Biome biome;
 
-	public Triangle(Point[] points, double[] heights) {
+	public Triangle(Point[] points, double[] heights, Biome b) {
 		if (points.length != 3 || heights.length != 3) {
 			throw new IllegalArgumentException();
 		}
@@ -22,6 +23,8 @@ public class Triangle {
 			ver[0] = ver[1];
 			ver[1] = temp;
 		}
+		
+		biome = b;
 	}
 
 	/**
@@ -114,7 +117,7 @@ public class Triangle {
 		// small testing methods
 		Triangle t = new Triangle(new Point[] { new Point(1, 1),
 				new Point(10, 1), new Point(10, 10) }, new double[] { 0.5, .25,
-				.50 });
+				.50 }, Biome.GRASSLAND);
 		System.out.println(t.height(new Point(5, 2)));
 	}
 }

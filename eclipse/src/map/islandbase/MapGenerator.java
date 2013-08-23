@@ -34,9 +34,6 @@ import java.awt.Graphics;
 
 import static map.islandbase.Biome.*;
 
-import java.awt.Rectangle;
-import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +46,6 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -95,7 +91,8 @@ public class MapGenerator {
 			for (Edge e : c.borders) {
 				tri.add(new Triangle(new Point[] { c.point, e.v0.point,
 						e.v1.point }, new double[] { c.elevation,
-						e.v0.elevation, e.v1.elevation }));
+						e.v0.elevation, e.v1.elevation },
+						c.biome));
 				// System.out.println(tri.get(tri.size()-1).toString());
 			}
 		}
@@ -1006,7 +1003,7 @@ public class MapGenerator {
 				double x = SD_ISLAND * ((2d * s.point.x / SIZE) - 1);
 				double y = SD_ISLAND * ((2d * s.point.y / SIZE) - 1);
 
-				double fg = normalDistribution(SD_ISLAND);
+				//double fg = normalDistribution(SD_ISLAND);
 
 				// double noiseBarrier = normalDistribution(Math.hypot(x, y))
 				// - (normalDistribution(Math.hypot(x, y) * 1.4) - fg) * 2;
@@ -1046,6 +1043,7 @@ public class MapGenerator {
 
 	}
 
+	@SuppressWarnings("serial")
 	public void look() {
 
 		JFrame j = new JFrame();
@@ -1074,20 +1072,6 @@ public class MapGenerator {
 
 	public void paintc(Graphics g) {
 		for (Center c : centers) {
-
-			// int[] xValues = new int[c.corners.size()];
-			// int[] yValues = new int[c.corners.size()];
-			//
-			//
-			// for(int i=0; i< c.corners.size(); i++){
-			// xValues[i] = c.corners.get(i).point.x;
-			// yValues[i] = c.corners.get(i).point.y;
-			// }
-			//
-			// if(c.water){g.setColor(Color.BLUE);}
-			// else{g.setColor(Color.LIGHT_GRAY);}
-			// g.fillPolygon(xValues, yValues, c.corners.size());
-
 			for (Corner o : c.corners) {
 				for (Corner r : c.corners) {
 
@@ -1112,22 +1096,7 @@ public class MapGenerator {
 
 					}
 				}
-
-				// g.setColor(Color.black);
-				// g.drawString(String.format("%s",
-				// c.biome.toString().substring(0, 1)),
-				// (int) c.point.x-3, (int) c.point.y+4);// TODO getting zeros
-				// here
 			}
-
-			// for(int i=0; i< c.corners.size(); i++){
-			// g.drawLine(c.point.x, c.point.y, c.corners.get(i).point.x,
-			// c.corners.get(i).point.y);
-			// }
-
-			// g.setColor(Color.BLACK);
-			// g.fillOval((int)c.point.x, (int)c.point.y, 3, 3);
-
 		}
 
 		for (Edge e : edges) {
@@ -1139,33 +1108,6 @@ public class MapGenerator {
 			g.drawLine((int) e.v0.point.x, (int) e.v0.point.y,
 					(int) e.v1.point.x, (int) e.v1.point.y);
 		}
-
-		// testing for consistency of final graph
-//		 g.setColor(Color.RED);
-//
-//		 for (Corner c : corners) {
-//		  g.setColor(Color.RED);
-//		 if (c.adjacent.size() <= 1) {
-//		  for(Center k : c.touches){
-//		  g.drawLine((int)c.point.x, (int)c.point.y, (int)k.point.x,
-//		 (int)k.point.y);
-//		  }
-//		 g.setColor(Color.BLACK);
-//		
-//		 } else if (c.adjacent.size() == 2) {
-//		 g.setColor(Color.BLUE);
-//		 } else if (c.adjacent.size() == 3) {
-//		 g.setColor(Color.GREEN);
-//		 } else if (c.adjacent.size() == 4) {
-//		 g.setColor(Color.ORANGE);
-//		 } else if (c.adjacent.size() == 5){
-//		 g.setColor(Color.RED);
-//		 } else {
-//		 g.setColor(Color.WHITE);
-//		 }
-//		 g.fillOval((int) c.point.x - 1, (int) c.point.y - 1, 3, 3);
-//		 }
-
 	}
 
 	public static void main(String[] args) {

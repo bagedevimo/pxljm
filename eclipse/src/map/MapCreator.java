@@ -125,52 +125,52 @@ public class MapCreator {
 	}
 
 	public static void main(String[] args) {
-	
-		int WIDTH = 400, HIEGHT = 400;
-		double fq = 4.0f;
-		
-		
-		final BufferedImage bi = new BufferedImage(WIDTH, HIEGHT, BufferedImage.TYPE_INT_RGB);
-		Perlin noise = new Perlin(1);
-		
-		MapCreator.newMap(WIDTH, HIEGHT);
-		MapCreator.AddPerlinNoise(6.0f);
-		MapCreator.Perturb(32.0f, 32.0f);
-		for (int i = 0; i < 10; i++ )
-			MapCreator.Erode(16.0f);
-		MapCreator.Smoothen();
-	
-		
-		
-	double[][] map = MapCreator.getMap();
-		
-		for(int y = 0; y<HIEGHT; y++){
-			for(int x = 0; x<WIDTH; x++){
-				bi.setRGB(x, y, (int)((map[x][y]+1)*127));
-				
-				//int color = (int)((noise.getNoise(x/(double)WIDTH, y/(double)HIEGHT, 0, 2)+1)*127);
-				//bi.setRGB(x, y, (int)((noise.getNoise(x/(double)WIDTH, y/(double)HIEGHT, 0, 2)+1)*127));
-				//System.out.printf("%5f ", noise.Noise((fq*x)/(double)WIDTH,(fq* y)/(double)HIEGHT, 0));
-			}
-			//System.out.println();
-		}
-		
-		JFrame j = new JFrame();
-		j.setLayout(new BorderLayout());
-		JPanel pic = new JPanel(){
-		@Override
-		public void paintComponent(Graphics g){
-			g.drawImage(bi, 0, 0, getWidth(), getHeight(), null);
-			}
-		};
-		
-		pic.setPreferredSize(new Dimension(WIDTH, HIEGHT));
-		
-		
-		j.add(pic, BorderLayout.CENTER);
-		j.pack();
-		j.setLocationRelativeTo(null);
-		j.setVisible(true);
-	
+//	
+//		int WIDTH = 400, HIEGHT = 400;
+//		double fq = 4.0f;
+//		
+//		
+//		final BufferedImage bi = new BufferedImage(WIDTH, HIEGHT, BufferedImage.TYPE_INT_RGB);
+//		Perlin noise = new Perlin(1);
+//		
+//		MapCreator.newMap(WIDTH, HIEGHT);
+//		MapCreator.AddPerlinNoise(6.0f);
+//		MapCreator.Perturb(32.0f, 32.0f);
+//		for (int i = 0; i < 10; i++ )
+//			MapCreator.Erode(16.0f);
+//		MapCreator.Smoothen();
+//	
+//		
+//		
+//	double[][] map = MapCreator.getMap();
+//		
+//		for(int y = 0; y<HIEGHT; y++){
+//			for(int x = 0; x<WIDTH; x++){
+//				bi.setRGB(x, y, (int)((map[x][y]+1)*127));
+//				
+//				//int color = (int)((noise.getNoise(x/(double)WIDTH, y/(double)HIEGHT, 0, 2)+1)*127);
+//				//bi.setRGB(x, y, (int)((noise.getNoise(x/(double)WIDTH, y/(double)HIEGHT, 0, 2)+1)*127));
+//				//System.out.printf("%5f ", noise.Noise((fq*x)/(double)WIDTH,(fq* y)/(double)HIEGHT, 0));
+//			}
+//			//System.out.println();
+//		}
+//		
+//		JFrame j = new JFrame();
+//		j.setLayout(new BorderLayout());
+//		JPanel pic = new JPanel(){
+//		@Override
+//		public void paintComponent(Graphics g){
+//			g.drawImage(bi, 0, 0, getWidth(), getHeight(), null);
+//			}
+//		};
+//		
+//		pic.setPreferredSize(new Dimension(WIDTH, HIEGHT));
+//		
+//		
+//		j.add(pic, BorderLayout.CENTER);
+//		j.pack();
+//		j.setLocationRelativeTo(null);
+//		j.setVisible(true);
+//	
 	}
 }
