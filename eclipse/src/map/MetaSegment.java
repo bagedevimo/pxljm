@@ -56,11 +56,13 @@ public class MetaSegment {
 	private void addFoliage(Segment seg, Biome[][] biomes){
 		Random rand = new Random(seg.id);
 		
+		List<Foliage> foliage = new ArrayList<Foliage>();
+		
 		for(int i=0; i<TreeFill; i++){
 			double x = rand.nextDouble() * Segment.size;
 			double y = rand.nextDouble() * Segment.size;
 			if (treeChance(biomes[(int)x][(int)y]) > rand.nextDouble()){
-				seg.addEntity(new TreeEnitity(null,x, y, 0));
+				foliage.add(new Foliage(1, x, y, 10, 0.01));
 			}
 		}
 		
@@ -68,9 +70,16 @@ public class MetaSegment {
 			double x = rand.nextDouble() * Segment.size;
 			double y = rand.nextDouble() * Segment.size;
 			if (plantChance(biomes[(int)x][(int)y]) > rand.nextDouble()){
-				seg.addEntity(new TreeEnitity(null,x, y, 0));
+				foliage.add(new Foliage(0, x, y, 5, 0.01));
 			}
 		}
+		
+		//
+//		forall
+//		
+//		
+//		
+//		seg.addEntity(new TreeEnitity(null,x, y, 0));
 	}
 	
 	private double treeChance(Biome b){
@@ -109,6 +118,27 @@ public class MetaSegment {
 		case GRASSLAND: return 0.05;
 		}
 		return 0;
+	}
+	
+	private class Foliage{
+		public final int priority;
+		public final double xPos;
+		public final double yPos;
+		public final double maxRadius;
+		double radius;
+		Foliage(int priority_, double xPos_, double yPos_, double maxRadius_, double radius_){
+			priority = priority_;
+			xPos = xPos_;
+			yPos = yPos_;
+			maxRadius = maxRadius_;
+			radius = 0.01;
+		}
+		
+		int collision(Foliage f){
+			if(Math.hypot((xPos - f.xPos), (yPos - f.yPos)) < radius + f.radius)
+				return (priority > f.priority) ? 1:-1;
+			return 0;
+		}
 	}
 	
 	public BoundingBox getBound() {
