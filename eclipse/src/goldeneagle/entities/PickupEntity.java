@@ -33,8 +33,9 @@ import goldeneagle.util.Profiler;
 
 public class PickupEntity extends Entity {
 
+	private static final int size = 32;
 	private final Item item;
-	private Bound bound;
+	private Bound bound; 
 	
 	public PickupEntity(Frame parent_, double xPos_, double yPos_, Item item_) {
 		super(parent_);
@@ -50,42 +51,38 @@ public class PickupEntity extends Entity {
 
 	@Override
 	public void Draw() {
-//		int texID = -1;
-//		try {
-//			texID = ResourceCache.GetGLTexture("./assets/entities/bush.png");
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	
-// 		glBindTexture(GL_TEXTURE_2D, texID);
-//		glEnable(GL_TEXTURE_2D);
-//		
-//		glEnable(GL_ALPHA_TEST);
-//		glAlphaFunc(GL_GREATER, 0.5f);
-//		
-//		Profiler.enter(PlantEntity);
-//		
-//		glBegin(GL_POLYGON);
-//		
-//		glColor3d(1, 1, 1);
-//		glNormal3d(0, 0, 1);
-//		
-//		glTexCoord2d(0, 0);
-//		glVertex3d(, -this.radius, SceneManager.Z_OBJECT);
-//		glTexCoord2d(1, 0);
-//		glVertex3d(this.radius, -this.radius, SceneManager.Z_OBJECT);
-//		glTexCoord2d(1, 1);
-//		glVertex3d(this.radius, this.radius, SceneManager.Z_OBJECT);
-//		glTexCoord2d(0, 1);
-//		glVertex3d(-this.radius, this.radius, SceneManager.Z_OBJECT);
-//		
-//		glEnd();	
-//		
-//		Profiler.exit(PlantEntity);
-//		
-//		glDisable(GL_TEXTURE_2D);
-//		glDisable(GL_ALPHA_TEST);
+		int texID = -1;
+		try {
+			texID = ResourceCache.GetGLTexture("./assets/entities/bush.png");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+ 		glBindTexture(GL_TEXTURE_2D, texID);
+		glEnable(GL_TEXTURE_2D);
+		
+		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GREATER, 0.5f);
+
+		glBegin(GL_POLYGON);
+		
+		glColor3d(1, 1, 1);
+		glNormal3d(0, 0, 1);
+		
+		glTexCoord2d(0, 0);
+		glVertex3d(-size, -size, SceneManager.Z_OBJECT);
+		glTexCoord2d(1, 0);
+		glVertex3d(size, -size, SceneManager.Z_OBJECT);
+		glTexCoord2d(1, 1);
+		glVertex3d(size, size, SceneManager.Z_OBJECT);
+		glTexCoord2d(0, 1);
+		glVertex3d(-size, size, SceneManager.Z_OBJECT);
+		
+		glEnd();
+		
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_ALPHA_TEST);
 	}
 
 }
