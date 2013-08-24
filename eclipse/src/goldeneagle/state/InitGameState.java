@@ -11,12 +11,12 @@ public class InitGameState extends GameState {
 	@Override
 	protected void init() {
 		rl = new ResourceLoader();
-		rl.Add("./assets/test.png");
+		rl.Add("./assets/tiles/atlas.jpg");
 		rl.Start();
 	}
 
 	@Override
-	protected void update() {
+	protected void update(double deltaTime) {
 		if(rl.isComplete())
 			this.nextState = new MainGameState();
 	}

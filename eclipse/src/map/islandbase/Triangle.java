@@ -114,9 +114,13 @@ public class Triangle {
 		return s;
 	}
 	
+	public void scale(double scale){
+		for(int i = 0; i < 3; i++)
+			ver[i].mul(scale);
+	}	
 	//hackish method
-	public BoundingBox getBound(double scale){
-		return new BoundingBox(getMinX()*scale, getMinZ()*scale, getMaxX()*scale, getMaxZ()*scale);
+	public BoundingBox getBound(){
+		return new BoundingBox(getMinX(), getMinZ(), getMaxX(), getMaxZ());
 	}
 
 	public static void main(String[] args) {

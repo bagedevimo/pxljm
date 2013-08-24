@@ -3,6 +3,7 @@ package map;
 import map.islandbase.Biome;
 
 public enum TileType {
+	UNKNOWN,
 	GRASS,
 	BEACH,
 	RIVER,

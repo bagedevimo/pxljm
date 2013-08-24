@@ -1,4 +1,4 @@
-package goldeneagle.scene;
+package goldeneagle.entities;
 
 import static org.lwjgl.opengl.GL11.GL_POLYGON;
 import static org.lwjgl.opengl.GL11.glBegin;
@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glNormal3d;
 import static org.lwjgl.opengl.GL11.glVertex3d;
 import goldeneagle.Frame;
+import goldeneagle.scene.Entity;
 
 public class TestEntity extends Entity {
 
@@ -27,7 +28,7 @@ public class TestEntity extends Entity {
 	}
 
 	@Override
-	public void Update() {
+	public void Update(double deltaTime) {
 		// TODO Auto-generated method stub
 		
 	}

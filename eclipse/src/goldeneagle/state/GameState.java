@@ -35,8 +35,9 @@ public abstract class GameState {
 	}
 	
 	public final void doUpdate() {
+		double prevTime = clock.get();
 		clock.update();
-		this.update();
+		this.update(clock.get() - prevTime);
 	}
 	
 	public final void doDraw() {
@@ -53,7 +54,7 @@ public abstract class GameState {
 	}
 	
 	protected abstract void init();
-	protected abstract void update();
+	protected abstract void update(double deltaTime);
 	protected abstract void draw();
 	
 	protected void onPause() {

@@ -18,12 +18,14 @@ public class BoundingBox extends Bound{
 	@Override
 	public Vec3 intersects(BoundingBox b) {
 		if (b == null) return null;
-		if (this.contains(b.minX, b.minY) || 
-			this.contains(b.minX, b.maxY) || 
-			this.contains(b.maxX, b.minY) || 
-			this.contains(b.maxX, b.maxY)) {
+		double xMin = Math.min(b.minX, minX);
+		double xMax = Math.max(b.maxX, maxX);
+		double yMin = Math.min(b.minY, minY);
+		double yMax = Math.max(b.maxY, maxY);
+		
+		if(xMax-xMin < ((b.maxX-b.minX)+(maxX-minX)) && 
+				yMax-yMin < ((b.maxY-b.minY)+(maxY-minY)))
 			return new Vec3(0,0,0);
-		}
 		return null;
 	}
 	
