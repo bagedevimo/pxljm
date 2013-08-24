@@ -26,7 +26,7 @@ public enum TileType {
 		case SCORCHED:
 		case TEMPERATE_DESERT:
 		case SUBTROPICAL_DESERT:
-			return RIVER;
+			return STONE;
 		default:
 			return TileType.GRASS;
 		}
