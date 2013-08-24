@@ -2,4 +2,6 @@
 #FORMAT <Tile-Type> <x-position> <y-position> <number of tiles, in y direction> <number of tiles in x direction>
 BEACH 32 32 6 6
 GRASS 288 32 6 6
-STONE 544 32 6 6
+RIVER 544 32 6 6
+STONE 1056 32 6 6
+OCEAN 1312 32 6 6
