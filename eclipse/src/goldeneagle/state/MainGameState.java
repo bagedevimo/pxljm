@@ -1,15 +1,20 @@
 package goldeneagle.state;
 
+import goldeneagle.scene.Camera;
 import goldeneagle.scene.ChunkEntity;
 import goldeneagle.scene.Scene;
 import goldeneagle.scene.SceneManager;
 
 public class MainGameState extends GameState {
 	private Scene scene;
+	private Camera cam;
 	
 	@Override
 	protected void init() {
 		this.scene = new Scene(getClock());
+		this.cam = new Camera();
+		cam.bindFrame(scene.getRoot());
+		cam.setRadius(10);
 		scene.AddEntity(new ChunkEntity(scene.getRoot(), 0, 0));
 	}
 
@@ -21,6 +26,6 @@ public class MainGameState extends GameState {
 	@Override
 	protected void draw() {
 		// hello, world!
-		SceneManager.doFrame(scene, null);
+		SceneManager.doFrame(scene, cam);
 	}
 }

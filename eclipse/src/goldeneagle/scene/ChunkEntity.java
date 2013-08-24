@@ -26,7 +26,6 @@ public class ChunkEntity extends Entity {
 			e.printStackTrace();
 		}
 		
-		System.out.printf("texID: %d\n", texID);
 		
 		glBindTexture(GL_TEXTURE_2D, texID);
 		glEnable(GL_TEXTURE_2D);
@@ -37,13 +36,13 @@ public class ChunkEntity extends Entity {
 		glNormal3d(0, 0, 1);
 		
 		glTexCoord2d(0, 0);
-		glVertex3d(0, -1, -1);
+		glVertex3d(0, 0, -1);
 		glTexCoord2d(1, 0);
 		glVertex3d(1, 0, -1);
 		glTexCoord2d(0, 1);
-		glVertex3d(0, 1, -1);
+		glVertex3d(1, 1, -1);
 		glTexCoord2d(1, 1);
-		glVertex3d(-1, 0, -1);
+		glVertex3d(0, 1, -1);
 		
 		glEnd();
 		
