@@ -14,6 +14,8 @@ package goldeneagle;
  */
 public final class Vec4 {
 
+	public static final Vec4 zero = new Vec4(0, 0, 0, 0);
+	
 	public final double x;
 	public final double y;
 	public final double z;

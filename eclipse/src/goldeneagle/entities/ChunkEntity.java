@@ -14,10 +14,10 @@ import map.Segment;
 import map.SegmentGenerator;
 import map.TileTextureLoader;
 import map.TileType;
-import goldeneagle.Frame;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.scene.Entity;
+import goldeneagle.scene.Frame;
 import goldeneagle.scene.Scene;
 import goldeneagle.scene.SceneManager;
 import goldeneagle.util.Profiler;
@@ -103,17 +103,13 @@ public class ChunkEntity extends Entity {
 		
 		final double uv = 0.03125;
 		
-		
-		
-		
-		
 		glBindTexture(GL_TEXTURE_2D, texID);
 		glEnable(GL_TEXTURE_2D);
 		
 		Profiler.enter(ChunkDraw);
+		glMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, SceneManager.floatv(1f, 1f, 1f, 1f));
+		
 		glBegin(GL_QUADS);
-	
-		glColor3d(1, 1, 1);
 		glNormal3d(0, 0, 1);
 		
 		for(int i = 0; i < 1024; i++) {
@@ -142,6 +138,7 @@ public class ChunkEntity extends Entity {
 		}
 		
 		glEnd();
+		
 		Profiler.exit(ChunkDraw);
 		glDisable(GL_TEXTURE_2D);
 	}

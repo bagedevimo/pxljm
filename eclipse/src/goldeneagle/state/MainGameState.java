@@ -1,5 +1,6 @@
 package goldeneagle.state;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import goldeneagle.Vec3;
 import goldeneagle.entities.ChunkEntity;
 import goldeneagle.entities.PlayerEntity;
 import goldeneagle.scene.Camera;
+import goldeneagle.scene.Light;
 import goldeneagle.scene.Scene;
 import goldeneagle.scene.SceneManager;
 
@@ -22,8 +24,9 @@ public class MainGameState extends GameState {
 	protected void init() {
 		this.chunks = new HashMap<Long, ChunkEntity>();
 		this.scene = new Scene(getClock());
-		this.cam = new Camera();
+		this.cam = new Camera(scene.getRoot());
 		PlayerEntity player = new PlayerEntity(scene.getRoot());
+		
 		MovingFrame offset = new MovingFrame(player);
 		offset.setLinear(new Vec3(0, 4, 0), Vec3.zero);
 		cam.bindFrame(offset);
@@ -48,6 +51,10 @@ public class MainGameState extends GameState {
 //		scene.AddEntity(new ChunkEntity(scene.getRoot(), playerSpawnX, playerSpawnY, scene));
 		
 		scene.AddEntity(player);
+		
+		scene.setAmbient(Color.BLACK);
+		Light l = new Light.PointLight(player, Color.WHITE, 10);
+		scene.addLight(l);
 	}	
 	
 	private long getID(int x, int y) {
