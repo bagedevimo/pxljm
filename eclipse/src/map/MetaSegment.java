@@ -45,7 +45,7 @@ public class MetaSegment {
 						set = true;
 					}
 				if(!set){ //default to ocean
-					tiles[x][y] = TileType.OCEAN;
+					tiles[x][y] = TileType.UNKNOWN;
 				}
 			}
 		}
