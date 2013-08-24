@@ -2,6 +2,7 @@ package goldeneagle.util;
 
 import goldeneagle.Bound;
 import goldeneagle.BoundingBox;
+import goldeneagle.InvalidBoundException;
 import goldeneagle.Vec3;
 
 import java.util.ArrayList;
@@ -134,7 +135,12 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 
 		public boolean add(U u) throws OutOfBoundsException {
 			Bound a = u.getBound();
-			if (!this.bound.contains(a)) throw new OutOfBoundsException();
+			try {
+				if (!this.bound.contains(a)) throw new OutOfBoundsException();
+			} catch (InvalidBoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			if (isleaf && elements.size() < MAX_LEAF_ELEMENTS) {
 				if (!elements.add(u)) return false;
 			} else {
@@ -187,7 +193,12 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 
 		public boolean contains(U u) {
 			Bound a = u.getBound();
-			if (!this.bound.contains(a)) return false;
+			try {
+				if (!this.bound.contains(a)) return false;
+			} catch (InvalidBoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (elements.contains(u)) return true;
 			if (isleaf) return false;
 			final int cid_min = childID(a.min());

@@ -35,9 +35,20 @@ public class PxlGame {
 		
 		double lastFPS = sysclock.get();
 		int fps = 0;
+		
+		try {
+			SceneManager.init();
+			AudioEngine.Initalise();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		while (!Display.isCloseRequested()) {
 			Profiler.enter(drawLoop);
+			
+			AudioEngine.Update();
+			
 			GameState currentState = getCurrentState();
 			currentState.doUpdate();
 			currentState.doDraw();
@@ -58,6 +69,8 @@ public class PxlGame {
 //				
 //			}
 		}
+		
+		AudioEngine.destroy();
 
 		Display.destroy();
 	}
