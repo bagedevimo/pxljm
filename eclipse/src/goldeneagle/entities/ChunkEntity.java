@@ -16,24 +16,23 @@ import map.TileTextureLoader;
 import map.TileType;
 import goldeneagle.Frame;
 import goldeneagle.ResourceCache;
+import goldeneagle.Vec3;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.SceneManager;
+import goldeneagle.util.Profiler;
 
 public class ChunkEntity extends Entity {
-	public final double xOrigin;
-	public final double yOrigin;
-	
 	public final TileType[] tiles;
 	public final int[] tilesR;
 	private List<Point> sandTiles; 
 	private TileTextureLoader ttl;
 	private Map<TileType, List<Point>> tileMaps;
+	static final int ChunkDraw = Profiler.createSection("ChunkEntity.Draw.glDRAW");
+	static final int ChunkUV = Profiler.createSection("ChunkEntity.Draw.uv");
 	
 	public ChunkEntity(Frame parent_, int baseX, int baseY) {
 		super(parent_);
-		
-		this.xOrigin = baseX;
-		this.yOrigin = baseY;
+		this.setLinear(new Vec3(baseX, baseY), Vec3.zero);
 		
 		try {
 			ttl = new TileTextureLoader("./assets/tiles/tiletex_info.txt");
@@ -48,8 +47,8 @@ public class ChunkEntity extends Entity {
 //		tileMaps.put(TileType.OCEAN, ttl.getTileLocation(TileType.GRASS));
 		
 		System.out.println("Starting seg-gen");
-		System.out.println("Originas" + this.xOrigin / 32 + " :: " + this.yOrigin / 32);
-		Segment seg = SegmentGenerator.getInst().segmentAt(this.xOrigin, this.yOrigin);
+		System.out.println("Originas" + this.getPosition().x / 32 + " :: " + this.getPosition().y / 32);
+		Segment seg = SegmentGenerator.getInst().segmentAt(this.getPosition().x, this.getPosition().y);
 		System.out.println("seg-gen complete");
 		TileType[][] temp = seg.getTiles();
 		
@@ -58,7 +57,6 @@ public class ChunkEntity extends Entity {
 		for(int x = 0; x < temp.length; x++) {
 			for(int y = 0; y < temp[x].length; y++) {
 				tiles[(y*32)+x] = temp[x][y];
-				System.out.printf("temp[%d][%d]=%s\n", x, y, temp[x][y]);
 			}
 		}
 		
@@ -70,6 +68,10 @@ public class ChunkEntity extends Entity {
 			else
 				tilesR[i] = 0;
 		}
+	}
+	
+	public Vec3 Center() {
+		return this.getPosition().add(new Vec3(512, 512, 0));
 	}
 
 	@Override
@@ -89,9 +91,10 @@ public class ChunkEntity extends Entity {
 		
 		
 		
+		
 		glBindTexture(GL_TEXTURE_2D, texID);
 		glEnable(GL_TEXTURE_2D);
-		
+		Profiler.enter(ChunkDraw);
 		glBegin(GL_QUADS);
 	
 		glColor3d(1, 1, 1);
@@ -108,6 +111,8 @@ public class ChunkEntity extends Entity {
 				uvy = ((double)tileMaps.get(tiles[i]).get(r).y / 1024);
 			}
 			
+//			Profiler.enter(ChunkUV);
+			
 			glTexCoord2d(uvx, uvy);
 			glVertex3d(x, y, SceneManager.Z_TERRAIN);
 			glTexCoord2d(uvx+uv, uvy);
@@ -116,10 +121,12 @@ public class ChunkEntity extends Entity {
 			glVertex3d(x+1, y+1, SceneManager.Z_TERRAIN);
 			glTexCoord2d(uvx, uvy+uv);
 			glVertex3d(x, y+1, SceneManager.Z_TERRAIN);
+			
+//			Profiler.exit(ChunkUV);
 		}
 		
 		glEnd();
-		
+		Profiler.exit(ChunkDraw);
 		glDisable(GL_TEXTURE_2D);
 	}
 
