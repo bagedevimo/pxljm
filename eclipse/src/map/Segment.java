@@ -14,6 +14,9 @@ public class Segment {
 	public final long id;
 	private final TileType[][] tiles;
 	
+	private List<Vec3> trees;
+	private List<Vec3> plants;
+	
 	private final List<Entity> entities;
 
 	public static long getID(int posx, int posz) {
@@ -52,11 +55,19 @@ public class Segment {
 	}
 	
 	public void addTrees(List<Vec3> trees){
-		
+		this.trees = trees;
 	}
 	
 	public void addPlants(List<Vec3> plants){
-		
+		this.plants = plants;
+	}
+	
+	public List<Vec3> getTrees(){
+		return trees;
+	}
+	
+	public List<Vec3> addPlants(){
+		return plants;
 	}
 	
 	public List<Entity> getEntities(Entity e){
