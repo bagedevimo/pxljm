@@ -32,18 +32,18 @@ public class MainGameState extends GameState {
 		int spawnRadius = 2;
 		player.setLinear(new Vec3(playerSpawnX, playerSpawnY), Vec3.zero);
 		
-//		for(int x = -spawnRadius; x <= spawnRadius; x++) {
-//			for(int y = -spawnRadius; y <= spawnRadius; y++) {
-//				double thisX = player.getPosition().x + (x*32);
-//				double thisY = player.getPosition().y + (y*32);
-//				System.out.printf("X:%f\tY:%f\n", thisX, thisY);
-//				ChunkEntity chunk = new ChunkEntity(scene.getRoot(), (int)thisX, (int)thisY, scene);
-////				chunks.put(id, chunk);
-//				scene.AddEntity(chunk);				
-//			}
-//		}
+		for(int x = -spawnRadius; x <= spawnRadius; x++) {
+			for(int y = -spawnRadius; y <= spawnRadius; y++) {
+				double thisX = player.getPosition().x + (x*32);
+				double thisY = player.getPosition().y + (y*32);
+				System.out.printf("X:%f\tY:%f\n", thisX, thisY);
+				ChunkEntity chunk = new ChunkEntity(scene.getRoot(), (int)thisX, (int)thisY, scene);
+//				chunks.put(id, chunk);
+				scene.AddEntity(chunk);				
+			}
+		}
 //		
-		scene.AddEntity(new ChunkEntity(scene.getRoot(), playerSpawnX, playerSpawnY, scene));
+//		scene.AddEntity(new ChunkEntity(scene.getRoot(), playerSpawnX, playerSpawnY, scene));
 		
 		scene.AddEntity(player);
 	}	
