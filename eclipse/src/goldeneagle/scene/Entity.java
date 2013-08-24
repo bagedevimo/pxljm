@@ -40,6 +40,6 @@ public abstract class Entity extends MovingFrame {
 		GL11.glPopMatrix();
 	}
 	
-	protected abstract void update(double deltaTime);
+	protected abstract boolean update(double deltaTime);
 	protected abstract void draw();
 }

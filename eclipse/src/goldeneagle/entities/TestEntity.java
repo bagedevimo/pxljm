@@ -28,9 +28,8 @@ public class TestEntity extends Entity {
 	}
 
 	@Override
-	public void update(double deltaTime) {
-		// TODO Auto-generated method stub
-		
+	public boolean update(double deltaTime) {
+		return true;
 	}
 	
 }

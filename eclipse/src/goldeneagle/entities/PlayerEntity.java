@@ -13,7 +13,7 @@ import goldeneagle.scene.SceneManager;
 import goldeneagle.util.Profiler;
 
 public class PlayerEntity extends Entity {
-	private static final int PlayerDraw = Profiler.createSection("PlayerDraw");
+	private static final int PlayerEntity_glBegin = Profiler.createSection("PlayerEntity_glBegin");
 	
 	
 
@@ -95,8 +95,8 @@ public class PlayerEntity extends Entity {
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.5f);
 		
-		Profiler.enter(PlayerDraw);
 		
+		Profiler.enter(PlayerEntity_glBegin);		
 		glBegin(GL_POLYGON);
 		
 		glColor3d(1, 1, 1);
@@ -115,15 +115,14 @@ public class PlayerEntity extends Entity {
 		glVertex3d(-size, size, 0);
 		
 		glEnd();
-		
-		Profiler.exit(PlayerDraw);
+		Profiler.exit(PlayerEntity_glBegin);
 		
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_ALPHA_TEST);
 	}
 
 	@Override
-	public void update(double deltaTime) {
+	public boolean update(double deltaTime) {
 		Vec3 motion = new Vec3(0, 0, 0);
 		double rot = 0;
 		double rotSpeed = 2.5 * deltaTime;
@@ -172,6 +171,16 @@ public class PlayerEntity extends Entity {
 		
 		if(this.getClock().get() - this.lastAttrUpdate > 1)
 			this.updateAttrs();
+		
+		return true;
+	}
+	
+	public int getCurrentChunkX() {
+		return (int) (this.getPosition().x / 32);
+	}
+	
+	public int getCurrentChunkY() {
+		return (int) (this.getPosition().y / 32);
 	}
 	
 	private void updateAttrs() {
@@ -185,11 +194,11 @@ public class PlayerEntity extends Entity {
 		else if(this.Thirst > this.DefaultThirst)
 			this.Thirst -= 0.0001;
 		
-		System.out.printf("Energy: %f\tdEnergy: %f\n", this.Energy, 0f);
-		System.out.printf("Nutrition: %f\tdNutrition: %f\n", this.Nutrition, this.Hunger);
-		System.out.printf("Hydration: %f\tddHydration: %f\n", this.Hydration, this.Thirst);
-		System.out.printf("Health: %f\tdHealth: %f\n",  this.Health, 0f);
-		System.out.printf("Temperature: %f\tdTemperature: %f\n", this.Temp, 0f);
+//		System.out.printf("Energy: %f\tdEnergy: %f\n", this.Energy, 0f);
+//		System.out.printf("Nutrition: %f\tdNutrition: %f\n", this.Nutrition, this.Hunger);
+//		System.out.printf("Hydration: %f\tddHydration: %f\n", this.Hydration, this.Thirst);
+//		System.out.printf("Health: %f\tdHealth: %f\n",  this.Health, 0f);
+//		System.out.printf("Temperature: %f\tdTemperature: %f\n", this.Temp, 0f);
 	}
 
 }

@@ -16,11 +16,19 @@ public class Main {
 		PxlGame game = new PxlGame();
 		
 		boolean fullscreen = false;
+		int width = 800;
+		int height = 600;
 		
-		for(int i = 0; i < args.length; i++)
-			if(args[i] == "--fullscreen")
+		for(int i = 0; i < args.length; i++) {
+			System.out.printf("args[%d]=%s\n", i, args[i]);
+			if(args[i].equals("--fullscreen")) {
 				fullscreen = true;
+				System.out.println("fullscreen!");
+				width = Integer.parseInt(args[++i]);
+				height = Integer.parseInt(args[++i]);
+			}
+		}
 			
-		game.start(fullscreen);
+		game.start(fullscreen, width, height);
 	}
 }

@@ -1,13 +1,11 @@
 package goldeneagle.entities;
 
 import static org.lwjgl.opengl.GL11.*;
-import goldeneagle.Bound;
 import goldeneagle.BoundingSphere;
 import goldeneagle.scene.Frame;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.scene.Entity;
-import goldeneagle.scene.SceneManager;
 import goldeneagle.util.Profiler;
 
 public class PlantEntity extends Entity{
@@ -29,7 +27,6 @@ public class PlantEntity extends Entity{
 		try {
 			texID = ResourceCache.GetGLTexture("./assets/entities/bush.png");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
@@ -64,8 +61,7 @@ public class PlantEntity extends Entity{
 	}
 
 	@Override
-	public void update(double deltaTime) {
-		// TODO Auto-generated method stub
-		
+	public boolean update(double deltaTime) {
+		return true;
 	}
 }

@@ -5,8 +5,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.lwjgl.opengl.*;
@@ -20,6 +20,7 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL21.*;
 import goldeneagle.*;
 
+@SuppressWarnings("unused")
 public class SceneManager {
 	
 	public static final PixelFormat PIXEL_FORMAT = new PixelFormat(8, 24, 8, 4);
@@ -72,6 +73,15 @@ public class SceneManager {
 		}
 		buf.position(0);
 		return buf;
+	}
+	
+	public static IntBuffer intv(int... ds) {
+		IntBuffer buf = buftemp.asIntBuffer();
+		buf.position(0);
+		for(int d : ds)
+			buf.put(d);
+		buf.position(0);
+		return buf;		
 	}
 	
 	public static FloatBuffer floatv(Vec3 v) {
