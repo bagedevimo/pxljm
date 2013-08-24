@@ -38,7 +38,7 @@ public class TileTextureLoader {
 			}
 			System.out.printf("Line: %s\n", line);
 			
-			TileType type = TileType.GRASS; //default value
+			TileType type = TileType.UNKNOWN; //default value
 			try{
 				String toke = sc.next().toUpperCase();
 				if(toke.equals("GRASS"))

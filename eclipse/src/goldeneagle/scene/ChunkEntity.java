@@ -5,7 +5,9 @@ import static org.lwjgl.opengl.GL11.*;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import map.Segment;
@@ -23,6 +25,7 @@ public class ChunkEntity extends Entity {
 	public final int[] tilesR;
 	private List<Point> sandTiles; 
 	private TileTextureLoader ttl;
+	private Map<TileType, List<Point>> tileMaps;
 	
 	public ChunkEntity(Frame parent_, int baseX, int baseY) {
 		super(parent_);
@@ -36,7 +39,10 @@ public class ChunkEntity extends Entity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sandTiles = ttl.getTileLocation(TileType.GRASS);
+		
+		tileMaps = new HashMap<TileType, List<Point>>();
+		tileMaps.put(TileType.GRASS, ttl.getTileLocation(TileType.GRASS));
+		tileMaps.put(TileType.BEACH, ttl.getTileLocation(TileType.BEACH));
 		
 //		System.out.println("Starting seg-gen");
 ////		Segment seg = SegmentGenerator.getInst().segmentAt(this.xOrigin / 32, this.yOrigin / 32);
@@ -83,9 +89,12 @@ public class ChunkEntity extends Entity {
 			int x = i % 32;
 			int y = i / 32;
 			
+			double uvx = 0, uvy = 0;
 			int r = tilesR[i];
-			double uvx = ((double)sandTiles.get(r).x / 32) * uv;
-			double uvy = ((double)sandTiles.get(r).y / 32) * uv;
+			if(tileMaps.containsKey(tiles[i])) {
+				uvx = ((double)tileMaps.get(tiles[i]).get(r).x / 32) * uv;
+				uvy = ((double)tileMaps.get(tiles[i]).get(r).y / 32) * uv;
+			}
 			
 			glTexCoord2d(uvx, uvy);
 			glVertex3d(x, y, SceneManager.Z_TERRAIN);
