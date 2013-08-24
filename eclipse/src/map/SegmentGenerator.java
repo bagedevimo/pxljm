@@ -49,10 +49,11 @@ public class SegmentGenerator {
 
 		double scale = numSegments / regionSize;
 		
+		int i = 0;
 		for (Triangle t : tList) {
 			BoundingBox b = t.getBound(scale);
-			for (int y = 0; y < numSegments; y++) {
-				for (int x = 0; x < numSegments; x++) {
+			for (int y = (int)b.minY-1; y>=0 && y<=b.maxY && y < numSegments; y++) {
+				for (int x = (int)b.minX; x>=0 && x<=b.maxX && x < numSegments; x++) {
 					if (b.intersects(metaSegments[x][y].getBound()) != null) {
 						metaSegments[x][y].addTriangle(t);
 					}
@@ -94,9 +95,10 @@ public class SegmentGenerator {
 	}
 
 	public static void main(String[] args) {
-		SegmentGenerator sg = new SegmentGenerator(32);
+		//SegmentGenerator sg = new SegmentGenerator(32);
+		System.out.println("Made it here");
 		for (int i = 0; i < 10; i++) {
-			Segment s = sg.getSegment(0, i);
+			Segment s = SegmentGenerator.getInst().getSegment(0, i);
 			System.out.println(s.xPos + " :: " + s.yPos);
 		}
 	}
