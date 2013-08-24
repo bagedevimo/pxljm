@@ -1,7 +1,11 @@
 package map;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -9,14 +13,15 @@ import java.util.Scanner;
 public class TileTextureLoader {
 
 	private int TILE_SIZE = 32;
-	private final String TILE_TEXTURE_PATH = "../assets/images/tiletex_info.txt";
+	private final String TILE_TEXTURE_PATH = "./assets/images/tiletex_info.txt";
 	
 	//maps the tile types to their position in the texture
 	private Map<TileType, List<Point>> textureMap;
 	
-	public TileTextureLoader() {
-		Scanner s = new Scanner(TILE_TEXTURE_PATH);
-		try{
+	public TileTextureLoader(String path) throws IOException {
+		textureMap = new HashMap<TileType, List<Point>>();
+		Scanner s = new Scanner(new File(path));
+		try {
 			String line = s.nextLine();
 			Scanner sc = new Scanner(line);
 			TILE_SIZE = sc.nextInt();
@@ -31,23 +36,31 @@ public class TileTextureLoader {
 			if( line.charAt(0) == '#'){
 				continue; //ignore comments
 			}
+			System.out.printf("Line: %s\n", line);
 			
 			TileType type = TileType.GRASS; //default value
 			try{
-				switch (sc.next().toUpperCase()){
-				case "GRASS": type = TileType.GRASS;
-				case "BEACH": type = TileType.BEACH;
-				case "RIVER": type = TileType.RIVER;
-				case "STONE": type = TileType.STONE;
-				case "OCEAN": type = TileType.OCEAN;
-				}
+				String toke = sc.next().toUpperCase();
+				if(toke.equals("GRASS"))
+					type = TileType.GRASS;
+				if(toke.equals("BEACH"))
+					type = TileType.BEACH;
+				if(toke.equals("RIVER"))
+					type = TileType.RIVER;
+				else if(toke.equals("STONE"))
+					 type = TileType.STONE;
+				else if(toke.equals("OCEAN"))
+					type = TileType.OCEAN;
+				
+				System.out.printf("Type: %s\n", type);
 				
 				if (!textureMap.containsKey(type))
 					textureMap.put(type, new ArrayList<Point>());
 				
 				int xPos = sc.nextInt();
-				int xNum = sc.nextInt();
+				
 				int yPos = sc.nextInt();
+				int xNum = sc.nextInt();
 				int yNum = sc.nextInt();
 				
 				for(int x=0; x<xNum; x++){

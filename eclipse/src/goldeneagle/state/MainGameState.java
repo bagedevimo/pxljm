@@ -21,6 +21,7 @@ public class MainGameState extends GameState {
 		offset.setLinear(new Vec3(0, 4, 0), Vec3.zero);
 		cam.bindFrame(offset);
 		cam.setRadius(10);
+		
 		scene.AddEntity(new ChunkEntity(scene.getRoot(), 0, 0));
 		scene.AddEntity(player);
 	}
