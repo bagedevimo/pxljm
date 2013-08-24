@@ -10,6 +10,7 @@ import goldeneagle.clock.DerivedClock;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.SceneManager;
+import goldeneagle.scene.ShadowCaster;
 import goldeneagle.util.Profiler;
 
 public class PlayerEntity extends Entity {
@@ -58,6 +59,7 @@ public class PlayerEntity extends Entity {
 		animationStart = this.animationClock.get();
 		
 		this.lastAttrUpdate = this.getClock().get();
+		
 	}
 	
 	private double getFrameTime() {

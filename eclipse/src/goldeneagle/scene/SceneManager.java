@@ -172,6 +172,7 @@ public class SceneManager {
 		// blend lights
 		glBlendFunc(GL_ONE, GL_ONE);
 		glDepthMask(false);
+		glEnable(GL_STENCIL_TEST);
 		glLightModel(GL_LIGHT_MODEL_AMBIENT, floatv(0f, 0f, 0f, 1f));
 		Profiler.exit(blend);
 		
@@ -183,17 +184,27 @@ public class SceneManager {
 			}
 			l.load(0);
 			
-			// stencil stuff here
-			
-			glEnable(GL_BLEND);
+			glDisable(GL_BLEND); // We don't want lighting. We are only writing in stencil buffer for now
+	        glClear(GL_STENCIL_BUFFER_BIT); // We clear the stencil buffer
+	        glDepthFunc(GL_LESS); // We change the z-testing function to LESS, to avoid little bugs in shadow
+	        glColorMask(false, false, false, false); // We dont draw it to the screen
+	        glStencilFunc(GL_ALWAYS, 0, 0); // We always draw whatever we have in the stencil buffer
+
+	        glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
+	        drawShadowVolumes(l);
+
+	        glEnable(GL_BLEND);
 			glDepthFunc(GL_LEQUAL);
 			glColorMask(true, true, true, true);
+			glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP); // Drawing will not affect the stencil buffer
+            glStencilFunc(GL_EQUAL, 0x0, 0xff); // And the most important thing, the stencil function. Drawing if equal to 0
 			glEnable(GL_LIGHTING);
 			glEnable(GL_LIGHT0);
 			draw();
 			glDisable(GL_LIGHTING);
-			
 		}
+		glDisable(GL_STENCIL_TEST);
+		
 		Profiler.exit(lightLoop);
 		
 		glFinish();
@@ -202,12 +213,19 @@ public class SceneManager {
 	}
 	
 	private static void draw() {
-		for(Entity e : entities_draw) {
-			glPushMatrix();
-			multMatrix(e.getTransformToRoot());
+		for (Entity e : entities_draw) {
 			e.doDraw();
-			glPopMatrix();
 		}
+	}
+	
+	private static void drawShadowVolumes(Light l) {
+		glDisable(GL_LIGHTING);
+		for (Entity e : entities_shadow) {
+			Mat4 m = l.getTransformTo(e);
+			glColor3f(1f, 1f, 0f);
+			e.doDrawShadowVolume(m.mul(l.lightpos));
+		}
+		glEnable(GL_LIGHTING);
 	}
 	
 }

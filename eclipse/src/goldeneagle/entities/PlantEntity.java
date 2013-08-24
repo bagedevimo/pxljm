@@ -3,6 +3,7 @@ package goldeneagle.entities;
 import static org.lwjgl.opengl.GL11.*;
 import goldeneagle.BoundingSphere;
 import goldeneagle.scene.Frame;
+import goldeneagle.scene.ShadowCaster;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.scene.Entity;
@@ -18,7 +19,14 @@ public class PlantEntity extends Entity{
 		this.setLinear(new Vec3(xPos_, yPos_, 0), Vec3.zero);
 		this.radius = radius;
 		setBound(new BoundingSphere(this, radius));
-		setHeight(0.1);
+		setHeight(0.5);
+		
+		ShadowCaster sc = new ShadowCaster();
+		sc.addVertex(new Vec3(-0.5, -0.5, 0));
+		sc.addVertex(new Vec3(0.5, -0.5, 0));
+		sc.addVertex(new Vec3(0.5, 0.5, 0));
+		sc.addVertex(new Vec3(-0.5, 0.5, 0));
+		addShadowCaster(sc);
 	}
 
 	@Override
