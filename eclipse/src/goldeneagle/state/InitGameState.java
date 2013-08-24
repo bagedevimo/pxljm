@@ -1,5 +1,6 @@
-package goldeneagle;
+package goldeneagle.state;
 
+import goldeneagle.ResourceLoader;
 import goldeneagle.scene.SceneManager;
 
 // This GameState should load any assets required to display the intros

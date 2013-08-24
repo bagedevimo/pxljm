@@ -2,6 +2,8 @@ package goldeneagle;
 
 import goldeneagle.clock.SystemClock;
 import goldeneagle.scene.SceneManager;
+import goldeneagle.state.GameState;
+import goldeneagle.state.InitGameState;
 
 import java.util.Stack;
 

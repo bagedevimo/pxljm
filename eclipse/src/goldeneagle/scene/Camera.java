@@ -23,8 +23,8 @@ public class Camera {
 		return radius;
 	}
 	
-	public Mat4 getViewXform() {
-		return frame.getRootTransform().inv();
+	public Mat4 getViewTransform() {
+		return frame.getTransformToRoot().inv();
 	}
 	
 }

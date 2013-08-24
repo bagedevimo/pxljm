@@ -14,7 +14,17 @@ public class SegmentGenerator {
 
 	private Map<Long, Segment> segmentCache = new HashMap<Long, Segment>();
 
-	public SegmentGenerator(long seed) {
+	private static SegmentGenerator inst = new SegmentGenerator(System.currentTimeMillis());
+	
+	public static SegmentGenerator getInst(){
+		return inst;
+	}
+	
+	public void setSeed(long seed){
+		inst = new SegmentGenerator(seed);
+	}
+	
+	private SegmentGenerator(long seed) {
 		this.seed = seed;
 		metaSegments = new MetaSegment[regionSize][regionSize];
 		createRegion();
@@ -44,6 +54,7 @@ public class SegmentGenerator {
 		}
 	}
 
+	//Gets the segment by the segment number
 	public Segment getSegment(final int posx, final int posy) {
 
 		// location id by long
@@ -64,7 +75,7 @@ public class SegmentGenerator {
 		return s;
 	}
 
-	// Takes world coordinates and gives back segment at that vlue
+	//returns the segment that contains the given global co-oridinate
 	public Segment segmentAt(double x, double y) {
 		int segX = (int) x / Segment.size;
 		int segY = (int) y / Segment.size;

@@ -1,4 +1,4 @@
-package goldeneagle;
+package goldeneagle.state;
 
 import goldeneagle.scene.ChunkEntity;
 import goldeneagle.scene.Scene;

@@ -1,0 +1,3 @@
+32
+#FORMAT <Tile-Type> <x-position> <y-position> <number of tiles, in y direction> <number of tiles in x direction>
+BEACH 0 0 6 6
