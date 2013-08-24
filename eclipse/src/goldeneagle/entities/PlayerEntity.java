@@ -140,6 +140,9 @@ public class PlayerEntity extends Entity {
 		} else
 			isRunning = false;
 		
+		if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
+			speed *= 10;
+		
 		double x = 0, y = 0;
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			x = (Math.sin(this.getRotation()) * -speed);
