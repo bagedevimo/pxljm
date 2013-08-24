@@ -1,7 +1,7 @@
 package map;
 
 import goldeneagle.BoundingBox;
-import goldeneagle.entities.TreeEnitity;
+import goldeneagle.entities.TreeEntity;
 
 import java.util.ArrayList;
 import java.util.List;
