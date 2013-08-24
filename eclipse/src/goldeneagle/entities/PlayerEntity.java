@@ -38,15 +38,16 @@ public class PlayerEntity extends Entity {
 	public void Update(double deltaTime) {
 		Vec3 motion = new Vec3(0, 0, 0);
 		double rot = 0;
+		double rotSpeed = 2.5 * deltaTime;
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_A))
-			rot = 0.01d;
+			rot = rotSpeed;
 		if(Keyboard.isKeyDown(Keyboard.KEY_D))
-			rot = -0.01d;
+			rot = -rotSpeed;
 		
 		this.setAngular(rot + this.getRotation(), 0);
 		
-		double speed = 0.1;
+		double speed = 3.5 * deltaTime;
 		double x = 0, y = 0;
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			x = (Math.sin(this.getRotation()) * -speed);
