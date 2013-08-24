@@ -45,6 +45,9 @@ public class ChunkEntity extends Entity {
 		tileMaps = new HashMap<TileType, List<Point>>();
 		tileMaps.put(TileType.GRASS, ttl.getTileLocation(TileType.GRASS));
 		tileMaps.put(TileType.BEACH, ttl.getTileLocation(TileType.BEACH));
+		tileMaps.put(TileType.STONE, ttl.getTileLocation(TileType.STONE));
+		tileMaps.put(TileType.RIVER, ttl.getTileLocation(TileType.RIVER));
+		tileMaps.put(TileType.OCEAN, ttl.getTileLocation(TileType.OCEAN));
 //		tileMaps.put(TileType.OCEAN, ttl.getTileLocation(TileType.GRASS));
 		
 		System.out.println("Starting seg-gen");
