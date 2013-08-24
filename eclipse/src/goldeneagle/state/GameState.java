@@ -1,5 +1,6 @@
-package goldeneagle;
+package goldeneagle.state;
 
+import goldeneagle.PxlGame;
 import goldeneagle.clock.*;
 
 public abstract class GameState {

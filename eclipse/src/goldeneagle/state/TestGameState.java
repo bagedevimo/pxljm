@@ -1,5 +1,6 @@
-package goldeneagle;
+package goldeneagle.state;
 
+import goldeneagle.Frame;
 import goldeneagle.scene.Scene;
 import goldeneagle.scene.SceneManager;
 import goldeneagle.scene.TestEntity;
