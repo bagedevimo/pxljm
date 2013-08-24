@@ -77,12 +77,32 @@ public class MetaSegment {
 			}
 		}
 		
-		//
-//		forall
-//		
-//		
-//		
-//		seg.addEntity(new TreeEnitity(null,x, y, 0));
+		int foliageCount = foliage.size();
+		while (foliageCount > 0) {
+			for(int i=0; i<foliage.size(); i++){
+				Foliage focus = foliage.get(i);
+				if (focus.radius >= focus.maxRadius){
+					foliageCount--;
+				}else{
+					focus.radius += 0.5;
+					for(int j=i+1; j<foliage.size(); j++){
+						int result = focus.collision(foliage.get(j));
+						if(result > 0){
+							foliage.remove(j--);
+							foliageCount--;
+						}else if (result < 0){
+							foliage.remove(i--);
+							j--;
+							foliageCount--;
+						}
+					}
+				}
+			}
+		}
+		
+		for(int i=0; i<foliage.size(); i++){
+		//	seg.addEntity(new TreeEntity());
+		}
 	}
 	
 	private double treeChance(Biome b){
