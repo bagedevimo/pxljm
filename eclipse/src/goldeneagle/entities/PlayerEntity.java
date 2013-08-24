@@ -52,6 +52,8 @@ public class PlayerEntity extends Entity {
 	public PlayerEntity(Frame parent_) {
 		super(parent_);
 		
+		setHeight(2);
+		
 		animationClock = new DerivedClock(this.getClock(), 0);
 		animationStart = this.animationClock.get();
 		
@@ -65,7 +67,7 @@ public class PlayerEntity extends Entity {
 	}
 
 	@Override
-	public void Draw() {				
+	public void draw() {				
 		int texID = -1;
 		
 		double dT = (this.animationClock.get() - this.animationStart);
@@ -104,13 +106,13 @@ public class PlayerEntity extends Entity {
 		
 		double size = 1.8f;
 		glTexCoord2d(u, 0);
-		glVertex3d(-size, -size, SceneManager.Z_PLAYER);
+		glVertex3d(-size, -size, 0);
 		glTexCoord2d(u+frameWidth, 0);
-		glVertex3d(size, -size, SceneManager.Z_PLAYER);
+		glVertex3d(size, -size, 0);
 		glTexCoord2d(u+frameWidth, 1);
-		glVertex3d(size, size, SceneManager.Z_PLAYER);
+		glVertex3d(size, size, 0);
 		glTexCoord2d(u, 1);
-		glVertex3d(-size, size, SceneManager.Z_PLAYER);
+		glVertex3d(-size, size, 0);
 		
 		glEnd();
 		
@@ -121,7 +123,7 @@ public class PlayerEntity extends Entity {
 	}
 
 	@Override
-	public void Update(double deltaTime) {
+	public void update(double deltaTime) {
 		Vec3 motion = new Vec3(0, 0, 0);
 		double rot = 0;
 		double rotSpeed = 2.5 * deltaTime;

@@ -90,7 +90,7 @@ public class ChunkEntity extends Entity {
 	}
 
 	@Override
-	public void Draw() {
+	public void draw() {
 		int texID = -1;
 		try {
 			texID = ResourceCache.GetGLTexture("./assets/tiles/atlas.jpg");
@@ -126,13 +126,13 @@ public class ChunkEntity extends Entity {
 //			Profiler.enter(ChunkUV);
 			
 			glTexCoord2d(uvx, uvy);
-			glVertex3d(x, y, SceneManager.Z_TERRAIN);
+			glVertex3d(x, y, 0);
 			glTexCoord2d(uvx+uv, uvy);
-			glVertex3d(x+1, y, SceneManager.Z_TERRAIN);
+			glVertex3d(x+1, y, 0);
 			glTexCoord2d(uvx+uv, uvy+uv);
-			glVertex3d(x+1, y+1, SceneManager.Z_TERRAIN);
+			glVertex3d(x+1, y+1, 0);
 			glTexCoord2d(uvx, uvy+uv);
-			glVertex3d(x, y+1, SceneManager.Z_TERRAIN);
+			glVertex3d(x, y+1, 0);
 			
 //			Profiler.exit(ChunkUV);
 		}
@@ -144,7 +144,7 @@ public class ChunkEntity extends Entity {
 	}
 
 	@Override
-	public void Update(double deltaTime) {
+	public void update(double deltaTime) {
 	}
 
 }

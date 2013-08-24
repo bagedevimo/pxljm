@@ -44,13 +44,13 @@ public class PickupEntity extends Entity {
 	}
 
 	@Override
-	public void Update(double deltaTime) {
+	public void update(double deltaTime) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void Draw() {
+	public void draw() {
 //		int texID = -1;
 //		try {
 //			texID = ResourceCache.GetGLTexture("./assets/entities/bush.png");

@@ -12,7 +12,7 @@ import goldeneagle.scene.SceneManager;
 import goldeneagle.util.Profiler;
 
 public class TreeEntity extends Entity{
-	private final Bound bound;
+
 	private final double radius;
 	private static final int TreeEntity = Profiler.createSection("TreeEntity");
 	
@@ -20,11 +20,12 @@ public class TreeEntity extends Entity{
 		super(parent_);
 		this.setLinear(new Vec3(xPos_, yPos_, 0), Vec3.zero);
 		this.radius = radius;
-		bound = new BoundingSphere(parent_, radius);
+		setBound(new BoundingSphere(parent_, radius));
+		setHeight(5);
 	}
 
 	@Override
-	public void Draw() {
+	public void draw() {
 		int texID = -1;
 		try {
 			texID = ResourceCache.GetGLTexture("./assets/entities/tree.png");
@@ -47,13 +48,13 @@ public class TreeEntity extends Entity{
 		glNormal3d(0, 0, 1);
 		
 		glTexCoord2d(0, 0);
-		glVertex3d(-this.radius, -this.radius, SceneManager.Z_ROOF);
+		glVertex3d(-this.radius, -this.radius, 0);
 		glTexCoord2d(1, 0);
-		glVertex3d(this.radius, -this.radius, SceneManager.Z_ROOF);
+		glVertex3d(this.radius, -this.radius, 0);
 		glTexCoord2d(1, 1);
-		glVertex3d(this.radius, this.radius, SceneManager.Z_ROOF);
+		glVertex3d(this.radius, this.radius, 0);
 		glTexCoord2d(0, 1);
-		glVertex3d(-this.radius, this.radius, SceneManager.Z_ROOF);
+		glVertex3d(-this.radius, this.radius, 0);
 		
 		glEnd();
 		
@@ -64,7 +65,7 @@ public class TreeEntity extends Entity{
 	}
 
 	@Override
-	public void Update(double deltaTime) {
+	public void update(double deltaTime) {
 		// TODO Auto-generated method stub
 		
 	}

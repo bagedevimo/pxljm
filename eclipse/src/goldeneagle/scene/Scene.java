@@ -53,7 +53,7 @@ public class Scene implements Iterable<Entity> {
 
 	public void Update(double deltaTime) {
 		for(Entity e : this.entities)
-			e.Update(deltaTime);
+			e.update(deltaTime);
 	}
 	
 	public void addLight(Light l) {
