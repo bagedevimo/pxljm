@@ -19,12 +19,15 @@ public class Main {
 		int width = 800;
 		int height = 600;
 		
-		for(int i = 0; i < args.length; i++)
-			if(args[i] == "--fullscreen") {
+		for(int i = 0; i < args.length; i++) {
+			System.out.printf("args[%d]=%s\n", i, args[i]);
+			if(args[i].equals("--fullscreen")) {
 				fullscreen = true;
-				width = Integer.parseInt(args[i+1]);
-				height = Integer.parseInt(args[i+2]);
+				System.out.println("fullscreen!");
+				width = Integer.parseInt(args[++i]);
+				height = Integer.parseInt(args[++i]);
 			}
+		}
 			
 		game.start(fullscreen, width, height);
 	}

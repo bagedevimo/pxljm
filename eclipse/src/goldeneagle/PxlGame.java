@@ -19,8 +19,10 @@ public class PxlGame {
 	protected Stack<GameState> gameStates = new Stack<GameState>();
 
 	public void start(boolean isFullscreen, int width, int height) {
+		System.out.printf("isFullscreen: %s\n", isFullscreen);
 		try {
-			Display.setDisplayMode(new DisplayMode(800, 600));
+			Display.setDisplayMode(new DisplayMode(width, height));
+			Display.setFullscreen(isFullscreen);
 			Display.create(SceneManager.PIXEL_FORMAT, SceneManager.CONTEXT_ATTRIBS);
 		} catch (LWJGLException ex) {
 			ex.printStackTrace();
