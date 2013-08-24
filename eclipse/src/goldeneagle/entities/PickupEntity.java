@@ -23,7 +23,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 import map.Segment;
 import goldeneagle.Bound;
 import goldeneagle.BoundingSphere;
-import goldeneagle.Frame;
+import goldeneagle.scene.Frame;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.items.Item;
