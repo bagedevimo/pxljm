@@ -1,4 +1,4 @@
-package goldeneagle.scene;
+package goldeneagle.entities;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -16,6 +16,8 @@ import map.TileTextureLoader;
 import map.TileType;
 import goldeneagle.Frame;
 import goldeneagle.ResourceCache;
+import goldeneagle.scene.Entity;
+import goldeneagle.scene.SceneManager;
 
 public class ChunkEntity extends Entity {
 	public final int xOrigin;
@@ -120,7 +122,7 @@ public class ChunkEntity extends Entity {
 	}
 
 	@Override
-	public void Update() {
+	public void Update(double deltaTime) {
 	}
 
 }

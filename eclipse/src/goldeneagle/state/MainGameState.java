@@ -5,9 +5,9 @@ import java.util.Map;
 
 import goldeneagle.MovingFrame;
 import goldeneagle.Vec3;
+import goldeneagle.entities.ChunkEntity;
+import goldeneagle.entities.PlayerEntity;
 import goldeneagle.scene.Camera;
-import goldeneagle.scene.ChunkEntity;
-import goldeneagle.scene.PlayerEntity;
 import goldeneagle.scene.Scene;
 import goldeneagle.scene.SceneManager;
 
@@ -33,7 +33,7 @@ public class MainGameState extends GameState {
 //			}
 //		}
 //		
-		scene.AddEntity(new ChunkEntity(scene.getRoot(), 0, 0));
+		scene.AddEntity(new ChunkEntity(scene.getRoot(), 4096, 4096));
 		
 		scene.AddEntity(player);
 	}	
@@ -44,8 +44,8 @@ public class MainGameState extends GameState {
 	}
 
 	@Override
-	protected void update() {
-		scene.Update();
+	protected void update(double deltaTime) {
+		scene.Update(deltaTime);
 	}
 
 	@Override

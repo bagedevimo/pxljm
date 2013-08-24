@@ -1,4 +1,4 @@
-package goldeneagle.scene;
+package goldeneagle.entities;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -7,6 +7,8 @@ import org.lwjgl.input.Keyboard;
 import goldeneagle.Frame;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
+import goldeneagle.scene.Entity;
+import goldeneagle.scene.SceneManager;
 
 public class PlayerEntity extends Entity {
 	
@@ -33,7 +35,7 @@ public class PlayerEntity extends Entity {
 	}
 	
 	@Override
-	public void Update() {
+	public void Update(double deltaTime) {
 		Vec3 motion = new Vec3(0, 0, 0);
 		double rot = 0;
 		

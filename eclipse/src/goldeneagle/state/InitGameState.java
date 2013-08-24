@@ -16,7 +16,7 @@ public class InitGameState extends GameState {
 	}
 
 	@Override
-	protected void update() {
+	protected void update(double deltaTime) {
 		if(rl.isComplete())
 			this.nextState = new MainGameState();
 	}

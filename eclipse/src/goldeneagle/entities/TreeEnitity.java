@@ -1,8 +1,9 @@
-package goldeneagle.scene;
+package goldeneagle.entities;
 
 import goldeneagle.Bound;
 import goldeneagle.BoundingSphere;
 import goldeneagle.Frame;
+import goldeneagle.scene.Entity;
 
 public class TreeEnitity extends Entity{
 
@@ -24,7 +25,7 @@ public class TreeEnitity extends Entity{
 	}
 
 	@Override
-	public void Update() {
+	public void Update(double deltaTime) {
 		// TODO Auto-generated method stub
 		
 	}

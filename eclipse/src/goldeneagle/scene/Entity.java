@@ -8,6 +8,6 @@ public abstract class Entity extends MovingFrame {
 		super(parent_);
 	}
 	
-	public abstract void Update();
+	public abstract void Update(double deltaTime);
 	public abstract void Draw();
 }
