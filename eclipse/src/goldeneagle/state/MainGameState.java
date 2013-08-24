@@ -3,7 +3,6 @@ package goldeneagle.state;
 import goldeneagle.scene.ChunkEntity;
 import goldeneagle.scene.Scene;
 import goldeneagle.scene.SceneManager;
-import goldeneagle.scene.TestEntity;
 
 public class MainGameState extends GameState {
 	private Scene scene;

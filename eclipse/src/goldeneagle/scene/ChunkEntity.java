@@ -2,8 +2,6 @@ package goldeneagle.scene;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import org.lwjgl.opengl.GLContext;
-
 import goldeneagle.Frame;
 import goldeneagle.ResourceCache;
 

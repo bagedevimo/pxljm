@@ -20,7 +20,8 @@ public class TileTextureLoader {
 			String line = s.nextLine();
 			Scanner sc = new Scanner(line);
 			TILE_SIZE = sc.nextInt();
-		}catch(Exception e){throw e;}
+			sc.close();
+		}catch(Exception e){ s.close(); throw e;}
 		
 		
 		while(s.hasNextLine()){
@@ -55,7 +56,9 @@ public class TileTextureLoader {
 					}
 				}
 			}catch(Exception e){}
+			sc.close();
 		}
+		s.close();
 	} 
 	
 	public List<Point> getTileLocation(TileType type){

@@ -1,7 +1,6 @@
 package goldeneagle.scene;
 
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.DoubleBuffer;
 import java.util.Iterator;
 
