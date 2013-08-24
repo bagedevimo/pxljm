@@ -21,6 +21,10 @@ public class ResourceInfo {
 		return this.TextureID != -1;
 	}
 	
+	public String getPath() {
+		return this.Path;
+	}
+	
 	public int getWidth() {
 		return this.Width;
 	}

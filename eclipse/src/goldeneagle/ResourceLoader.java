@@ -10,7 +10,6 @@ import java.util.Queue;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
-import org.newdawn.slick.opengl.TextureLoader;
 
 enum ResourceType {
 	PNG,
@@ -44,6 +43,10 @@ public class ResourceLoader extends Thread {
 	
 	public boolean isComplete() {
 		return this.loadQueue.size() == 0;
+	}
+	
+	public double getProgress() {
+		return (this.loadQueue.size() / this.nResources);
 	}
 	
 	public void run() {

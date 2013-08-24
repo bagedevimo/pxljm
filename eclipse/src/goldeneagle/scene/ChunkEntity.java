@@ -2,28 +2,18 @@ package goldeneagle.scene;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import org.lwjgl.opengl.GLContext;
-
 import goldeneagle.Frame;
 import goldeneagle.ResourceCache;
 
 public class ChunkEntity extends Entity {
 	public final int xOrigin;
 	public final int yOrigin;
-	
-	private final double R;
-	private final double G;
-	private final double B;
 
 	public ChunkEntity(Frame parent_, int baseX, int baseY) {
 		super(parent_);
 		
 		this.xOrigin = baseX;
 		this.yOrigin = baseY;
-		
-		this.R = Math.random();
-		this.G = Math.random();
-		this.B = Math.random();
 	}
 
 	@Override
