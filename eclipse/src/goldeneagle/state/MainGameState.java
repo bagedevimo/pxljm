@@ -42,9 +42,15 @@ public class MainGameState extends GameState {
 		
 		scene.AddEntity(player);
 		
-		scene.setAmbient(Color.BLACK);
-		Light l = new Light.PointLight(player, Color.WHITE, 10);
+		scene.setAmbient(new Color(30, 30, 30));
+		Light.SpotLight l = new Light.SpotLight(player, Color.YELLOW, 1, 10, Math.PI / 6, 2);
+		l.setPitch(-Math.PI / 6);
 		scene.addLight(l);
+		
+		MovingFrame mf = new MovingFrame(scene.getRoot());
+		mf.setLinear(new Vec3(playerSpawnX, playerSpawnY), Vec3.zero);
+		Light.PointLight l2 = new Light.PointLight(mf, Color.RED, 4, 6);
+		scene.addLight(l2);
 	}	
 	
 	private long getID(int x, int y) {
@@ -71,8 +77,6 @@ public class MainGameState extends GameState {
 			for(int y = -spawnRadius; y <= spawnRadius; y++) {
 				long id = getID(player.getCurrentChunkX() + x, player.getCurrentChunkY() + y);
 				if(!chunks.containsKey(id) || (chunks.containsKey(id) && !scene.hasEntity(chunks.get(id)))) {
-					double thisX = player.getPosition().x + (x*32);
-					double thisY = player.getPosition().y + (y*32);
 					
 					int chunkCoordX = (player.getCurrentChunkX()+x)*32;
 					System.out.printf("chunkCoordX: %d\n", chunkCoordX);

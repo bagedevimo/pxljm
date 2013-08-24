@@ -2,17 +2,20 @@ package goldeneagle.scene;
 
 import java.awt.Color;
 
+import goldeneagle.Quat;
 import goldeneagle.Vec3;
 import goldeneagle.Vec4;
-
 import static org.lwjgl.opengl.GL11.*;
 
-public class Light extends BoundFrame {
+/**
+ * Light supertype and implementations. All angles handled by these classes are in radians.
+ */
+public class Light extends ProxyFrame {
 
 	protected Vec4 lightpos = Vec4.zero;
 	protected Vec4 spotdir = Vec4.zero;
 	protected Color color_d = Color.WHITE, color_s = Color.WHITE, color_a = Color.BLACK;
-	protected float spot_cutoff = (float) Math.PI;
+	protected float spot_cutoff = 180f;
 	protected float spot_exp = 0f;
 	protected float atten_const = 1f;
 	protected float atten_lin = 0f;
@@ -25,9 +28,9 @@ public class Light extends BoundFrame {
 	public void load(int id) {
 		// load modelview sensitive params
 		glPushMatrix();
-		//SceneManager.multMatrix(getTransformToRoot());
+		SceneManager.multMatrix(getTransformToRoot());
 		int light = GL_LIGHT0 + id;
-		glLight(light, GL_POSITION, SceneManager.floatv(0f, 0f, 2f, 1f));
+		glLight(light, GL_POSITION, SceneManager.floatv(lightpos));
 		glLight(light, GL_SPOT_DIRECTION, SceneManager.floatv(spotdir));
 		glPopMatrix();
 		// load other params
@@ -63,15 +66,15 @@ public class Light extends BoundFrame {
 
 	public static class PointLight extends Light {
 		
-		private volatile float radius = 1;
-
-		public PointLight(Frame f_, Color c, float radius_) {
+		private float radius = 1;
+		
+		public PointLight(Frame f_, Color c, double height_, double radius_) {
 			super(f_);
 			color_d = c;
 			color_s = c;
-			radius = radius_;
+			radius = (float) radius_;
 			atten_const = 1f;
-			lightpos = new Vec4(Vec3.zero, 1);
+			lightpos = new Vec4(0, 0, height_, 1);
 		}
 		
 		public void setColor(Color c) {
@@ -79,8 +82,12 @@ public class Light extends BoundFrame {
 			color_s = c;
 		}
 		
-		public void setRadius(float radius_) {
-			radius = radius_;
+		public void setHeight(double h) {
+			lightpos = new Vec4(0, 0, h, 1);
+		}
+		
+		public void setRadius(double radius_) {
+			radius = (float) radius_;
 			atten_lin = 1f / radius;
 			atten_quad = 1f / (4 * radius * radius);
 		}
@@ -89,19 +96,23 @@ public class Light extends BoundFrame {
 
 	public static class SpotLight extends PointLight {
 		
-		public SpotLight(Frame f_, Color c, float radius_, float spotcutoff_ , float spotexp_) {
-			super(f_, c, radius_);
-			spotdir = new Vec4(Vec3.j, 0);
-			spot_cutoff = spotcutoff_;
-			spot_exp = spotexp_;
+		public SpotLight(Frame f_, Color c, double height_, double radius_, double spotcutoff_, double spotexp_) {
+			super(f_, c, height_, radius_);
+			spotdir = new Vec4(0, 1, 0, 0);
+			setSpotCutoff(spotcutoff_);
+			setSpotExponent(spotexp_);
 		}
 		
-		public void setSpotCutoff(float spotcutoff_) {
-			spot_cutoff = spotcutoff_;
+		public void setPitch(double angle) {
+			spotdir = new Vec4(new Quat(Vec3.i, angle).rot(Vec3.j), 0);
 		}
 		
-		public void setSpotExponent(float spotexp_) {
-			spot_exp = spotexp_;
+		public void setSpotCutoff(double spotcutoff_) {
+			spot_cutoff = (float) (spotcutoff_ * 180d / Math.PI);
+		}
+		
+		public void setSpotExponent(double spotexp_) {
+			spot_exp = (float) spotexp_;
 		}
 
 	}

@@ -13,9 +13,6 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import com.sun.org.apache.xml.internal.serialize.Printer;
-
-
 public class PxlGame {
 
 	public static final SystemClock sysclock = new SystemClock();
@@ -52,14 +49,14 @@ public class PxlGame {
 				Display.setTitle(String.format("FPS: %d", fps));
 				fps = 0;
 			}
-			
-			try {
-				// for sanity - i get gpu whine at insane frame rates
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				
-			}
 			Profiler.exit(drawLoop);
+			
+//			try {
+//				// for sanity - i get gpu whine at insane frame rates
+//				Thread.sleep(1);
+//			} catch (InterruptedException e) {
+//				
+//			}
 		}
 
 		Display.destroy();

@@ -24,8 +24,7 @@ import goldeneagle.util.Profiler;
 
 public class ChunkEntity extends Entity {
 	public final TileType[] tiles;
-	public final int[] tilesR;
-	private List<Point> sandTiles; 
+	public final int[] tilesR; 
 	private TileTextureLoader ttl;
 	private Map<TileType, List<Point>> tileMaps;
 	static final int ChunkDraw = Profiler.createSection("ChunkEntity_glBegin");
@@ -42,7 +41,6 @@ public class ChunkEntity extends Entity {
 		try {
 			ttl = new TileTextureLoader("./assets/tiles/tiletex_info.txt");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -76,7 +74,6 @@ public class ChunkEntity extends Entity {
 		System.out.println("seg-gen complete");
 		TileType[][] temp = seg.getTiles();
 		
-		boolean hasGrass = false;
 		tiles = new TileType[1024];
 		for(int x = 0; x < temp.length; x++) {
 			for(int y = 0; y < temp[x].length; y++) {
@@ -107,12 +104,11 @@ public class ChunkEntity extends Entity {
 	}
 
 	@Override
-	public void Draw() {
+	public void draw() {
 		int texID = -1;
 		try {
 			texID = ResourceCache.GetGLTexture("./assets/tiles/atlas.jpg");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -149,20 +145,19 @@ public class ChunkEntity extends Entity {
 				
 				Profiler.enter(actualDraw);
 				glTexCoord2d(uvx, uvy);
-				glVertex3d(x, y, SceneManager.Z_TERRAIN);
+				glVertex3d(x, y, 0);
 				glTexCoord2d(uvx+uv, uvy);
-				glVertex3d(x+1, y, SceneManager.Z_TERRAIN);
+				glVertex3d(x+1, y, 0);
 				glTexCoord2d(uvx+uv, uvy+uv);
-				glVertex3d(x+1, y+1, SceneManager.Z_TERRAIN);
+				glVertex3d(x+1, y+1, 0);
 				glTexCoord2d(uvx, uvy+uv);
-				glVertex3d(x, y+1, SceneManager.Z_TERRAIN);
+				glVertex3d(x, y+1, 0);
 				Profiler.exit(actualDraw);
 				
 			}
 			
 			glEnd();
 			glEndList();
-			
 			
 		}
 		glCallList(this.compiledList);
@@ -172,7 +167,7 @@ public class ChunkEntity extends Entity {
 	}
 
 	@Override
-	public boolean Update(double deltaTime) {
+	public boolean update(double deltaTime) {
 		return true;
 	}
 

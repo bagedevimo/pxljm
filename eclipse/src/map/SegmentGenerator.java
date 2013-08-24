@@ -49,7 +49,6 @@ public class SegmentGenerator {
 
 		double scale = regionSize / numSegments;
 		
-		int i = 0;
 		for (Triangle t : tList) {
 			t.scale(scale);
 			BoundingBox b = t.getBound();

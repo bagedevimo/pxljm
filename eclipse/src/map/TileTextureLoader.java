@@ -2,7 +2,6 @@ package map;
 
 import java.awt.Point;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +12,6 @@ import java.util.Scanner;
 public class TileTextureLoader {
 
 	private int TILE_SIZE = 32;
-	private final String TILE_TEXTURE_PATH = "./assets/images/tiletex_info.txt";
 	
 	//maps the tile types to their position in the texture
 	private Map<TileType, List<Point>> textureMap;
