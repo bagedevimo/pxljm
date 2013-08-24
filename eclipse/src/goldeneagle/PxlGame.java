@@ -1,6 +1,8 @@
 package goldeneagle;
 
 import goldeneagle.clock.SystemClock;
+
+import goldeneagle.util.*;
 import goldeneagle.scene.SceneManager;
 import goldeneagle.state.GameState;
 import goldeneagle.state.InitGameState;
@@ -11,12 +13,15 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import com.sun.org.apache.xml.internal.serialize.Printer;
+
 
 public class PxlGame {
 
 	public static final SystemClock sysclock = new SystemClock();
 
 	protected Stack<GameState> gameStates = new Stack<GameState>();
+	private static final int drawLoop = Profiler.createSection("PxlGame_DrawLoop");
 
 	public void start(boolean isFullscreen, int width, int height) {
 		System.out.printf("isFullscreen: %s\n", isFullscreen);
@@ -35,6 +40,7 @@ public class PxlGame {
 		int fps = 0;
 
 		while (!Display.isCloseRequested()) {
+			Profiler.enter(drawLoop);
 			GameState currentState = getCurrentState();
 			currentState.doUpdate();
 			currentState.doDraw();
@@ -43,7 +49,7 @@ public class PxlGame {
 			fps++;
 			if(sysclock.get() - lastFPS > 1) {
 				lastFPS = sysclock.get();
-				System.out.printf("FPS: %d\n", fps);
+				Display.setTitle(String.format("FPS: %d", fps));
 				fps = 0;
 			}
 			
@@ -53,6 +59,7 @@ public class PxlGame {
 			} catch (InterruptedException e) {
 				
 			}
+			Profiler.exit(drawLoop);
 		}
 
 		Display.destroy();

@@ -72,6 +72,10 @@ public class Scene implements Iterable<Entity> {
 		this.removeList.add(e);
 	}
 	
+	public boolean hasEntity(Entity e) {
+		return this.entities.contains(e) && !this.removeList.contains(e);
+	}
+	
 	public void addLight(Light l) {
 		lights.add(l);
 	}

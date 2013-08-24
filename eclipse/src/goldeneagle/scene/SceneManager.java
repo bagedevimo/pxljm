@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +69,15 @@ public class SceneManager {
 		}
 		buf.position(0);
 		return buf;
+	}
+	
+	public static IntBuffer intv(int... ds) {
+		IntBuffer buf = buftemp.asIntBuffer();
+		buf.position(0);
+		for(int d : ds)
+			buf.put(d);
+		buf.position(0);
+		return buf;		
 	}
 	
 	public static FloatBuffer floatv(Vec3 v) {
