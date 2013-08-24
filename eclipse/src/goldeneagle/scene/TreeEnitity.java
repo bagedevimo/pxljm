@@ -22,4 +22,10 @@ public class TreeEnitity extends Entity{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void Update() {
+		// TODO Auto-generated method stub
+		
+	}
 }

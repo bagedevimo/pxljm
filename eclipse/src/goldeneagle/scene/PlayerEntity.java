@@ -34,6 +34,18 @@ public class PlayerEntity extends Entity {
 	
 	@Override
 	public void Update() {
+		Vec3 motion = new Vec3(0, 0, 0);
+		if(Keyboard.isKeyDown(Keyboard.KEY_A))
+			motion = motion.add(new Vec3(-1, 0, 0));
+		if(Keyboard.isKeyDown(Keyboard.KEY_D))
+			motion = motion.add(new Vec3(1, 0, 0));
+		if(Keyboard.isKeyDown(Keyboard.KEY_W))
+			motion = motion.add(new Vec3(0, 1, 0));
+		if(Keyboard.isKeyDown(Keyboard.KEY_S))
+			motion = motion.add(new Vec3(0, -1, 0));
+			
+		this.setLinear(this.getPosition(), motion);
+			
 	}
 
 }
