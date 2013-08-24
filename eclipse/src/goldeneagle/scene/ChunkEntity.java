@@ -36,7 +36,7 @@ public class ChunkEntity extends Entity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sandTiles = ttl.getTileLocation(TileType.BEACH);
+		sandTiles = ttl.getTileLocation(TileType.GRASS);
 		
 //		System.out.println("Starting seg-gen");
 ////		Segment seg = SegmentGenerator.getInst().segmentAt(this.xOrigin / 32, this.yOrigin / 32);
@@ -84,8 +84,8 @@ public class ChunkEntity extends Entity {
 			int y = i / 32;
 			
 			int r = tilesR[i];
-			double uvx = (double)sandTiles.get(r).x * uv;
-			double uvy = (double)sandTiles.get(r).y * uv;
+			double uvx = ((double)sandTiles.get(r).x / 32) * uv;
+			double uvy = ((double)sandTiles.get(r).y / 32) * uv;
 			
 			glTexCoord2d(uvx, uvy);
 			glVertex3d(x, y, SceneManager.Z_TERRAIN);
