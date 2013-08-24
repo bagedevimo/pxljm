@@ -1,12 +1,19 @@
 package map;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import goldeneagle.scene.Entity;
+
 public class Segment {
 	public static final int size = 32;
 
 	public final int xPos;
 	public final int yPos;
-	public final TileType[][] tiles;
 	public final long id;
+	private final TileType[][] tiles;
+	
+	private final List<Entity> entities;
 
 	public static long getID(int posx, int posz) {
 		return (long) ((long) posx << 32) | (((long) (posz)) & 0xFFFFFFFFL);
@@ -20,6 +27,7 @@ public class Segment {
 			tiles = t;
 		else
 			tiles = new TileType[size][size];
+		entities = new ArrayList<Entity>();
 	}
 	
 	public TileType[][] getTiles(){
@@ -36,6 +44,14 @@ public class Segment {
 	// values go from 0 to size (inclusive)
 	public TileType tileAt(int x, int y) {
 		return tiles[(int) x + 1][(int) y + 1];
+	}
+	
+	public void addEntity(Entity e){
+		entities.add(e);
+	}
+	
+	public List<Entity> getEntities(Entity e){
+		return new ArrayList<Entity>(entities); 
 	}
 
 //	// values go from 0 to size (inclusive)
