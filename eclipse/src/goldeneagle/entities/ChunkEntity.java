@@ -109,6 +109,7 @@ public class ChunkEntity extends Entity {
 		
 		glBindTexture(GL_TEXTURE_2D, texID);
 		glEnable(GL_TEXTURE_2D);
+		
 		Profiler.enter(ChunkDraw);
 		glBegin(GL_QUADS);
 	
@@ -116,15 +117,15 @@ public class ChunkEntity extends Entity {
 		glNormal3d(0, 0, 1);
 		
 		for(int i = 0; i < 1024; i++) {
-			int x = i % 32;
-			int y = i / 32;
+			int x = i & 0x1F;
+			int y = i >>> 5;
 			
 			double uvx = 0, uvy = 0;
 			int r = tilesR[i];
-			if(tileMaps.containsKey(tiles[i])) {
+//			if(tileMaps.containsKey(tiles[i])) {
 				uvx = ((double)tileMaps.get(tiles[i]).get(r).x / 1024);
 				uvy = ((double)tileMaps.get(tiles[i]).get(r).y / 1024);
-			}
+//			}
 			
 //			Profiler.enter(ChunkUV);
 			

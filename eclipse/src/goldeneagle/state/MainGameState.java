@@ -31,7 +31,7 @@ public class MainGameState extends GameState {
 		
 		int playerSpawnX = 4096;
 		int playerSpawnY = 4096;
-		int spawnRadius = 2;
+		int spawnRadius = 0;
 		player.setLinear(new Vec3(playerSpawnX, playerSpawnY), Vec3.zero);
 		
 		for(int x = -spawnRadius; x <= spawnRadius; x++) {
