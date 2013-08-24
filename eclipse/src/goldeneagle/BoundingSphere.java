@@ -36,7 +36,7 @@ public class BoundingSphere extends Bound {
 
 	@Override
 	public Vec3 intersects(BoundingSphere b) {
-		Vec3 collisionNorm = b.getPosition().sub(parent.getPosition());
+		Vec3 collisionNorm = b.getPosition().sub(parent.getGlobalPosition());
 		if(radius + b.radius > collisionNorm.mag()){
 			return collisionNorm.unit();
 		}
@@ -49,13 +49,13 @@ public class BoundingSphere extends Bound {
 	
 	@Override
 	public boolean contains(double x, double y) {
-		Vec3 position = parent.getPosition();
+		Vec3 position = parent.getGlobalPosition();
 		double distance = Math.hypot((x-position.x), (y-position.y));
 		return distance < radius;
 	}
 
 	@Override
 	public Vec3 getPosition() {
-		return parent.getPosition();
+		return parent.getGlobalPosition();
 	}
 }
