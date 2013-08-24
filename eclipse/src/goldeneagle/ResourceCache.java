@@ -29,7 +29,7 @@ public class ResourceCache {
 		}
 		
 		return ri.getTextureID();
-			
+					
 	}
 	
 	private static int bindGLTexture(ResourceInfo res) {

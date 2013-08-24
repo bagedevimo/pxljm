@@ -11,15 +11,14 @@ public class InitGameState extends GameState {
 	@Override
 	protected void init() {
 		rl = new ResourceLoader();
-		rl.Add("./assets/images/backdrop.jpg");
+		rl.Add("./assets/test.png");
 		rl.Start();
 	}
 
 	@Override
 	protected void update() {
 		if(rl.isComplete())
-			this.nextState = new TestGameState();
-		System.out.printf("not here\n");
+			this.nextState = new MainGameState();
 	}
 
 	@Override

@@ -48,7 +48,13 @@ public class SceneManager {
 		for(Iterator<Entity> i = s.iterator(); i.hasNext();)
 		{
 			Entity e = i.next();
+			glPushMatrix();
+			
 			e.Draw();
+			
+			glPopMatrix();
+			
+			
 		}
 		
 //		glBegin(GL_POLYGON);
