@@ -16,9 +16,9 @@ import map.islandbase.Triangle;
 
 public class MetaSegment {
 
-	private static final int TreeFill = (int)(Segment.size * Segment.size / 3);
+	private static final int TreeFill = (int)(Segment.size * Segment.size / 4);
 	private static final double TreeRadius = 5;
-	private static final int PlantFill = (int)(Segment.size * Segment.size);
+	private static final int PlantFill = (int)(Segment.size * Segment.size / 2);
 	private static final double PlantRadius = 1;
 	
 	private List<Triangle> triList = new ArrayList<Triangle>();
@@ -97,7 +97,7 @@ public class MetaSegment {
 		for(int i=0; i<PlantFill; i++){
 			double x = rand.nextDouble() * Segment.size;
 			double y = rand.nextDouble() * Segment.size;
-			if (treeChance(biomes[(int)x][(int)y]) > rand.nextDouble()){
+			if (plantChance(biomes[(int)x][(int)y]) > rand.nextDouble()){
 				Foliage newF = new Foliage(x, y, PlantRadius + ((PlantRadius / 3) * rand.nextGaussian()));
 				boolean collision = false;
 				for(int j=0; j<foliage.size(); j++){
