@@ -3,6 +3,8 @@ package goldeneagle.state;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.lwjgl.input.Keyboard;
+
 import goldeneagle.MovingFrame;
 import goldeneagle.Vec3;
 import goldeneagle.entities.ChunkEntity;
@@ -25,7 +27,7 @@ public class MainGameState extends GameState {
 		MovingFrame offset = new MovingFrame(player);
 		offset.setLinear(new Vec3(0, 4, 0), Vec3.zero);
 		cam.bindFrame(offset);
-		cam.setRadius(10);
+		cam.setRadius(14);
 		
 		int playerSpawnX = 4096;
 		int playerSpawnY = 4096;
@@ -36,9 +38,9 @@ public class MainGameState extends GameState {
 			for(int y = -spawnRadius; y <= spawnRadius; y++) {
 				double thisX = player.getPosition().x + (x*32);
 				double thisY = player.getPosition().y + (y*32);
-				System.out.printf("X:%f\tY:%f\n", thisX, thisY);
 				ChunkEntity chunk = new ChunkEntity(scene.getRoot(), (int)thisX, (int)thisY, scene);
-//				chunks.put(id, chunk);
+				long id = getID((int)thisX, (int)thisY);
+				chunks.put(id, chunk);
 				scene.AddEntity(chunk);				
 			}
 		}
@@ -56,6 +58,10 @@ public class MainGameState extends GameState {
 
 	@Override
 	protected void update(double deltaTime) {
+		if(Keyboard.isKeyDown(Keyboard.KEY_EQUALS))
+			cam.setRadius(cam.getRadius() + 0.1);
+		if(Keyboard.isKeyDown(Keyboard.KEY_MINUS))
+			cam.setRadius(cam.getRadius() - 0.1);
 		scene.Update(deltaTime);
 	}
 
