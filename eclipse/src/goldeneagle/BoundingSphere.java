@@ -53,4 +53,26 @@ public class BoundingSphere extends Bound {
 		Vec3 p = getPosition();
 		return new BoundingBox(p.x-radius, p.y-radius, p.x+radius, p.y+radius);
 	}
+
+	@Override
+	public Vec3 center() {
+		return getPosition();
+	}
+
+	@Override
+	public Vec3 min() {
+		return center().sub(radius, radius, 0);
+	}
+
+	@Override
+	public Vec3 max() {
+		return center().add(radius, radius, 0);
+	}
+
+	@Override
+	public boolean contains(Bound b) {
+		System.out.println("SIP");
+		System.exit(1);
+		return false;
+	}
 }

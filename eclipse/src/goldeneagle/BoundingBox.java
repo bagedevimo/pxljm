@@ -74,4 +74,28 @@ public class BoundingBox extends Bound{
 	public String toString(){
 		return String.format("%.3f,%.3f,%.3f,%.3f",minX, minY, maxX, maxY);
 	}
+
+	public Vec3 center() {
+		return new Vec3((this.maxX + this.minX) * 0.5,(this.maxY + this.minY) * 0.5, 0); 
+	}
+
+	public boolean contains(Bound a) {
+		System.out.println("SIP!");
+		System.exit(1);
+		return false;
+	}
+	
+	public Vec3 min() {
+		return new Vec3(this.minX, this.minY);
+	}
+	
+	public Vec3 max() {
+		return new Vec3(this.maxX, this.maxY);
+	}
+
+	public static BoundingBox fromExtremes(Vec3 center, Vec3 add) {
+		Vec3 max = Vec3.positiveExtremes(center, add);
+		Vec3 min = Vec3.negativeExtremes(center, add);
+		return new BoundingBox(min.x, min.y, max.x, max.y);
+	}
 }

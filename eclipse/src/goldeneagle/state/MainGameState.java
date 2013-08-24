@@ -42,7 +42,7 @@ public class MainGameState extends GameState {
 		
 		scene.AddEntity(player);
 		
-		scene.setAmbient(Color.WHITE);
+		scene.setAmbient(Color.BLACK);
 		Light l = new Light.PointLight(player, Color.WHITE, 10);
 		scene.addLight(l);
 	}	
