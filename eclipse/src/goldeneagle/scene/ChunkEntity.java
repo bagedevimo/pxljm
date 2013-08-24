@@ -45,6 +45,7 @@ public class ChunkEntity extends Entity {
 		tileMaps.put(TileType.BEACH, ttl.getTileLocation(TileType.BEACH));
 		
 		System.out.println("Starting seg-gen");
+		System.out.println("Originas" + this.xOrigin / 32 + " :: " + this.yOrigin / 32);
 		Segment seg = SegmentGenerator.getInst().segmentAt(this.xOrigin / 32, this.yOrigin / 32);
 		System.out.println("seg-gen complete");
 		TileType[][] temp = seg.getTiles();
