@@ -20,8 +20,8 @@ import goldeneagle.scene.Entity;
 import goldeneagle.scene.SceneManager;
 
 public class ChunkEntity extends Entity {
-	public final int xOrigin;
-	public final int yOrigin;
+	public final double xOrigin;
+	public final double yOrigin;
 	
 	public final TileType[] tiles;
 	public final int[] tilesR;
@@ -45,10 +45,11 @@ public class ChunkEntity extends Entity {
 		tileMaps = new HashMap<TileType, List<Point>>();
 		tileMaps.put(TileType.GRASS, ttl.getTileLocation(TileType.GRASS));
 		tileMaps.put(TileType.BEACH, ttl.getTileLocation(TileType.BEACH));
+		tileMaps.put(TileType.OCEAN, ttl.getTileLocation(TileType.GRASS));
 		
 		System.out.println("Starting seg-gen");
 		System.out.println("Originas" + this.xOrigin / 32 + " :: " + this.yOrigin / 32);
-		Segment seg = SegmentGenerator.getInst().segmentAt(this.xOrigin / 32, this.yOrigin / 32);
+		Segment seg = SegmentGenerator.getInst().segmentAt(this.xOrigin, this.yOrigin);
 		System.out.println("seg-gen complete");
 		TileType[][] temp = seg.getTiles();
 		
@@ -103,8 +104,10 @@ public class ChunkEntity extends Entity {
 			double uvx = 0, uvy = 0;
 			int r = tilesR[i];
 			if(tileMaps.containsKey(tiles[i])) {
-				uvx = ((double)tileMaps.get(tiles[i]).get(r).x / 32) * uv;
-				uvy = ((double)tileMaps.get(tiles[i]).get(r).y / 32) * uv;
+				uvx = ((double)tileMaps.get(tiles[i]).get(r).x / 1024);
+				uvy = ((double)tileMaps.get(tiles[i]).get(r).y / 1024);
+				if(uvx > (uv*9) || uvx < (uv*15))
+					System.out.printf("%f %f\n", uvx, uvy);
 			}
 			
 			glTexCoord2d(uvx, uvy);
