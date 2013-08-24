@@ -34,5 +34,10 @@ public class Scene implements Iterable<Entity> {
 
 	public void AddEntity(Entity entity) {
 		this.entities.add(entity);
+	}
+
+	public void Update() {
+		for(Entity e : this.entities)
+			e.Update();
 	}	
 }

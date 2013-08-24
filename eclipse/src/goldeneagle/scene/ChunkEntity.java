@@ -32,17 +32,17 @@ public class ChunkEntity extends Entity {
 		
 		glBegin(GL_POLYGON);
 	
-//		glColor3d(R, G, B);
+		glColor3d(1, 1, 1);
 		glNormal3d(0, 0, 1);
 		
 		glTexCoord2d(0, 0);
-		glVertex3d(0, -16, SceneManager.Z_TERRAIN);
+		glVertex3d(0, 0, SceneManager.Z_TERRAIN);
 		glTexCoord2d(1, 0);
-		glVertex3d(16, 0, SceneManager.Z_TERRAIN);
+		glVertex3d(32, 0, SceneManager.Z_TERRAIN);
 		glTexCoord2d(0, 1);
-		glVertex3d(0, 16, SceneManager.Z_TERRAIN);
+		glVertex3d(0, 32, SceneManager.Z_TERRAIN);
 		glTexCoord2d(1, 1);
-		glVertex3d(-16, 0, SceneManager.Z_TERRAIN);
+		glVertex3d(0, 0, SceneManager.Z_TERRAIN);
 		
 		glEnd();
 		

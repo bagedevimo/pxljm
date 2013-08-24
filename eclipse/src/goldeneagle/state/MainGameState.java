@@ -22,7 +22,7 @@ public class MainGameState extends GameState {
 
 	@Override
 	protected void update() {
-
+		scene.Update();
 	}
 
 	@Override

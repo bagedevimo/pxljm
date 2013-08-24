@@ -18,13 +18,14 @@ public class PlayerEntity extends Entity {
 	public void Draw() {				
 		glBegin(GL_POLYGON);
 	
-		glColor3d(0.5,  0.5,  0.5);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glColor3d(1, 0, 0);
 		glNormal3d(0, 0, 1);
 		
-		glVertex3d(0, -2, SceneManager.Z_PLAYER);
-		glVertex3d(2, 0, SceneManager.Z_PLAYER);
-		glVertex3d(0, 2, SceneManager.Z_PLAYER);
-		glVertex3d(-2, 0, SceneManager.Z_PLAYER);
+		glVertex3d(0, 0, SceneManager.Z_PLAYER);
+		glVertex3d(1, 0, SceneManager.Z_PLAYER);
+		glVertex3d(1, 1, SceneManager.Z_PLAYER);
+		glVertex3d(0, 1, SceneManager.Z_PLAYER);
 		
 		glEnd();
 		

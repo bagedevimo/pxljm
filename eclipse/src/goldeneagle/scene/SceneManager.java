@@ -69,14 +69,14 @@ public class SceneManager {
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
+		glEnable(GL_DEPTH_TEST);
 		for(Entity e : s) {
 			glPushMatrix();
 			multMatrix(e.getTransformToRoot());
 			e.Draw();
 			glPopMatrix();
-			
-			
 		}
+		glDisable(GL_DEPTH_TEST);
 		
 		glFinish();
 		
