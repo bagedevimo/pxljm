@@ -3,6 +3,7 @@ package map;
 import java.util.ArrayList;
 import java.util.List;
 
+import goldeneagle.Vec3;
 import goldeneagle.scene.Entity;
 
 public class Segment {
@@ -50,8 +51,12 @@ public class Segment {
 		return tiles[(int) x + 1][(int) y + 1];
 	}
 	
-	public void addEntity(Entity e){
-		entities.add(e);
+	public void addTrees(List<Vec3> trees){
+		
+	}
+	
+	public void addPlants(List<Vec3> plants){
+		
 	}
 	
 	public List<Entity> getEntities(Entity e){

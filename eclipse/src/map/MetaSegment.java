@@ -1,7 +1,11 @@
 package map;
 
 import goldeneagle.BoundingBox;
+import goldeneagle.Frame;
+import goldeneagle.Vec3;
 import goldeneagle.entities.TreeEntity;
+import goldeneagle.scene.Scene;
+import goldeneagle.scene.SceneManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +55,7 @@ public class MetaSegment {
 		}
 		
 		Segment seg = new Segment(xPos, yPos, tiles);
-		//addFoliage(seg, biomes);
+		addFoliage(seg, biomes);
 		
 		return seg;
 	}
@@ -91,18 +95,28 @@ public class MetaSegment {
 							foliage.remove(j--);
 							foliageCount--;
 						}else if (result < 0){
-							foliage.remove(i--);
-							j--;
+							foliage.remove(i);
 							foliageCount--;
+							continue;
 						}
 					}
 				}
 			}
 		}
 		
+		List<Vec3> trees = new ArrayList<Vec3>();
+		List<Vec3> plants = new ArrayList<Vec3>();
+		
 		for(int i=0; i<foliage.size(); i++){
-		//	seg.addEntity(new TreeEntity());
+			Foliage f = foliage.get(i);
+			if(f.maxRadius==10)
+				trees.add(new Vec3(f.xPos, f.yPos, f.radius));
+			else
+				plants.add(new Vec3(f.xPos, f.yPos, f.radius));
 		}
+		
+		seg.addPlants(plants);
+		seg.addTrees(trees);
 	}
 	
 	private double treeChance(Biome b){
