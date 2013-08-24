@@ -18,6 +18,6 @@ public abstract class Entity extends MovingFrame {
 		bound = bs;
 	}
 	
-	public abstract void Update(double deltaTime);
+	public abstract boolean Update(double deltaTime);
 	public abstract void Draw();
 }

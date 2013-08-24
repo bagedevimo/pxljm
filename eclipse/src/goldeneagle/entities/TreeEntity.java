@@ -64,8 +64,7 @@ public class TreeEntity extends Entity{
 	}
 
 	@Override
-	public void Update(double deltaTime) {
-		// TODO Auto-generated method stub
-		
+	public boolean Update(double deltaTime) {
+		 return true;
 	}
 }

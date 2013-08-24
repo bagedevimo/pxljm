@@ -121,7 +121,7 @@ public class PlayerEntity extends Entity {
 	}
 
 	@Override
-	public void Update(double deltaTime) {
+	public boolean Update(double deltaTime) {
 		Vec3 motion = new Vec3(0, 0, 0);
 		double rot = 0;
 		double rotSpeed = 2.5 * deltaTime;
@@ -170,6 +170,8 @@ public class PlayerEntity extends Entity {
 		
 		if(this.getClock().get() - this.lastAttrUpdate > 1)
 			this.updateAttrs();
+		
+		return true;
 	}
 	
 	private void updateAttrs() {
