@@ -45,7 +45,7 @@ public class ChunkEntity extends Entity {
 		tileMaps = new HashMap<TileType, List<Point>>();
 		tileMaps.put(TileType.GRASS, ttl.getTileLocation(TileType.GRASS));
 		tileMaps.put(TileType.BEACH, ttl.getTileLocation(TileType.BEACH));
-		tileMaps.put(TileType.OCEAN, ttl.getTileLocation(TileType.GRASS));
+//		tileMaps.put(TileType.OCEAN, ttl.getTileLocation(TileType.GRASS));
 		
 		System.out.println("Starting seg-gen");
 		System.out.println("Originas" + this.xOrigin / 32 + " :: " + this.yOrigin / 32);
@@ -106,8 +106,6 @@ public class ChunkEntity extends Entity {
 			if(tileMaps.containsKey(tiles[i])) {
 				uvx = ((double)tileMaps.get(tiles[i]).get(r).x / 1024);
 				uvy = ((double)tileMaps.get(tiles[i]).get(r).y / 1024);
-				if(uvx > (uv*9) || uvx < (uv*15))
-					System.out.printf("%f %f\n", uvx, uvy);
 			}
 			
 			glTexCoord2d(uvx, uvy);

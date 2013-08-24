@@ -33,7 +33,7 @@ public class MainGameState extends GameState {
 //			}
 //		}
 //		
-		scene.AddEntity(new ChunkEntity(scene.getRoot(), 64*32, 64*32));
+		scene.AddEntity(new ChunkEntity(scene.getRoot(), 256, 256));
 		
 		scene.AddEntity(player);
 	}	
