@@ -12,8 +12,8 @@ import map.islandbase.Triangle;
 public class SegmentGenerator {
 	private final long seed;
 	private final MetaSegment[][] metaSegments;
-	private static final int regionSize = 512; // genereated map resolution
-	private static final int numSegments = 256;
+	private static final int regionSize = 256; // genereated map resolution
+	public static final int numSegments = 256;
 	
 	private Map<Long, Segment> segmentCache = new HashMap<Long, Segment>();
 	
@@ -51,7 +51,8 @@ public class SegmentGenerator {
 		
 		int i = 0;
 		for (Triangle t : tList) {
-			BoundingBox b = t.getBound(scale);
+			t.scale(scale);
+			BoundingBox b = t.getBound();
 			for (int y = (int)b.minY-1; y>=0 && y<=b.maxY && y < numSegments; y++) {
 				for (int x = (int)b.minX; x>=0 && x<=b.maxX && x < numSegments; x++) {
 					if (b.intersects(metaSegments[x][y].getBound()) != null) {
@@ -97,9 +98,12 @@ public class SegmentGenerator {
 	public static void main(String[] args) {
 		//SegmentGenerator sg = new SegmentGenerator(32);
 		System.out.println("Made it here");
-		for (int i = 0; i < 10; i++) {
-			Segment s = SegmentGenerator.getInst().getSegment(0, i);
-			System.out.println(s.xPos + " :: " + s.yPos);
+		for (int y = 64; y < 70; y++) {
+			for (int x = 64; x < 70; x++) {
+				Segment s = SegmentGenerator.getInst().getSegment(x, y);
+				System.out.printf(s.getTiles()[0][0] + " ");
+			}
+			System.out.println();
 		}
 	}
 }
