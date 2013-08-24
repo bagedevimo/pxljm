@@ -1,5 +1,6 @@
 package goldeneagle.state;
 
+import goldeneagle.ResourceCache;
 import goldeneagle.ResourceLoader;
 
 // This GameState should load any assets required to display the intros
@@ -16,6 +17,14 @@ public class InitGameState extends GameState {
 		rl.Add("./assets/entities/bush.png");
 		rl.Add("./assets/sprites/character_walk.png");
 		rl.Start();
+		
+		try {
+			ResourceCache.AddShaderProgram("test");
+			System.out.printf("ShaderProgram: %d\n", ResourceCache.GetProgram("test"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

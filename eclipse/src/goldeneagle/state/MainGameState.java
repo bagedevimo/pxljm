@@ -7,6 +7,7 @@ import java.util.Map;
 import org.lwjgl.input.Keyboard;
 
 import goldeneagle.MovingFrame;
+import goldeneagle.ParticleEmitter;
 import goldeneagle.Vec3;
 import goldeneagle.entities.ChunkEntity;
 import goldeneagle.entities.PlayerEntity;
@@ -51,6 +52,9 @@ public class MainGameState extends GameState {
 		mf.setLinear(new Vec3(playerSpawnX, playerSpawnY), Vec3.zero);
 		Light.PointLight l2 = new Light.PointLight(mf, Color.RED, 4, 6);
 		scene.addLight(l2);
+		
+//		ParticleEmitter pe = new ParticleEmitter(mf);
+//		scene.AddEntity(pe);
 	}	
 	
 	private long getID(int x, int y) {

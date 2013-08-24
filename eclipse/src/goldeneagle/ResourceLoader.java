@@ -1,8 +1,11 @@
 package goldeneagle;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -10,10 +13,14 @@ import java.util.Queue;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.ARBFragmentShader;
+import org.lwjgl.opengl.ARBShaderObjects;
+import org.lwjgl.opengl.ARBVertexShader;
+import org.lwjgl.opengl.GL11;
 
 enum ResourceType {
 	PNG,
-	JPG
+	JPG, VERT, FRAG
 }
 
 public class ResourceLoader extends Thread {
@@ -68,7 +75,6 @@ public class ResourceLoader extends Thread {
 			this.loadQueue.remove();
 		}
 	}
-
     
        public ByteBuffer loadTexture(BufferedImage image){
 

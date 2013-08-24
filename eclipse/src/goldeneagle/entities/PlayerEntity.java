@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.input.Keyboard;
 
+import goldeneagle.AudioEngine;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.clock.DerivedClock;
@@ -50,6 +51,9 @@ public class PlayerEntity extends Entity {
 	double NormalTemp = 37.0f;
 	double Temp = NormalTemp;
 	
+	double lastStep;
+	double stepInterval;
+	
 	public PlayerEntity(Frame parent_) {
 		super(parent_);
 		
@@ -57,6 +61,9 @@ public class PlayerEntity extends Entity {
 		
 		animationClock = new DerivedClock(this.getClock(), 0);
 		animationStart = this.animationClock.get();
+		
+		lastStep = this.animationClock.get();
+		stepInterval = 0.8;
 		
 		this.lastAttrUpdate = this.getClock().get();
 		
@@ -78,7 +85,15 @@ public class PlayerEntity extends Entity {
 			this.animationStart = this.animationClock.get();
 			dT = (this.animationClock.get() - this.animationStart);
 			frame = (int)(dT / getFrameTime());
-		}		
+		}
+		
+		
+		if((this.animationClock.get() - this.lastStep) > this.stepInterval && this.isMoving) {
+			this.lastStep = animationClock.get();
+			AudioEngine.PlayEffect("step", this.getGlobalPosition());
+			System.out.println("step");
+		}
+			
 		
 		try {
 			texID = ResourceCache.GetGLTexture("./assets/sprites/character_walk.png");

@@ -23,7 +23,16 @@ public class PxlGame {
 	public void start(boolean isFullscreen, int width, int height) {
 		System.out.printf("isFullscreen: %s\n", isFullscreen);
 		try {
-			Display.setDisplayMode(new DisplayMode(width, height));
+			DisplayMode mode = null;
+			DisplayMode[] modes = Display.getAvailableDisplayModes();
+			
+			for(int i = 0; i < modes.length; i++) {
+				if(modes[i].getWidth() == width &&
+						modes[i].getHeight() == height &&
+						modes[i].isFullscreenCapable())
+					mode = modes[i];
+			}
+			Display.setDisplayMode(mode);
 			Display.setFullscreen(isFullscreen);
 			Display.create(SceneManager.PIXEL_FORMAT, SceneManager.CONTEXT_ATTRIBS);
 		} catch (LWJGLException ex) {
@@ -35,9 +44,20 @@ public class PxlGame {
 		
 		double lastFPS = sysclock.get();
 		int fps = 0;
+		
+		try {
+			SceneManager.init();
+			AudioEngine.Initalise();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		while (!Display.isCloseRequested()) {
 			Profiler.enter(drawLoop);
+			
+			AudioEngine.Update();
+			
 			GameState currentState = getCurrentState();
 			currentState.doUpdate();
 			currentState.doDraw();
@@ -58,6 +78,8 @@ public class PxlGame {
 //				
 //			}
 		}
+		
+		AudioEngine.destroy();
 
 		Display.destroy();
 	}
