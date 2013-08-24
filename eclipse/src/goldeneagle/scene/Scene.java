@@ -11,9 +11,10 @@ import java.awt.Color;
 
 import goldeneagle.*;
 import goldeneagle.clock.Clock;
+import goldeneagle.util.*;
 
 public class Scene implements Iterable<Entity> {
-	
+	private static final int updateProfile = Profiler.createSection("Scene.update");
 	private final Clock clock;
 	private final Frame root;
 	private final Set<Entity> entities;
@@ -57,8 +58,9 @@ public class Scene implements Iterable<Entity> {
 	}
 
 	public void Update(double deltaTime) {
+		Profiler.enter(updateProfile);
 		for(Entity e : this.entities)
-			if(!e.Update(deltaTime))
+			if(!e.update(deltaTime))
 				this.removeList.add(e);
 		
 		while(!this.removeList.isEmpty()) {
@@ -66,10 +68,15 @@ public class Scene implements Iterable<Entity> {
 			if(this.entities.contains(e))
 				this.entities.remove(e);
 		}
+		Profiler.exit(updateProfile);
 	}
 	
 	public void RemoveEntity(Entity e) {
 		this.removeList.add(e);
+	}
+	
+	public boolean hasEntity(Entity e) {
+		return this.entities.contains(e) && !this.removeList.contains(e);
 	}
 	
 	public void addLight(Light l) {

@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.input.Keyboard;
 
+import goldeneagle.AudioEngine;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.clock.DerivedClock;
@@ -13,7 +14,7 @@ import goldeneagle.scene.SceneManager;
 import goldeneagle.util.Profiler;
 
 public class PlayerEntity extends Entity {
-	private static final int PlayerDraw = Profiler.createSection("PlayerDraw");
+	private static final int PlayerEntity_glBegin = Profiler.createSection("PlayerEntity_glBegin");
 	
 	
 
@@ -49,11 +50,19 @@ public class PlayerEntity extends Entity {
 	double NormalTemp = 37.0f;
 	double Temp = NormalTemp;
 	
+	double lastStep;
+	double stepInterval;
+	
 	public PlayerEntity(Frame parent_) {
 		super(parent_);
 		
+		setHeight(2);
+		
 		animationClock = new DerivedClock(this.getClock(), 0);
 		animationStart = this.animationClock.get();
+		
+		lastStep = this.animationClock.get();
+		stepInterval = 0.8;
 		
 		this.lastAttrUpdate = this.getClock().get();
 	}
@@ -65,7 +74,7 @@ public class PlayerEntity extends Entity {
 	}
 
 	@Override
-	public void Draw() {				
+	public void draw() {				
 		int texID = -1;
 		
 		double dT = (this.animationClock.get() - this.animationStart);
@@ -74,7 +83,15 @@ public class PlayerEntity extends Entity {
 			this.animationStart = this.animationClock.get();
 			dT = (this.animationClock.get() - this.animationStart);
 			frame = (int)(dT / getFrameTime());
-		}		
+		}
+		
+		
+		if((this.animationClock.get() - this.lastStep) > this.stepInterval && this.isMoving) {
+			this.lastStep = animationClock.get();
+			AudioEngine.PlayEffect("step", this.getGlobalPosition());
+			System.out.println("step");
+		}
+			
 		
 		try {
 			texID = ResourceCache.GetGLTexture("./assets/sprites/character_walk.png");
@@ -93,8 +110,8 @@ public class PlayerEntity extends Entity {
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.5f);
 		
-		Profiler.enter(PlayerDraw);
 		
+		Profiler.enter(PlayerEntity_glBegin);		
 		glBegin(GL_POLYGON);
 		
 		glColor3d(1, 1, 1);
@@ -104,24 +121,23 @@ public class PlayerEntity extends Entity {
 		
 		double size = 1.8f;
 		glTexCoord2d(u, 0);
-		glVertex3d(-size, -size, SceneManager.Z_PLAYER);
+		glVertex3d(-size, -size, 0);
 		glTexCoord2d(u+frameWidth, 0);
-		glVertex3d(size, -size, SceneManager.Z_PLAYER);
+		glVertex3d(size, -size, 0);
 		glTexCoord2d(u+frameWidth, 1);
-		glVertex3d(size, size, SceneManager.Z_PLAYER);
+		glVertex3d(size, size, 0);
 		glTexCoord2d(u, 1);
-		glVertex3d(-size, size, SceneManager.Z_PLAYER);
+		glVertex3d(-size, size, 0);
 		
 		glEnd();
-		
-		Profiler.exit(PlayerDraw);
+		Profiler.exit(PlayerEntity_glBegin);
 		
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_ALPHA_TEST);
 	}
 
 	@Override
-	public boolean Update(double deltaTime) {
+	public boolean update(double deltaTime) {
 		Vec3 motion = new Vec3(0, 0, 0);
 		double rot = 0;
 		double rotSpeed = 2.5 * deltaTime;
@@ -174,6 +190,14 @@ public class PlayerEntity extends Entity {
 		return true;
 	}
 	
+	public int getCurrentChunkX() {
+		return (int) (this.getPosition().x / 32);
+	}
+	
+	public int getCurrentChunkY() {
+		return (int) (this.getPosition().y / 32);
+	}
+	
 	private void updateAttrs() {
 		this.lastAttrUpdate = this.getClock().get();
 		
@@ -185,11 +209,11 @@ public class PlayerEntity extends Entity {
 		else if(this.Thirst > this.DefaultThirst)
 			this.Thirst -= 0.0001;
 		
-		System.out.printf("Energy: %f\tdEnergy: %f\n", this.Energy, 0f);
-		System.out.printf("Nutrition: %f\tdNutrition: %f\n", this.Nutrition, this.Hunger);
-		System.out.printf("Hydration: %f\tddHydration: %f\n", this.Hydration, this.Thirst);
-		System.out.printf("Health: %f\tdHealth: %f\n",  this.Health, 0f);
-		System.out.printf("Temperature: %f\tdTemperature: %f\n", this.Temp, 0f);
+//		System.out.printf("Energy: %f\tdEnergy: %f\n", this.Energy, 0f);
+//		System.out.printf("Nutrition: %f\tdNutrition: %f\n", this.Nutrition, this.Hunger);
+//		System.out.printf("Hydration: %f\tddHydration: %f\n", this.Hydration, this.Thirst);
+//		System.out.printf("Health: %f\tdHealth: %f\n",  this.Health, 0f);
+//		System.out.printf("Temperature: %f\tdTemperature: %f\n", this.Temp, 0f);
 	}
 
 }

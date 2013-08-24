@@ -16,7 +16,7 @@ public class TestEntity extends Entity {
 	}
 
 	@Override
-	public void Draw() {
+	public void draw() {
 		glBegin(GL_POLYGON);
 		glColor3d(1, 0, 0);
 		glNormal3d(0, 0, 1);
@@ -28,7 +28,7 @@ public class TestEntity extends Entity {
 	}
 
 	@Override
-	public boolean Update(double deltaTime) {
+	public boolean update(double deltaTime) {
 		return true;
 	}
 	

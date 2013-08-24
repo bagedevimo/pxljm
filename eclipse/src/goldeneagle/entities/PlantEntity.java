@@ -1,17 +1,14 @@
 package goldeneagle.entities;
 
 import static org.lwjgl.opengl.GL11.*;
-import goldeneagle.Bound;
 import goldeneagle.BoundingSphere;
 import goldeneagle.scene.Frame;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.scene.Entity;
-import goldeneagle.scene.SceneManager;
 import goldeneagle.util.Profiler;
 
 public class PlantEntity extends Entity{
-	private final Bound bound;
 	private final double radius;
 	
 	static final int PlantEntity = Profiler.createSection("PlantEntity");
@@ -20,16 +17,16 @@ public class PlantEntity extends Entity{
 		super(parent_);
 		this.setLinear(new Vec3(xPos_, yPos_, 0), Vec3.zero);
 		this.radius = radius;
-		bound = new BoundingSphere(parent_, radius);
+		setBound(new BoundingSphere(this, radius));
+		setHeight(0.1);
 	}
 
 	@Override
-	public void Draw() {
+	public void draw() {
 		int texID = -1;
 		try {
 			texID = ResourceCache.GetGLTexture("./assets/entities/bush.png");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
@@ -47,13 +44,13 @@ public class PlantEntity extends Entity{
 		glNormal3d(0, 0, 1);
 		
 		glTexCoord2d(0, 0);
-		glVertex3d(-this.radius, -this.radius, SceneManager.Z_OBJECT);
+		glVertex3d(-this.radius, -this.radius, 0);
 		glTexCoord2d(1, 0);
-		glVertex3d(this.radius, -this.radius, SceneManager.Z_OBJECT);
+		glVertex3d(this.radius, -this.radius, 0);
 		glTexCoord2d(1, 1);
-		glVertex3d(this.radius, this.radius, SceneManager.Z_OBJECT);
+		glVertex3d(this.radius, this.radius, 0);
 		glTexCoord2d(0, 1);
-		glVertex3d(-this.radius, this.radius, SceneManager.Z_OBJECT);
+		glVertex3d(-this.radius, this.radius, 0);
 		
 		glEnd();	
 		
@@ -64,7 +61,7 @@ public class PlantEntity extends Entity{
 	}
 
 	@Override
-	public boolean Update(double deltaTime) {
+	public boolean update(double deltaTime) {
 		return true;
 	}
 }

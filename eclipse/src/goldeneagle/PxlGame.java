@@ -1,6 +1,8 @@
 package goldeneagle;
 
 import goldeneagle.clock.SystemClock;
+
+import goldeneagle.util.*;
 import goldeneagle.scene.SceneManager;
 import goldeneagle.state.GameState;
 import goldeneagle.state.InitGameState;
@@ -11,16 +13,27 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-
 public class PxlGame {
 
 	public static final SystemClock sysclock = new SystemClock();
 
 	protected Stack<GameState> gameStates = new Stack<GameState>();
+	private static final int drawLoop = Profiler.createSection("PxlGame_DrawLoop");
 
-	public void start(boolean isFullscreen) {
+	public void start(boolean isFullscreen, int width, int height) {
+		System.out.printf("isFullscreen: %s\n", isFullscreen);
 		try {
-			Display.setDisplayMode(new DisplayMode(800, 600));
+			DisplayMode mode = null;
+			DisplayMode[] modes = Display.getAvailableDisplayModes();
+			
+			for(int i = 0; i < modes.length; i++) {
+				if(modes[i].getWidth() == width &&
+						modes[i].getHeight() == height &&
+						modes[i].isFullscreenCapable())
+					mode = modes[i];
+			}
+			Display.setDisplayMode(mode);
+			Display.setFullscreen(isFullscreen);
 			Display.create(SceneManager.PIXEL_FORMAT, SceneManager.CONTEXT_ATTRIBS);
 		} catch (LWJGLException ex) {
 			ex.printStackTrace();
@@ -31,8 +44,20 @@ public class PxlGame {
 		
 		double lastFPS = sysclock.get();
 		int fps = 0;
+		
+		try {
+			SceneManager.init();
+			AudioEngine.Initalise();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		while (!Display.isCloseRequested()) {
+			Profiler.enter(drawLoop);
+			
+			AudioEngine.Update();
+			
 			GameState currentState = getCurrentState();
 			currentState.doUpdate();
 			currentState.doDraw();
@@ -41,17 +66,20 @@ public class PxlGame {
 			fps++;
 			if(sysclock.get() - lastFPS > 1) {
 				lastFPS = sysclock.get();
-				System.out.printf("FPS: %d\n", fps);
+				Display.setTitle(String.format("FPS: %d", fps));
 				fps = 0;
 			}
+			Profiler.exit(drawLoop);
 			
-			try {
-				// for sanity - i get gpu whine at insane frame rates
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				
-			}
+//			try {
+//				// for sanity - i get gpu whine at insane frame rates
+//				Thread.sleep(1);
+//			} catch (InterruptedException e) {
+//				
+//			}
 		}
+		
+		AudioEngine.destroy();
 
 		Display.destroy();
 	}

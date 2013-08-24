@@ -24,21 +24,23 @@ import goldeneagle.util.Profiler;
 
 public class ChunkEntity extends Entity {
 	public final TileType[] tiles;
-	public final int[] tilesR;
-	private List<Point> sandTiles; 
+	public final int[] tilesR; 
 	private TileTextureLoader ttl;
 	private Map<TileType, List<Point>> tileMaps;
-	static final int ChunkDraw = Profiler.createSection("ChunkEntity.Draw.glDRAW");
-	static final int ChunkUV = Profiler.createSection("ChunkEntity.Draw.uv");
+	static final int ChunkDraw = Profiler.createSection("ChunkEntity_glBegin");
+	static final int ChunkUV = Profiler.createSection("ChunkEntity_calc_uv");
+	static final int actualDraw = Profiler.createSection("ChunkEntity_actual_draw");
+	private int compiledList = -1;
+	private final List<Entity> childEntities;
 	
 	public ChunkEntity(Frame parent_, int baseX, int baseY, Scene scene) {
 		super(parent_);
 		this.setLinear(new Vec3(baseX, baseY), Vec3.zero);
+		this.childEntities = new ArrayList<Entity>();
 		
 		try {
 			ttl = new TileTextureLoader("./assets/tiles/tiletex_info.txt");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -50,24 +52,28 @@ public class ChunkEntity extends Entity {
 		tileMaps.put(TileType.OCEAN, ttl.getTileLocation(TileType.OCEAN));
 //		tileMaps.put(TileType.OCEAN, ttl.getTileLocation(TileType.GRASS));
 		
+		
+		
 		System.out.println("Starting seg-gen");
 		System.out.println("Originas" + this.getPosition().x / 32 + " :: " + this.getPosition().y / 32);
 		Segment seg = SegmentGenerator.getInst().segmentAt(this.getPosition().x, this.getPosition().y);
 		
+		Entity e;
 		for(Vec3 tree : seg.getTrees()) {
-			System.out.printf("Added tree @ %f %f, r=%f\n", tree.x, tree.y, tree.z);
-			scene.AddEntity(new TreeEntity(scene.getRoot(), this.getPosition().x+tree.x, this.getPosition().y+tree.y, tree.z));
+			e = new TreeEntity(scene.getRoot(), this.getPosition().x+tree.x, this.getPosition().y+tree.y, tree.z);
+			this.childEntities.add(e);
+			scene.AddEntity(e);
 		}
 		
 		for(Vec3 plant : seg.getPlants()) {
-			System.out.printf("Added tree @ %f %f, r=%f\n", plant.x, plant.y, plant.z);
-			scene.AddEntity(new PlantEntity(scene.getRoot(), this.getPosition().x+plant.x, this.getPosition().y+plant.y, plant.z));
+			e = new PlantEntity(scene.getRoot(), this.getPosition().x+plant.x, this.getPosition().y+plant.y, plant.z);
+			this.childEntities.add(e);
+			scene.AddEntity(e);
 		}
 		
 		System.out.println("seg-gen complete");
 		TileType[][] temp = seg.getTiles();
 		
-		boolean hasGrass = false;
 		tiles = new TileType[1024];
 		for(int x = 0; x < temp.length; x++) {
 			for(int y = 0; y < temp[x].length; y++) {
@@ -85,17 +91,24 @@ public class ChunkEntity extends Entity {
 		}
 	}
 	
+	public void unload(Scene scene) {
+		glDeleteLists(this.compiledList, 1);
+		
+		for(Entity e : this.childEntities) {
+			scene.RemoveEntity(e);
+		}
+	}
+	
 	public Vec3 Center() {
 		return this.getPosition().add(new Vec3(512, 512, 0));
 	}
 
 	@Override
-	public void Draw() {
+	public void draw() {
 		int texID = -1;
 		try {
 			texID = ResourceCache.GetGLTexture("./assets/tiles/atlas.jpg");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -109,42 +122,52 @@ public class ChunkEntity extends Entity {
 		Profiler.enter(ChunkDraw);
 		glMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, SceneManager.floatv(1f, 1f, 1f, 1f));
 		
-		glBegin(GL_QUADS);
-		glNormal3d(0, 0, 1);
 		
-		for(int i = 0; i < 1024; i++) {
-			int x = i & 0x1F;
-			int y = i >>> 5;
+		if(this.compiledList < 0) {
+			this.compiledList = glGenLists(1);
+
+			glNewList(compiledList, GL_COMPILE);
+			glBegin(GL_QUADS);
+			glNormal3d(0, 0, 1);
 			
-			double uvx = 0, uvy = 0;
-			int r = tilesR[i];
-//			if(tileMaps.containsKey(tiles[i])) {
-				uvx = ((double)tileMaps.get(tiles[i]).get(r).x / 1024);
-				uvy = ((double)tileMaps.get(tiles[i]).get(r).y / 1024);
-//			}
+			for(int i = 0; i < 1024; i++) {
+				Profiler.enter(ChunkUV);
+				int x = i & 0x1F;
+				int y = i >>> 5;
+				
+				double uvx = 0, uvy = 0;
+				int r = tilesR[i];
+	//			if(tileMaps.containsKey(tiles[i])) {
+					uvx = ((double)tileMaps.get(tiles[i]).get(r).x / 1024);
+					uvy = ((double)tileMaps.get(tiles[i]).get(r).y / 1024);
+	//			}
+				Profiler.exit(ChunkUV);
+				
+				Profiler.enter(actualDraw);
+				glTexCoord2d(uvx, uvy);
+				glVertex3d(x, y, 0);
+				glTexCoord2d(uvx+uv, uvy);
+				glVertex3d(x+1, y, 0);
+				glTexCoord2d(uvx+uv, uvy+uv);
+				glVertex3d(x+1, y+1, 0);
+				glTexCoord2d(uvx, uvy+uv);
+				glVertex3d(x, y+1, 0);
+				Profiler.exit(actualDraw);
+				
+			}
 			
-//			Profiler.enter(ChunkUV);
+			glEnd();
+			glEndList();
 			
-			glTexCoord2d(uvx, uvy);
-			glVertex3d(x, y, SceneManager.Z_TERRAIN);
-			glTexCoord2d(uvx+uv, uvy);
-			glVertex3d(x+1, y, SceneManager.Z_TERRAIN);
-			glTexCoord2d(uvx+uv, uvy+uv);
-			glVertex3d(x+1, y+1, SceneManager.Z_TERRAIN);
-			glTexCoord2d(uvx, uvy+uv);
-			glVertex3d(x, y+1, SceneManager.Z_TERRAIN);
-			
-//			Profiler.exit(ChunkUV);
 		}
-		
-		glEnd();
+		glCallList(this.compiledList);
 		
 		Profiler.exit(ChunkDraw);
 		glDisable(GL_TEXTURE_2D);
 	}
 
 	@Override
-	public boolean Update(double deltaTime) {
+	public boolean update(double deltaTime) {
 		return true;
 	}
 

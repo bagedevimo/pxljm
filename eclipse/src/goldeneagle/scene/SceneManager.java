@@ -5,8 +5,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.lwjgl.opengl.*;
@@ -19,12 +19,18 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL21.*;
 import goldeneagle.*;
+import goldeneagle.util.*;
 
+@SuppressWarnings("unused")
 public class SceneManager {
-	public static final double Z_TERRAIN = 0.0;
-	public static final double Z_OBJECT = 0.3;
-	public static final double Z_PLAYER = 0.5;
-	public static final double Z_ROOF = 1.0;
+	public static final int doSceneProfile = Profiler.createSection("SM.doFrame"); 
+	public static final int projection = Profiler.createSection("SM.doFrame.projection");
+	public static final int lightLoop = Profiler.createSection("SM.doFrame.light_loop");
+	public static final int bufferClear = Profiler.createSection("SM.doFrame.clear_buffer");
+	public static final int getEntities = Profiler.createSection("SM.doFrame.get_entities");
+	public static final int zWrite = Profiler.createSection("SM.doFrame.write_z_buffer");
+	public static final int blend = Profiler.createSection("SM.doFrame.blend");
+	public static final int modelview = Profiler.createSection("SM.doFrame.model_view");
 	
 	public static final PixelFormat PIXEL_FORMAT = new PixelFormat(8, 24, 8, 4);
 	public static final ContextAttribs CONTEXT_ATTRIBS = new ContextAttribs(2, 1);
@@ -60,6 +66,14 @@ public class SceneManager {
 		return buf;
 	}
 	
+	public static FloatBuffer floatv(double... ds) {
+		float[] fs = new float[ds.length];
+		for (int i = 0; i < ds.length; i++) {
+			fs[i] = (float) ds[i];
+		}
+		return floatv(fs);
+	}
+	
 	public static FloatBuffer floatv(float... ds) {
 		FloatBuffer buf = buftemp.asFloatBuffer();
 		buf.position(0);
@@ -68,6 +82,15 @@ public class SceneManager {
 		}
 		buf.position(0);
 		return buf;
+	}
+	
+	public static IntBuffer intv(int... ds) {
+		IntBuffer buf = buftemp.asIntBuffer();
+		buf.position(0);
+		for(int d : ds)
+			buf.put(d);
+		buf.position(0);
+		return buf;		
 	}
 	
 	public static FloatBuffer floatv(Vec3 v) {
@@ -91,35 +114,47 @@ public class SceneManager {
 	}
 	
 	public static void doFrame(Scene s, Camera c) {
+		Profiler.enter(doSceneProfile);
+		
 		init();
 		
+		Profiler.enter(projection);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		double ratio = Display.getWidth() / (double) Display.getHeight();
 		if (ratio >= 1) {
 			double right = c.getRadius();
-			glOrtho(-right, right, -right / ratio, right / ratio, -10, 10);
+			glOrtho(-right, right, -right / ratio, right / ratio, -100, 1);
 		} else {
 			double top = c.getRadius();
-			glOrtho(-top * ratio, top * ratio, -top, top, -10, 10);
+			glOrtho(-top * ratio, top * ratio, -top, top, -100, 1);
 		}
+		Profiler.exit(projection);
 		
+		
+		Profiler.enter(modelview);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		
-		glLight(GL_LIGHT0, GL_POSITION, floatv(0, 0, 1, 1));
-		
 		multMatrix(c.getViewTransform());
+		Profiler.exit(modelview);
 		
+		Profiler.enter(bufferClear);		
+		// clear the buffers
+		glDepthMask(true);
+		glColorMask(true, true, true, true);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glShadeModel(GL_FLAT);
+		glShadeModel(GL_SMOOTH);
+		Profiler.exit(bufferClear);
 		
+		Profiler.enter(getEntities);		
 		// get entities to draw and shadow casters
 		entities_draw.clear();
 		s.getEntities(entities_draw, new BoundingSphere(c, c.getRadius()));
 		entities_shadow.clear();
 		s.getEntities(entities_shadow, new BoundingSphere(c, 2 * c.getRadius()));
+		Profiler.exit(getEntities);
 		
+		Profiler.enter(zWrite);
 		// write entire scene to z-buffer only, with ambient
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
@@ -130,33 +165,39 @@ public class SceneManager {
 	    glDepthMask(true);
 	    glColorMask(true, true, true, true);
 	    glLightModel(GL_LIGHT_MODEL_AMBIENT, floatv(s.getAmbient()));
-	    
-	    glEnable(GL_LIGHT0);
-	    
-	    
-		draw();
+	    draw();
+	    Profiler.exit(zWrite);
 		
+	    Profiler.enter(blend);
 		// blend lights
-//		glBlendFunc(GL_ONE, GL_ONE);
-//		glDepthMask(false);
-//		glLightModel(GL_LIGHT_MODEL_AMBIENT, floatv(0f, 0f, 0f, 1f));
-//		
-//		for (Light l : s.getLights()) {
-//			l.load(0);
-//			
-//			// stencil stuff here
-//			
-//			// glEnable(GL_BLEND);
-//			glDepthFunc(GL_LEQUAL);
-//			glColorMask(true, true, true, true);
-//			glEnable(GL_LIGHTING);
-//			glEnable(GL_LIGHT0);
-//			draw();
-//			glDisable(GL_LIGHTING);
-//			
-//		}
+		glBlendFunc(GL_ONE, GL_ONE);
+		glDepthMask(false);
+		glLightModel(GL_LIGHT_MODEL_AMBIENT, floatv(0f, 0f, 0f, 1f));
+		Profiler.exit(blend);
+		
+		Profiler.enter(lightLoop);		
+		for (Light l : s.getLights()) {
+			// skip light if out of range
+			if (l.getGlobalPosition().dist(c.getGlobalPosition()) > 2 * c.getRadius()) {
+				continue;
+			}
+			l.load(0);
+			
+			// stencil stuff here
+			
+			glEnable(GL_BLEND);
+			glDepthFunc(GL_LEQUAL);
+			glColorMask(true, true, true, true);
+			glEnable(GL_LIGHTING);
+			glEnable(GL_LIGHT0);
+			draw();
+			glDisable(GL_LIGHTING);
+			
+		}
+		Profiler.exit(lightLoop);
 		
 		glFinish();
+		Profiler.exit(doSceneProfile);
 		
 	}
 	
@@ -164,7 +205,7 @@ public class SceneManager {
 		for(Entity e : entities_draw) {
 			glPushMatrix();
 			multMatrix(e.getTransformToRoot());
-			e.Draw();
+			e.doDraw();
 			glPopMatrix();
 		}
 	}

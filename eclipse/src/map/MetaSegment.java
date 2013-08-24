@@ -2,10 +2,6 @@ package map;
 
 import goldeneagle.BoundingBox;
 import goldeneagle.Vec3;
-import goldeneagle.entities.TreeEntity;
-import goldeneagle.scene.Frame;
-import goldeneagle.scene.Scene;
-import goldeneagle.scene.SceneManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,12 +132,17 @@ public class MetaSegment {
 		case TROPICAL_SEASONAL_FOREST: return 0.8;
 		case SUBTROPICAL_DESERT: return 0.02;
 		case GRASSLAND: return 0.05;
+		default: return 0;
 		}
-		return 0;
 	}
 	
 	private double plantChance(Biome b){
 		switch(b) {
+		case BEACH: return 0;
+		case ICE: return 0;
+		case LAKE: return 0;
+		case MARSH: return 0;
+		case OCEAN: return 0;
 		case SNOW: return 0.1;
 		case TUNDRA: return 0.1;
 		case BARE: return 0.01;

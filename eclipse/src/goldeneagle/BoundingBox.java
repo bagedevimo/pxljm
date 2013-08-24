@@ -74,4 +74,43 @@ public class BoundingBox extends Bound{
 	public String toString(){
 		return String.format("%.3f,%.3f,%.3f,%.3f",minX, minY, maxX, maxY);
 	}
+
+	public Vec3 center() {
+		return new Vec3((this.maxX + this.minX) * 0.5,(this.maxY + this.minY) * 0.5, 0); 
+	}
+
+	public boolean contains(Bound b) throws InvalidBoundException {
+		BoundingBox a = this;
+		if(b instanceof BoundingBox) {
+			BoundingBox bb = (BoundingBox)b;
+			if(bb.minX >= a.minX && bb.maxX <= a.maxX && bb.minY >= a.minX && bb.maxY <= a.maxY)
+				return true;
+			return false;
+		} else if(b instanceof BoundingSphere) {
+			BoundingSphere bb = (BoundingSphere)b;
+			double minX = bb.center().x - bb.getRadius();
+			double maxX = bb.center().x + bb.getRadius();
+			double minY = bb.center().y - bb.getRadius();
+			double maxY = bb.center().y + bb.getRadius();
+			
+			if(minX >= a.minX && maxX <= a.maxX && minY >= a.minX && maxY <= a.maxY)
+				return true;
+			return false;
+		} else
+			throw new InvalidBoundException();
+	}
+	
+	public Vec3 min() {
+		return new Vec3(this.minX, this.minY);
+	}
+	
+	public Vec3 max() {
+		return new Vec3(this.maxX, this.maxY);
+	}
+
+	public static BoundingBox fromExtremes(Vec3 center, Vec3 add) {
+		Vec3 max = Vec3.positiveExtremes(center, add);
+		Vec3 min = Vec3.negativeExtremes(center, add);
+		return new BoundingBox(min.x, min.y, max.x, max.y);
+	}
 }

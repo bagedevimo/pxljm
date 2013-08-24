@@ -2,9 +2,9 @@ package goldeneagle.scene;
 
 import goldeneagle.Vec3;
 
-public class BoundFrame extends Frame {
+public class ProxyFrame extends Frame {
 
-	public BoundFrame(Frame parent_) {
+	public ProxyFrame(Frame parent_) {
 		super(parent_);
 	}
 

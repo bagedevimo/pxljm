@@ -2,7 +2,7 @@ package goldeneagle.scene;
 
 import goldeneagle.*;
 
-public class Camera extends BoundFrame {
+public class Camera extends ProxyFrame {
 
 	private double radius = 1;
 	
