@@ -98,9 +98,9 @@ public class SegmentGenerator {
 	public static void main(String[] args) {
 		//SegmentGenerator sg = new SegmentGenerator(32);
 		System.out.println("Made it here");
-		for (int y = 64; y < 70; y++) {
-			for (int x = 64; x < 70; x++) {
-				Segment s = SegmentGenerator.getInst().getSegment(x, y);
+		for (int y = 64; y < 80; y++) {
+			for (int x = 64; x < 80; x++) {
+				Segment s = SegmentGenerator.getInst().segmentAt(x*32, y*32);
 				System.out.printf(s.getTiles()[0][0] + " ");
 			}
 			System.out.println();
