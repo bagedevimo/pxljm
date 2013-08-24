@@ -2,7 +2,7 @@ package goldeneagle.items;
 
 import goldeneagle.entities.PlayerEntity;
 
-public class Berries extends Item{
+public class Wood extends Item{
 
 	@Override
 	public void use(PlayerEntity player) {
@@ -11,4 +11,3 @@ public class Berries extends Item{
 	}
 
 }
-

@@ -2,12 +2,16 @@ package goldeneagle.entities;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 
 import goldeneagle.AudioEngine;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.clock.DerivedClock;
+import goldeneagle.items.Item;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.SceneManager;
@@ -49,6 +53,9 @@ public class PlayerEntity extends Entity {
 	
 	double NormalTemp = 37.0f;
 	double Temp = NormalTemp;
+	
+	private int inventoryIndex = -1;
+	private final List<Item> inventory = new ArrayList<Item>();
 	
 	double lastStep;
 	double stepInterval;
@@ -172,11 +179,10 @@ public class PlayerEntity extends Entity {
 
 		motion = this.getPosition().add(new Vec3(x, y, 0));
 
-		if(x == 0 && y == 0) {
+		if (x == 0 && y == 0) {
 			this.animationClock.pause();
 			this.isMoving = false;
-		}
-		else {
+		} else {
 			this.animationClock.play();
 			this.isMoving = true;
 		}
@@ -215,5 +221,4 @@ public class PlayerEntity extends Entity {
 //		System.out.printf("Health: %f\tdHealth: %f\n",  this.Health, 0f);
 //		System.out.printf("Temperature: %f\tdTemperature: %f\n", this.Temp, 0f);
 	}
-
 }
