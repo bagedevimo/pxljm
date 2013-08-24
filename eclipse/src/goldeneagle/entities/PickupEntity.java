@@ -4,6 +4,7 @@ import goldeneagle.Bound;
 import goldeneagle.items.Item;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.Entity;
+import goldeneagle.scene.Scene;
 
 public class PickupEntity extends Entity {
 
@@ -16,7 +17,7 @@ public class PickupEntity extends Entity {
 		item = item_;
 	}
 	
-	protected boolean update(double deltaTime) {
+	protected boolean update(double deltaTime, Scene scene) {
 		return false;
 	}
 

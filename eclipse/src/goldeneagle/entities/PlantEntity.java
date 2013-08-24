@@ -3,13 +3,16 @@ package goldeneagle.entities;
 import static org.lwjgl.opengl.GL11.*;
 import goldeneagle.BoundingSphere;
 import goldeneagle.scene.Frame;
+import goldeneagle.scene.Scene;
 import goldeneagle.scene.ShadowCaster;
+import goldeneagle.Bound;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.scene.Entity;
+import goldeneagle.state.Collidable;
 import goldeneagle.util.Profiler;
 
-public class PlantEntity extends Entity{
+public class PlantEntity extends Entity implements Collidable {
 	private final double radius;
 	
 	static final int PlantEntity = Profiler.createSection("PlantEntity");
@@ -69,7 +72,12 @@ public class PlantEntity extends Entity{
 	}
 
 	@Override
-	public boolean update(double deltaTime) {
+	public boolean update(double deltaTime, Scene scene) {
 		return true;
+	}
+
+	@Override
+	public Bound getCollisionBound() {
+		return new BoundingSphere(this, this.radius);
 	}
 }

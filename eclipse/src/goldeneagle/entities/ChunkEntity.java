@@ -167,7 +167,7 @@ public class ChunkEntity extends Entity {
 	}
 
 	@Override
-	public boolean update(double deltaTime) {
+	public boolean update(double deltaTime, Scene scene) {
 		return true;
 	}
 

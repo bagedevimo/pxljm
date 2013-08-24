@@ -60,7 +60,7 @@ public class Scene implements Iterable<Entity> {
 	public void Update(double deltaTime) {
 		Profiler.enter(updateProfile);
 		for(Entity e : this.entities)
-			if(!e.update(deltaTime))
+			if(!e.update(deltaTime, this))
 				this.removeList.add(e);
 		
 		while(!this.removeList.isEmpty()) {
