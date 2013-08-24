@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
 import java.awt.Color;
 
 import goldeneagle.*;
@@ -55,6 +54,10 @@ public class Scene implements Iterable<Entity> {
 	public void Update(double deltaTime) {
 		for(Entity e : this.entities)
 			e.Update(deltaTime);
+	}
+	
+	public void addLight(Light l) {
+		lights.add(l);
 	}
 	
 	public Set<Light> getLights() {

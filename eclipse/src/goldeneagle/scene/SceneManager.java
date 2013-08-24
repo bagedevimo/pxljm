@@ -1,5 +1,6 @@
 package goldeneagle.scene;
 
+import java.awt.Color;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.DoubleBuffer;
@@ -35,7 +36,7 @@ public class SceneManager {
 	
 	private static ByteBuffer buftemp;
 	
-	private static void multMatrix(Mat4 m) {
+	public static void multMatrix(Mat4 m) {
 		// assemble column-major
 		DoubleBuffer buf = buftemp.asDoubleBuffer();
 		buf.position(0);
@@ -49,7 +50,7 @@ public class SceneManager {
 		glMultMatrix(buf);
 	}
 	
-	private static DoubleBuffer doublev(double... ds) {
+	public static DoubleBuffer doublev(double... ds) {
 		DoubleBuffer buf = buftemp.asDoubleBuffer();
 		buf.position(0);
 		for (double d : ds) {
@@ -59,7 +60,7 @@ public class SceneManager {
 		return buf;
 	}
 	
-	private static FloatBuffer floatv(float... ds) {
+	public static FloatBuffer floatv(float... ds) {
 		FloatBuffer buf = buftemp.asFloatBuffer();
 		buf.position(0);
 		for (float d : ds) {
@@ -67,6 +68,19 @@ public class SceneManager {
 		}
 		buf.position(0);
 		return buf;
+	}
+	
+	public static FloatBuffer floatv(Vec3 v) {
+		return floatv((float) v.x, (float) v.y, (float) v.z);
+	}
+	
+	public static FloatBuffer floatv(Vec4 v) {
+		return floatv((float) v.x, (float) v.y, (float) v.z, (float) v.w);
+	}
+	
+	public static FloatBuffer floatv(Color c) {
+		final float i255 = 1f / 255;
+		return floatv(c.getRed() * i255, c.getGreen() * i255, c.getBlue() * i255, c.getAlpha() * i255);
 	}
 	
 	public static void init() {
@@ -92,9 +106,13 @@ public class SceneManager {
 		
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
+		
+		glLight(GL_LIGHT0, GL_POSITION, floatv(0, 0, 1, 1));
+		
 		multMatrix(c.getViewTransform());
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glShadeModel(GL_FLAT);
 		
 		// get entities to draw and shadow casters
 		entities_draw.clear();
@@ -102,7 +120,7 @@ public class SceneManager {
 		entities_shadow.clear();
 		s.getEntities(entities_shadow, new BoundingSphere(c, 2 * c.getRadius()));
 		
-		// write entire scene to z-buffer only
+		// write entire scene to z-buffer only, with ambient
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 		glDisable(GL_TEXTURE_2D);
@@ -111,27 +129,32 @@ public class SceneManager {
 	    glDisable(GL_LIGHT0);
 	    glDepthMask(true);
 	    glColorMask(true, true, true, true);
-	    glLightModel(GL_LIGHT_MODEL_AMBIENT, floatv(0.2f, 0.2f, 0.2f, 1.0f));
+	    glLightModel(GL_LIGHT_MODEL_AMBIENT, floatv(s.getAmbient()));
+	    
+	    glEnable(GL_LIGHT0);
+	    
+	    
 		draw();
 		
 		// blend lights
-		glBlendFunc(GL_ONE, GL_ONE);
-		glDepthMask(false);
-		
-		for (Light l : s.getLights()) {
-			l.load(0);
-			
-			// stencil stuff here
-			
-			glEnable(GL_BLEND);
-			glDepthFunc(GL_LEQUAL);
-			glColorMask(true, true, true, true);
-			glEnable(GL_LIGHTING);
-			glEnable(GL_LIGHT0);
-			draw();
-			glDisable(GL_LIGHTING);
-			
-		}
+//		glBlendFunc(GL_ONE, GL_ONE);
+//		glDepthMask(false);
+//		glLightModel(GL_LIGHT_MODEL_AMBIENT, floatv(0f, 0f, 0f, 1f));
+//		
+//		for (Light l : s.getLights()) {
+//			l.load(0);
+//			
+//			// stencil stuff here
+//			
+//			// glEnable(GL_BLEND);
+//			glDepthFunc(GL_LEQUAL);
+//			glColorMask(true, true, true, true);
+//			glEnable(GL_LIGHTING);
+//			glEnable(GL_LIGHT0);
+//			draw();
+//			glDisable(GL_LIGHTING);
+//			
+//		}
 		
 		glFinish();
 		

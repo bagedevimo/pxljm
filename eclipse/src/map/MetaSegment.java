@@ -1,9 +1,9 @@
 package map;
 
 import goldeneagle.BoundingBox;
-import goldeneagle.Frame;
 import goldeneagle.Vec3;
 import goldeneagle.entities.TreeEntity;
+import goldeneagle.scene.Frame;
 import goldeneagle.scene.Scene;
 import goldeneagle.scene.SceneManager;
 

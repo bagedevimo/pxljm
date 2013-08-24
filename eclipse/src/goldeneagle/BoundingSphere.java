@@ -1,5 +1,7 @@
 package goldeneagle;
 
+import goldeneagle.scene.Frame;
+
 public class BoundingSphere extends Bound {
 	private final Frame parent;
 	private final double radius;

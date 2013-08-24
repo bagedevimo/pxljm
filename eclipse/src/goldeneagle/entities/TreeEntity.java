@@ -11,9 +11,9 @@ import static org.lwjgl.opengl.GL11.glNormal3d;
 import static org.lwjgl.opengl.GL11.glVertex3d;
 import goldeneagle.Bound;
 import goldeneagle.BoundingSphere;
-import goldeneagle.Frame;
 import goldeneagle.Vec3;
 import goldeneagle.scene.Entity;
+import goldeneagle.scene.Frame;
 import goldeneagle.scene.SceneManager;
 
 public class TreeEntity extends Entity{

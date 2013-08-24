@@ -1,5 +1,7 @@
-package goldeneagle;
+package goldeneagle.scene;
 
+import goldeneagle.Mat4;
+import goldeneagle.Vec3;
 import goldeneagle.clock.Clock;
 
 public abstract class Frame {
