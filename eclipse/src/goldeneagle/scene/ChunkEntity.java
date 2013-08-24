@@ -11,26 +11,15 @@ public class ChunkEntity extends Entity {
 	public final int xOrigin;
 	public final int yOrigin;
 	
-	private final double R;
-	private final double G;
-	private final double B;
-
 	public ChunkEntity(Frame parent_, int baseX, int baseY) {
 		super(parent_);
 		
 		this.xOrigin = baseX;
 		this.yOrigin = baseY;
-		
-		this.R = Math.random();
-		this.G = Math.random();
-		this.B = Math.random();
 	}
 
 	@Override
 	public void Draw() {
-		glEnable(GL_TEXTURE_2D);
-		
-		glBegin(GL_POLYGON);
 		int texID = -1;
 		try {
 			texID = ResourceCache.GetGLTexture("./assets/test.png");
@@ -42,6 +31,9 @@ public class ChunkEntity extends Entity {
 		System.out.printf("texID: %d\n", texID);
 		
 		glBindTexture(GL_TEXTURE_2D, texID);
+		glEnable(GL_TEXTURE_2D);
+		
+		glBegin(GL_POLYGON);
 	
 //		glColor3d(R, G, B);
 		glNormal3d(0, 0, 1);
