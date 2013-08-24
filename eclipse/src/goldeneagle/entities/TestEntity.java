@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL11.glNormal3d;
 import static org.lwjgl.opengl.GL11.glVertex3d;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Frame;
+import goldeneagle.scene.Scene;
 
 public class TestEntity extends Entity {
 
@@ -28,7 +29,7 @@ public class TestEntity extends Entity {
 	}
 
 	@Override
-	public boolean update(double deltaTime) {
+	public boolean update(double deltaTime, Scene scene) {
 		return true;
 	}
 	
