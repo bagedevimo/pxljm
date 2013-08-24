@@ -69,7 +69,7 @@ public class MetaSegment {
 			double x = rand.nextDouble() * Segment.size;
 			double y = rand.nextDouble() * Segment.size;
 			if (treeChance(biomes[(int)x][(int)y]) > rand.nextDouble()){
-				foliage.add(new Foliage(1, x, y, 10, 0.01));
+				foliage.add(new Foliage(1, x, y, 3, 0.01));
 			}
 		}
 		
@@ -77,7 +77,7 @@ public class MetaSegment {
 			double x = rand.nextDouble() * Segment.size;
 			double y = rand.nextDouble() * Segment.size;
 			if (plantChance(biomes[(int)x][(int)y]) > rand.nextDouble()){
-				foliage.add(new Foliage(0, x, y, 5, 0.01));
+				foliage.add(new Foliage(0, x, y, 1, 0.01));
 			}
 		}
 		
@@ -88,7 +88,7 @@ public class MetaSegment {
 				if (focus.radius >= focus.maxRadius){
 					foliageCount--;
 				}else{
-					focus.radius += 0.5;
+					focus.radius += 0.05;
 					for(int j=i+1; j<foliage.size(); j++){
 						int result = focus.collision(foliage.get(j));
 						if(result > 0){
@@ -109,7 +109,7 @@ public class MetaSegment {
 		
 		for(int i=0; i<foliage.size(); i++){
 			Foliage f = foliage.get(i);
-			if(f.maxRadius==10)
+			if(f.maxRadius==3)
 				trees.add(new Vec3(f.xPos, f.yPos, f.radius));
 			else
 				plants.add(new Vec3(f.xPos, f.yPos, f.radius));
