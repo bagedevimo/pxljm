@@ -11,7 +11,9 @@ public class BoundingSphere extends Bound {
 
 	@Override
 	public Vec3 intersects(BoundingBox _b){
-		return _b.intersects(this).neg();
+		Vec3 v = _b.intersects(this);
+		if (v != null) return v.neg();
+		return null;
 	}
 
 	@Override

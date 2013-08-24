@@ -2,17 +2,16 @@ package goldeneagle.scene;
 
 import goldeneagle.*;
 
-public class Camera {
+public class Camera extends Frame {
 
-	private Frame frame = null;
 	private double radius = 1;
 	
-	public Camera() {
-		
+	public Camera(Frame parent_) {
+		super(parent_);
 	}
 	
 	public void bindFrame(Frame f) {
-		frame = f;
+		setParent(f);
 	}
 	
 	public void setRadius(double r) {
@@ -24,7 +23,17 @@ public class Camera {
 	}
 	
 	public Mat4 getViewTransform() {
-		return frame.getTransformToRoot().inv();
+		return getTransformToRoot().inv();
+	}
+
+	@Override
+	public Vec3 getPosition() {
+		return getParent().getPosition();
+	}
+
+	@Override
+	public double getRotation() {
+		return getParent().getRotation();
 	}
 	
 }

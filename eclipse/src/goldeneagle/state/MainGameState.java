@@ -15,7 +15,7 @@ public class MainGameState extends GameState {
 	@Override
 	protected void init() {
 		this.scene = new Scene(getClock());
-		this.cam = new Camera();
+		this.cam = new Camera(scene.getRoot());
 		PlayerEntity player = new PlayerEntity(scene.getRoot());
 		MovingFrame offset = new MovingFrame(player);
 		offset.setLinear(new Vec3(0, 4, 0), Vec3.zero);

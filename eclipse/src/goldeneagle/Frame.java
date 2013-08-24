@@ -25,7 +25,7 @@ public abstract class Frame {
 		}
 
 	}
-
+	
 	// TODO allow changing parent (change rel positions so no global change)
 
 	private Frame parent;
@@ -55,6 +55,15 @@ public abstract class Frame {
 
 	public final Frame getParent() {
 		return parent;
+	}
+	
+	/**
+	 * Sets the parent of this frame directly
+	 * @param parent_
+	 */
+	protected final void setParent(Frame parent_) {
+		if (parent_ == null) throw new NullPointerException();
+		parent = parent_;
 	}
 
 	public final Clock getClock() {
