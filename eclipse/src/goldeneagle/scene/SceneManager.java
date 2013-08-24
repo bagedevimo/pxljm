@@ -57,10 +57,10 @@ public class SceneManager {
 		double ratio = Display.getWidth() / (double) Display.getHeight();
 		if (ratio >= 1) {
 			double right = c.getRadius();
-			glOrtho(-right, right, -right / ratio, right / ratio, 10, -10);
+			glOrtho(-right, right, -right / ratio, right / ratio, -10, 10);
 		} else {
 			double top = c.getRadius();
-			glOrtho(-top * ratio, top * ratio, -top, top, 10, -10);
+			glOrtho(-top * ratio, top * ratio, -top, top, -10, 10);
 		}
 		
 		glMatrixMode(GL_MODELVIEW);
