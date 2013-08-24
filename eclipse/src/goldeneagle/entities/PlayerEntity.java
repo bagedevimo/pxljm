@@ -15,6 +15,7 @@ import goldeneagle.items.Item;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.SceneManager;
+import goldeneagle.scene.ShadowCaster;
 import goldeneagle.util.Profiler;
 
 public class PlayerEntity extends Entity {
@@ -72,6 +73,7 @@ public class PlayerEntity extends Entity {
 		stepInterval = 0.8;
 		
 		this.lastAttrUpdate = this.getClock().get();
+		
 	}
 	
 	private double getFrameTime() {
