@@ -79,10 +79,25 @@ public class BoundingBox extends Bound{
 		return new Vec3((this.maxX + this.minX) * 0.5,(this.maxY + this.minY) * 0.5, 0); 
 	}
 
-	public boolean contains(Bound a) {
-		System.out.println("SIP!");
-		System.exit(1);
-		return false;
+	public boolean contains(Bound b) throws InvalidBoundException {
+		BoundingBox a = this;
+		if(b instanceof BoundingBox) {
+			BoundingBox bb = (BoundingBox)b;
+			if(bb.minX >= a.minX && bb.maxX <= a.maxX && bb.minY >= a.minX && bb.maxY <= a.maxY)
+				return true;
+			return false;
+		} else if(b instanceof BoundingSphere) {
+			BoundingSphere bb = (BoundingSphere)b;
+			double minX = bb.center().x - bb.getRadius();
+			double maxX = bb.center().x + bb.getRadius();
+			double minY = bb.center().y - bb.getRadius();
+			double maxY = bb.center().y + bb.getRadius();
+			
+			if(minX >= a.minX && maxX <= a.maxX && minY >= a.minX && maxY <= a.maxY)
+				return true;
+			return false;
+		} else
+			throw new InvalidBoundException();
 	}
 	
 	public Vec3 min() {

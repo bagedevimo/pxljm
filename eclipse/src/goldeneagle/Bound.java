@@ -30,7 +30,7 @@ public abstract class Bound {
 	
 	public abstract Vec3 intersects(BoundingBox b);
 	public abstract Vec3 intersects(BoundingSphere b);
-	public abstract boolean contains(Bound b);
+	public abstract boolean contains(Bound b) throws InvalidBoundException;
 	public abstract Vec3 center();
 	public abstract Vec3 getPosition();
 
