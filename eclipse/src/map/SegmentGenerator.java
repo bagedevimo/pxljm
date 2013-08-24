@@ -12,7 +12,7 @@ import map.islandbase.Triangle;
 public class SegmentGenerator {
 	private final long seed;
 	private final MetaSegment[][] metaSegments;
-	private static final int regionSize = 64; // genereated map resolution
+	private static final int regionSize = 512; // genereated map resolution
 	private static final int numSegments = 256;
 	
 	private Map<Long, Segment> segmentCache = new HashMap<Long, Segment>();
