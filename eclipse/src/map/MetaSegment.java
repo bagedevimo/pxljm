@@ -1,5 +1,7 @@
 package map;
 
+import goldeneagle.BoundingBox;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import map.islandbase.Triangle;
 public class MetaSegment {
 
 	private List<Triangle> triList = new ArrayList<Triangle>();
+	private final BoundingBox bound;
 	private final int xPos;
 	private final int yPos;
 	
@@ -15,6 +18,7 @@ public class MetaSegment {
 	public MetaSegment(int x, int y){
 		xPos = x;
 		yPos = y;
+		bound = new BoundingBox(x, y, x+Segment.size, y+Segment.size);
 	}
 	
 	public void addTriangle(Triangle t){
@@ -35,6 +39,15 @@ public class MetaSegment {
 			}
 		}
 		
-		return new Segment(xPos, yPos, tiles);
+		Segment seg = new Segment(xPos, yPos, tiles); 
+		
+		//TODO Generate entities here
+		
+		
+		return seg;
+	}
+	
+	public BoundingBox getBound() {
+		return bound;
 	}
 }

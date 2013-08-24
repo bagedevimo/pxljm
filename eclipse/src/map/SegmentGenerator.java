@@ -1,5 +1,7 @@
 package map;
 
+import goldeneagle.BoundingBox;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,9 +12,11 @@ import map.islandbase.Triangle;
 public class SegmentGenerator {
 	private final long seed;
 	private final MetaSegment[][] metaSegments;
-	private static final int regionSize = 256; // segments per region
-
+	private static final int regionSize = 64; // genereated map resolution
+	private static final int numSegments = 256;
+	
 	private Map<Long, Segment> segmentCache = new HashMap<Long, Segment>();
+	
 
 	private static SegmentGenerator inst = new SegmentGenerator(System.currentTimeMillis());
 	
@@ -37,17 +41,20 @@ public class SegmentGenerator {
 		List<Triangle> tList = map.getTriangles();
 
 		//initialise the metaSegments
-		 for (int y = 0; y < regionSize; y++) {
-			 for (int x = 0; x < regionSize; x++) {
-				 metaSegments[x][y] = new MetaSegment(x, y);
-			 }
-		 }
+		for (int y = 0; y < regionSize; y++) {
+			for (int x = 0; x < regionSize; x++) {
+				metaSegments[x][y] = new MetaSegment(x, y);
+			}
+		}
 
+		double scale = numSegments / regionSize;
+		
 		for (Triangle t : tList) {
-			for (int z = (int) t.getMinZ(); z <= (int) (t.getMaxZ() + 0.5); z++) {
-				for (int x = (int) t.getMinX(); x <= (int) (t.getMaxX() + 0.5); x++) {
-					if (x < regionSize && x >= 0 && z < regionSize && z >= 0 && t.contains(x, z)) {
-						metaSegments[x][z].addTriangle(t);
+			BoundingBox b = t.getBound(scale);
+			for (int y = 0; y < numSegments; y++) {
+				for (int x = 0; x < numSegments; x++) {
+					if (b.intersects(metaSegments[x][y].getBound()) != null) {
+						metaSegments[x][y].addTriangle(t);
 					}
 				}
 			}
@@ -65,7 +72,7 @@ public class SegmentGenerator {
 		}
 
 		Segment s;
-		if (!(posx < 0) && !(posx >= regionSize - 1) && !(posy < 0) && !(posy >= regionSize - 1)) {
+		if (!(posx < 0) && !(posx >= numSegments - 1) && !(posy < 0) && !(posy >= numSegments - 1)) {
 			s = metaSegments[posx][posy].generateSegment();
 		} else {
 			s = new Segment(posx, posy, null);
