@@ -1,5 +1,7 @@
 package goldeneagle;
 
+import goldeneagle.scene.Frame;
+
 public class MovingFrame extends Frame {
 
 	private double t0 = 0;

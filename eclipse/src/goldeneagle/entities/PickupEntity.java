@@ -23,7 +23,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 import map.Segment;
 import goldeneagle.Bound;
 import goldeneagle.BoundingSphere;
-import goldeneagle.Frame;
+import goldeneagle.scene.Frame;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.items.Item;
@@ -44,9 +44,8 @@ public class PickupEntity extends Entity {
 	}
 
 	@Override
-	public void Update(double deltaTime) {
-		// TODO Auto-generated method stub
-		
+	public boolean Update(double deltaTime) {
+		return true;
 	}
 
 	@Override

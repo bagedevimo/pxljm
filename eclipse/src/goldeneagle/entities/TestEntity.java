@@ -6,8 +6,8 @@ import static org.lwjgl.opengl.GL11.glColor3d;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glNormal3d;
 import static org.lwjgl.opengl.GL11.glVertex3d;
-import goldeneagle.Frame;
 import goldeneagle.scene.Entity;
+import goldeneagle.scene.Frame;
 
 public class TestEntity extends Entity {
 
@@ -28,9 +28,8 @@ public class TestEntity extends Entity {
 	}
 
 	@Override
-	public void Update(double deltaTime) {
-		// TODO Auto-generated method stub
-		
+	public boolean Update(double deltaTime) {
+		return true;
 	}
 	
 }

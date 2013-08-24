@@ -3,10 +3,11 @@ package goldeneagle.entities;
 import static org.lwjgl.opengl.GL11.*;
 import goldeneagle.Bound;
 import goldeneagle.BoundingSphere;
-import goldeneagle.Frame;
+import goldeneagle.scene.Frame;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.scene.Entity;
+import goldeneagle.scene.Frame;
 import goldeneagle.scene.SceneManager;
 import goldeneagle.util.Profiler;
 
@@ -63,8 +64,7 @@ public class TreeEntity extends Entity{
 	}
 
 	@Override
-	public void Update(double deltaTime) {
-		// TODO Auto-generated method stub
-		
+	public boolean Update(double deltaTime) {
+		 return true;
 	}
 }
