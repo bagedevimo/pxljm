@@ -49,10 +49,12 @@ public class ChunkEntity extends Entity {
 		System.out.println("seg-gen complete");
 		TileType[][] temp = seg.getTiles();
 		
+		boolean hasGrass = false;
 		tiles = new TileType[1024];
 		for(int x = 0; x < temp.length; x++) {
 			for(int y = 0; y < temp[x].length; y++) {
-				tiles[(y*32)] = temp[x][y];
+				tiles[(y*32)+x] = temp[x][y];
+				System.out.printf("temp[%d][%d]=%s\n", x, y, temp[x][y]);
 			}
 		}
 		

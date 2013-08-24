@@ -1,5 +1,8 @@
 package goldeneagle.state;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import goldeneagle.MovingFrame;
 import goldeneagle.Vec3;
 import goldeneagle.scene.Camera;
@@ -11,6 +14,7 @@ import goldeneagle.scene.SceneManager;
 public class MainGameState extends GameState {
 	private Scene scene;
 	private Camera cam;
+	private Map<Long, ChunkEntity> chunks = new HashMap<Long, ChunkEntity>();
 	
 	@Override
 	protected void init() {
@@ -22,8 +26,21 @@ public class MainGameState extends GameState {
 		cam.bindFrame(offset);
 		cam.setRadius(10);
 		
+//		for(int x = 0; x <= 2; x++) {
+//			for(int y = 0; y <= 2; y++) {
+//				chunks.put(getID(x, y), new ChunkEntity(scene.getRoot(), x*1024, y*1024));
+//				scene.AddEntity(chunks.get(getID(x, y)));				
+//			}
+//		}
+//		
 		scene.AddEntity(new ChunkEntity(scene.getRoot(), 0, 0));
+		
 		scene.AddEntity(player);
+	}	
+	
+	private long getID(int x, int y) {
+		return (((long)x) << 32) | ((long)y);
+		
 	}
 
 	@Override
