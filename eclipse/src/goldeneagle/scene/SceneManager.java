@@ -16,6 +16,10 @@ import static org.lwjgl.opengl.GL21.*;
 import goldeneagle.*;
 
 public class SceneManager {
+	public static final double Z_TERRAIN = 0.0;
+	public static final double Z_OBJECT = 0.3;
+	public static final double Z_PLAYER = 0.5;
+	public static final double Z_ROOF = 1.0;
 	
 	public static final PixelFormat PIXEL_FORMAT = new PixelFormat(8, 24, 8, 4);
 	public static final ContextAttribs CONTEXT_ATTRIBS = new ContextAttribs(2, 1);

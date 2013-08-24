@@ -25,5 +25,11 @@ public class TestEntity extends Entity {
 		glVertex3d(-1, 0, -1);
 		glEnd();
 	}
+
+	@Override
+	public void Update() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
