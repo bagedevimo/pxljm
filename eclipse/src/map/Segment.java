@@ -25,8 +25,12 @@ public class Segment {
 		id = getID(xPos, yPos);
 		if(t!=null)
 			tiles = t;
-		else
+		else {
 			tiles = new TileType[size][size];
+			for(int xs = x; xs < size; xs++)
+				for(int ys = y; ys < size; ys++)
+					tiles[xs][ys] = TileType.UNKNOWN;
+		}
 		entities = new ArrayList<Entity>();
 	}
 	
