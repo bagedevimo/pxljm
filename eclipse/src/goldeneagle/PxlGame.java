@@ -28,12 +28,23 @@ public class PxlGame {
 		}
 
 		gameStates.push(new InitGameState());
+		
+		double lastFPS = sysclock.get();
+		int fps = 0;
 
 		while (!Display.isCloseRequested()) {
 			GameState currentState = getCurrentState();
 			currentState.doUpdate();
 			currentState.doDraw();
 			Display.update();
+			
+			fps++;
+			if(sysclock.get() - lastFPS > 1) {
+				lastFPS = sysclock.get();
+				System.out.printf("FPS: %d\n", fps);
+				fps = 0;
+			}
+			
 			try {
 				// for sanity - i get gpu whine at insane frame rates
 				Thread.sleep(1);

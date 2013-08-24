@@ -1,7 +1,11 @@
 package map;
 
 import goldeneagle.BoundingBox;
-import goldeneagle.entities.TreeEnitity;
+import goldeneagle.Frame;
+import goldeneagle.Vec3;
+import goldeneagle.entities.TreeEntity;
+import goldeneagle.scene.Scene;
+import goldeneagle.scene.SceneManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +49,13 @@ public class MetaSegment {
 						set = true;
 					}
 				if(!set){ //default to ocean
-					tiles[x][y] = TileType.OCEAN;
+					tiles[x][y] = TileType.UNKNOWN;
 				}
 			}
 		}
 		
 		Segment seg = new Segment(xPos, yPos, tiles);
-		//addFoliage(seg, biomes);
+		addFoliage(seg, biomes);
 		
 		return seg;
 	}
@@ -77,12 +81,42 @@ public class MetaSegment {
 			}
 		}
 		
-		//
-//		forall
-//		
-//		
-//		
-//		seg.addEntity(new TreeEnitity(null,x, y, 0));
+		int foliageCount = foliage.size();
+		while (foliageCount > 0) {
+			for(int i=0; i<foliage.size(); i++){
+				Foliage focus = foliage.get(i);
+				if (focus.radius >= focus.maxRadius){
+					foliageCount--;
+				}else{
+					focus.radius += 0.5;
+					for(int j=i+1; j<foliage.size(); j++){
+						int result = focus.collision(foliage.get(j));
+						if(result > 0){
+							foliage.remove(j--);
+							foliageCount--;
+						}else if (result < 0){
+							foliage.remove(i);
+							foliageCount--;
+							continue;
+						}
+					}
+				}
+			}
+		}
+		
+		List<Vec3> trees = new ArrayList<Vec3>();
+		List<Vec3> plants = new ArrayList<Vec3>();
+		
+		for(int i=0; i<foliage.size(); i++){
+			Foliage f = foliage.get(i);
+			if(f.maxRadius==10)
+				trees.add(new Vec3(f.xPos, f.yPos, f.radius));
+			else
+				plants.add(new Vec3(f.xPos, f.yPos, f.radius));
+		}
+		
+		seg.addPlants(plants);
+		seg.addTrees(trees);
 	}
 	
 	private double treeChance(Biome b){
