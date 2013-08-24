@@ -10,7 +10,7 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * Light supertype and implementations. All angles handled by these classes are in radians.
  */
-public class Light extends BoundFrame {
+public class Light extends ProxyFrame {
 
 	protected Vec4 lightpos = Vec4.zero;
 	protected Vec4 spotdir = Vec4.zero;
