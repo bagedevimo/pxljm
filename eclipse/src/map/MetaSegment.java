@@ -39,11 +39,16 @@ public class MetaSegment {
 		
 		for(int x = 0; x<Segment.size; x++){
 			for(int y = 0; y<Segment.size; y++){
+				boolean set = false;
 				for(Triangle t : triList)
 					if(t.contains(x+xs, y+ys)){
 						tiles[x][y] = TileType.getType(t.biome);
 						biomes[x][y] = t.biome;
+						set = true;
 					}
+				if(!set){ //default to ocean
+					tiles[x][y] = TileType.OCEAN;
+				}
 			}
 		}
 		

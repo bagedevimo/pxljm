@@ -47,7 +47,7 @@ public class SegmentGenerator {
 			}
 		}
 
-		double scale = numSegments / regionSize;
+		double scale = regionSize / numSegments;
 		
 		int i = 0;
 		for (Triangle t : tList) {
@@ -73,7 +73,7 @@ public class SegmentGenerator {
 		}
 
 		Segment s;
-		if (!(posx < 0) && !(posx >= numSegments - 1) && !(posy < 0) && !(posy >= numSegments - 1)) {
+		if (posx >= 0 && posx < numSegments && posy >= 0 && posy < numSegments) {
 			s = metaSegments[posx][posy].generateSegment();
 		} else {
 			s = new Segment(posx, posy, null);
