@@ -7,16 +7,16 @@ import goldeneagle.scene.Frame;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.scene.Entity;
-import goldeneagle.scene.Frame;
 import goldeneagle.scene.SceneManager;
 import goldeneagle.util.Profiler;
 
-public class TreeEntity extends Entity{
+public class PlantEntity extends Entity{
 	private final Bound bound;
 	private final double radius;
-	private static final int TreeEntity = Profiler.createSection("TreeEntity");
 	
-	public TreeEntity(Frame parent_, double xPos_, double yPos_, double radius) {
+	static final int PlantEntity = Profiler.createSection("PlantEntity");
+	
+	public PlantEntity(Frame parent_, double xPos_, double yPos_, double radius) {
 		super(parent_);
 		this.setLinear(new Vec3(xPos_, yPos_, 0), Vec3.zero);
 		this.radius = radius;
@@ -27,7 +27,7 @@ public class TreeEntity extends Entity{
 	public void Draw() {
 		int texID = -1;
 		try {
-			texID = ResourceCache.GetGLTexture("./assets/entities/tree.png");
+			texID = ResourceCache.GetGLTexture("./assets/entities/bush.png");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,7 +39,7 @@ public class TreeEntity extends Entity{
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.5f);
 		
-		Profiler.enter(TreeEntity);
+		Profiler.enter(PlantEntity);
 		
 		glBegin(GL_POLYGON);
 		
@@ -47,17 +47,17 @@ public class TreeEntity extends Entity{
 		glNormal3d(0, 0, 1);
 		
 		glTexCoord2d(0, 0);
-		glVertex3d(-this.radius, -this.radius, SceneManager.Z_ROOF);
+		glVertex3d(-this.radius, -this.radius, SceneManager.Z_OBJECT);
 		glTexCoord2d(1, 0);
-		glVertex3d(this.radius, -this.radius, SceneManager.Z_ROOF);
+		glVertex3d(this.radius, -this.radius, SceneManager.Z_OBJECT);
 		glTexCoord2d(1, 1);
-		glVertex3d(this.radius, this.radius, SceneManager.Z_ROOF);
+		glVertex3d(this.radius, this.radius, SceneManager.Z_OBJECT);
 		glTexCoord2d(0, 1);
-		glVertex3d(-this.radius, this.radius, SceneManager.Z_ROOF);
+		glVertex3d(-this.radius, this.radius, SceneManager.Z_OBJECT);
 		
-		glEnd();
+		glEnd();	
 		
-		Profiler.exit(TreeEntity);
+		Profiler.exit(PlantEntity);
 		
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_ALPHA_TEST);

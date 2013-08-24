@@ -16,8 +16,10 @@ import map.islandbase.Triangle;
 
 public class MetaSegment {
 
-	private static final int TreeFill = (int)(Segment.size * Segment.size / 10);
-	private static final int PlantFill = (int)(Segment.size * Segment.size / 7);
+	private static final int TreeFill = (int)(Segment.size * Segment.size / 3);
+	private static final double TreeRadius = 5;
+	private static final int PlantFill = (int)(Segment.size * Segment.size);
+	private static final double PlantRadius = 1;
 	
 	private List<Triangle> triList = new ArrayList<Triangle>();
 	private final BoundingBox bound;
@@ -65,54 +67,54 @@ public class MetaSegment {
 		
 		List<Foliage> foliage = new ArrayList<Foliage>();
 		
+		//Trees
 		for(int i=0; i<TreeFill; i++){
 			double x = rand.nextDouble() * Segment.size;
 			double y = rand.nextDouble() * Segment.size;
 			if (treeChance(biomes[(int)x][(int)y]) > rand.nextDouble()){
-				foliage.add(new Foliage(1, x, y, 10, 0.01));
-			}
-		}
-		
-		for(int i=0; i<PlantFill; i++){
-			double x = rand.nextDouble() * Segment.size;
-			double y = rand.nextDouble() * Segment.size;
-			if (plantChance(biomes[(int)x][(int)y]) > rand.nextDouble()){
-				foliage.add(new Foliage(0, x, y, 5, 0.01));
-			}
-		}
-		
-		int foliageCount = foliage.size();
-		while (foliageCount > 0) {
-			for(int i=0; i<foliage.size(); i++){
-				Foliage focus = foliage.get(i);
-				if (focus.radius >= focus.maxRadius){
-					foliageCount--;
-				}else{
-					focus.radius += 0.5;
-					for(int j=i+1; j<foliage.size(); j++){
-						int result = focus.collision(foliage.get(j));
-						if(result > 0){
-							foliage.remove(j--);
-							foliageCount--;
-						}else if (result < 0){
-							foliage.remove(i);
-							foliageCount--;
-							continue;
-						}
+				Foliage newF = new Foliage(x, y, TreeRadius + ((TreeRadius / 3) * rand.nextGaussian()));
+				boolean collision = false;
+				for(int j=0; j<foliage.size(); j++){
+					if(foliage.get(j).collision(newF)){
+						collision = true;
+						break;
 					}
 				}
+				if(!collision)
+					foliage.add(newF);
 			}
 		}
 		
 		List<Vec3> trees = new ArrayList<Vec3>();
-		List<Vec3> plants = new ArrayList<Vec3>();
-		
 		for(int i=0; i<foliage.size(); i++){
 			Foliage f = foliage.get(i);
-			if(f.maxRadius==10)
-				trees.add(new Vec3(f.xPos, f.yPos, f.radius));
-			else
-				plants.add(new Vec3(f.xPos, f.yPos, f.radius));
+			trees.add(new Vec3(f.xPos, f.yPos, f.radius));
+		}
+		
+		foliage.clear();
+		
+		//Plants
+		for(int i=0; i<PlantFill; i++){
+			double x = rand.nextDouble() * Segment.size;
+			double y = rand.nextDouble() * Segment.size;
+			if (treeChance(biomes[(int)x][(int)y]) > rand.nextDouble()){
+				Foliage newF = new Foliage(x, y, PlantRadius + ((PlantRadius / 3) * rand.nextGaussian()));
+				boolean collision = false;
+				for(int j=0; j<foliage.size(); j++){
+					if(foliage.get(j).collision(newF)){
+						collision = true;
+						break;
+					}
+				}
+				if(!collision)
+					foliage.add(newF);
+			}
+		}
+		
+		List<Vec3> plants = new ArrayList<Vec3>();
+		for(int i=0; i<foliage.size(); i++){
+			Foliage f = foliage.get(i);
+			plants.add(new Vec3(f.xPos, f.yPos, f.radius));
 		}
 		
 		seg.addPlants(plants);
@@ -158,23 +160,19 @@ public class MetaSegment {
 	}
 	
 	private class Foliage{
-		public final int priority;
 		public final double xPos;
 		public final double yPos;
-		public final double maxRadius;
-		double radius;
-		Foliage(int priority_, double xPos_, double yPos_, double maxRadius_, double radius_){
-			priority = priority_;
+		public final double radius;
+		Foliage(double xPos_, double yPos_, double radius_){
 			xPos = xPos_;
 			yPos = yPos_;
-			maxRadius = maxRadius_;
-			radius = 0.01;
+			radius = radius_;
 		}
 		
-		int collision(Foliage f){
-			if(Math.hypot((xPos - f.xPos), (yPos - f.yPos)) < radius + f.radius)
-				return (priority > f.priority) ? 1:-1;
-			return 0;
+		public boolean collision(Foliage f){
+			if(Math.hypot((xPos - f.xPos), (yPos - f.yPos)) < (radius + f.radius))
+				return true;
+			return false;
 		}
 	}
 	

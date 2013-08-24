@@ -18,6 +18,7 @@ import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Frame;
+import goldeneagle.scene.Scene;
 import goldeneagle.scene.SceneManager;
 import goldeneagle.util.Profiler;
 
@@ -30,7 +31,7 @@ public class ChunkEntity extends Entity {
 	static final int ChunkDraw = Profiler.createSection("ChunkEntity.Draw.glDRAW");
 	static final int ChunkUV = Profiler.createSection("ChunkEntity.Draw.uv");
 	
-	public ChunkEntity(Frame parent_, int baseX, int baseY) {
+	public ChunkEntity(Frame parent_, int baseX, int baseY, Scene scene) {
 		super(parent_);
 		this.setLinear(new Vec3(baseX, baseY), Vec3.zero);
 		
@@ -44,11 +45,25 @@ public class ChunkEntity extends Entity {
 		tileMaps = new HashMap<TileType, List<Point>>();
 		tileMaps.put(TileType.GRASS, ttl.getTileLocation(TileType.GRASS));
 		tileMaps.put(TileType.BEACH, ttl.getTileLocation(TileType.BEACH));
+		tileMaps.put(TileType.STONE, ttl.getTileLocation(TileType.STONE));
+		tileMaps.put(TileType.RIVER, ttl.getTileLocation(TileType.RIVER));
+		tileMaps.put(TileType.OCEAN, ttl.getTileLocation(TileType.OCEAN));
 //		tileMaps.put(TileType.OCEAN, ttl.getTileLocation(TileType.GRASS));
 		
 		System.out.println("Starting seg-gen");
 		System.out.println("Originas" + this.getPosition().x / 32 + " :: " + this.getPosition().y / 32);
 		Segment seg = SegmentGenerator.getInst().segmentAt(this.getPosition().x, this.getPosition().y);
+		
+		for(Vec3 tree : seg.getTrees()) {
+			System.out.printf("Added tree @ %f %f, r=%f\n", tree.x, tree.y, tree.z);
+			scene.AddEntity(new TreeEntity(scene.getRoot(), this.getPosition().x+tree.x, this.getPosition().y+tree.y, tree.z));
+		}
+		
+		for(Vec3 plant : seg.getPlants()) {
+			System.out.printf("Added tree @ %f %f, r=%f\n", plant.x, plant.y, plant.z);
+			scene.AddEntity(new PlantEntity(scene.getRoot(), this.getPosition().x+plant.x, this.getPosition().y+plant.y, plant.z));
+		}
+		
 		System.out.println("seg-gen complete");
 		TileType[][] temp = seg.getTiles();
 		

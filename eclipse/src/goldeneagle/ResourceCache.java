@@ -7,6 +7,7 @@ import java.util.Map;
 import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL14;
 
 public class ResourceCache {
 	private static final Map<String, ResourceInfo> textures = new HashMap<String, ResourceInfo>();
@@ -39,8 +40,11 @@ public class ResourceCache {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
 		
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		
+		glTexParameteri(GL_TEXTURE_2D, GL12.GL_TEXTURE_MAX_LEVEL, 10);
+		glTexParameteri(GL_TEXTURE_2D, GL14.GL_GENERATE_MIPMAP, GL_TRUE);
 		
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, res.getWidth(), res.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, res.getBuffer());
 		
