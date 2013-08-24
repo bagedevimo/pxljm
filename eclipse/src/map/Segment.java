@@ -16,6 +16,8 @@ public class Segment {
 	
 	private List<Vec3> trees;
 	private List<Vec3> plants;
+	private List<Vec3> wood;
+	private List<Vec3> berries;
 	
 	private final List<Entity> entities;
 
@@ -62,6 +64,14 @@ public class Segment {
 		this.plants = plants;
 	}
 	
+	public void addBerries(List<Vec3> berries) {
+		this.berries = berries;
+	}
+
+	public void addWood(List<Vec3> wood) {
+		this.wood = wood;
+	}
+
 	public List<Vec3> getTrees(){
 		return trees;
 	}
@@ -70,10 +80,18 @@ public class Segment {
 		return plants;
 	}
 	
+	public List<Vec3> getBerries(){
+		return berries;
+	}
+	
+	public List<Vec3> getWood(){
+		return wood;
+	}
+	
 	public List<Entity> getEntities(Entity e){
 		return new ArrayList<Entity>(entities); 
 	}
-
+	
 //	// values go from 0 to size (inclusive)
 //	private Vec3 normalAt(int x, int z) {
 //		float h = heightAt(x, z);
