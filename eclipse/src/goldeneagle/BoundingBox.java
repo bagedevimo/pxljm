@@ -29,26 +29,26 @@ public class BoundingBox extends Bound{
 	
 	@Override
 	public Vec3 intersects(BoundingSphere b) {
-//		double[] result = new double[3];
-//		
-//		double[] sph_cen =  {b.getPosition().x, b.getPosition().y, b.getPosition().z};
-//		double[] box_min =  {neg_ext.x, neg_ext.y, neg_ext.z};
-//		double[] box_max =  {pos_ext.x, pos_ext.y, pos_ext.z};
-//		
-//		//for each plane record the 1-d vector from the 
-//		//edges to the sphere on that plane.
-//		for(int i=0; i<3; i++){
-//			if(sph_cen[i] < box_min[i]){
-//				result[i] =  sph_cen[i] - box_min[i];
-//			}else if(sph_cen[i] > box_max[i]){
-//				result[i] = sph_cen[i] - box_max[i];
-//			}
-//		}
-//		//compile the vector together and check the distance
-//		Vec3 collisionNorm = new Vec3(result[0], result[1], result[2]);
-//		if(b.getRadius() > collisionNorm.mag()){
-//			return collisionNorm.unit();
-//		}
+		double resultX = 0, resultY = 0;
+		
+		//for each plane record the 1-d vector from the 
+		//edges to the sphere on that plane.
+
+		if(b.getPosition().x < minX)
+			resultX =  b.getPosition().x - minX;
+		else if(b.getPosition().x > maxX)
+			resultX = b.getPosition().x - maxX;
+		
+		if(b.getPosition().y < minY)
+			resultY =  b.getPosition().y - minY;
+		else if(b.getPosition().y > maxY)
+			resultY = b.getPosition().y - maxY;
+		
+		//compile the vector together and check the distance
+		Vec3 collisionNorm = new Vec3(resultX, resultY);
+		if(b.getRadius() > collisionNorm.mag()){
+			return collisionNorm.unit();
+		}
 		return null;
 	}
 	
