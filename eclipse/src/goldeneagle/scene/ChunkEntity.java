@@ -44,20 +44,26 @@ public class ChunkEntity extends Entity {
 		tileMaps.put(TileType.GRASS, ttl.getTileLocation(TileType.GRASS));
 		tileMaps.put(TileType.BEACH, ttl.getTileLocation(TileType.BEACH));
 		
-//		System.out.println("Starting seg-gen");
-////		Segment seg = SegmentGenerator.getInst().segmentAt(this.xOrigin / 32, this.yOrigin / 32);
-//		System.out.println("seg-gen complete");
-//		TileType[][] temp = seg.getTiles();
+		System.out.println("Starting seg-gen");
+		Segment seg = SegmentGenerator.getInst().segmentAt(this.xOrigin / 32, this.yOrigin / 32);
+		System.out.println("seg-gen complete");
+		TileType[][] temp = seg.getTiles();
+		
 		tiles = new TileType[1024];
+		for(int x = 0; x < temp.length; x++) {
+			for(int y = 0; y < temp[x].length; y++) {
+				tiles[(y*32)] = temp[x][y];
+			}
+		}
+		
 		Random rand = new Random();
 		tilesR = new int[1024];
-		for(int i = 0; i < 1024; i++)
-			tilesR[i] = rand.nextInt(sandTiles.size());
-//		for(int x = 0; x < temp.length; x++) {
-//			for(int y = 0; y < temp[x].length; y++) {
-//				tiles[(y*32)] = temp[x][y];
-//			}
-//		}
+		for(int i = 0; i < 1024; i++) {
+			if(tileMaps.containsKey(tiles[i]))
+				tilesR[i] = rand.nextInt(tileMaps.get(tiles[i]).size());
+			else
+				tilesR[i] = 0;
+		}
 	}
 
 	@Override
