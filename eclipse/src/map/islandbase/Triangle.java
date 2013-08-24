@@ -1,5 +1,6 @@
 package map.islandbase;
 
+import goldeneagle.BoundingBox;
 import goldeneagle.Vec3;
 
 public class Triangle {
@@ -111,6 +112,11 @@ public class Triangle {
 			s += v.toString();
 		}
 		return s;
+	}
+	
+	//hackish method
+	public BoundingBox getBound(double scale){
+		return new BoundingBox(getMinX()*scale, getMinZ()*scale, getMaxX()*scale, getMaxZ()*scale);
 	}
 
 	public static void main(String[] args) {
