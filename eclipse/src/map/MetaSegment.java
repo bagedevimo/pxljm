@@ -34,14 +34,12 @@ public class MetaSegment {
 		TileType[][] tiles = new TileType[Segment.size][Segment.size];
 		Biome[][] biomes = new Biome[Segment.size][Segment.size];
 		
-		int xs = Segment.size * xPos;
-		int ys = Segment.size * yPos;
 		
 		for(int x = 0; x<Segment.size; x++){
 			for(int y = 0; y<Segment.size; y++){
 				boolean set = false;
 				for(Triangle t : triList)
-					if(t.contains(x+xs, y+ys)){
+					if(t.contains(x/(double)Segment.size+xPos, y/(double)Segment.size+yPos)){
 						tiles[x][y] = TileType.getType(t.biome);
 						biomes[x][y] = t.biome;
 						set = true;
