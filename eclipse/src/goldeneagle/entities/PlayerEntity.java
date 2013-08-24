@@ -48,6 +48,10 @@ public class PlayerEntity extends Entity {
 		this.setAngular(rot + this.getRotation(), 0);
 		
 		double speed = 3.5 * deltaTime;
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+			speed *= 8;
+		
 		double x = 0, y = 0;
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			x = (Math.sin(this.getRotation()) * -speed);

@@ -51,10 +51,14 @@ public class ChunkEntity extends Entity {
 		System.out.println("Originas" + this.getPosition().x / 32 + " :: " + this.getPosition().y / 32);
 		Segment seg = SegmentGenerator.getInst().segmentAt(this.getPosition().x, this.getPosition().y);
 		
-		List<Vec3> trees = seg.getTrees();
-		for(Vec3 tree : trees) {
+		for(Vec3 tree : seg.getTrees()) {
 			System.out.printf("Added tree @ %f %f, r=%f\n", tree.x, tree.y, tree.z);
 			scene.AddEntity(new TreeEntity(scene.getRoot(), this.getPosition().x+tree.x, this.getPosition().y+tree.y, tree.z));
+		}
+		
+		for(Vec3 plant : seg.getPlants()) {
+			System.out.printf("Added tree @ %f %f, r=%f\n", plant.x, plant.y, plant.z);
+			scene.AddEntity(new PlantEntity(scene.getRoot(), this.getPosition().x+plant.x, this.getPosition().y+plant.y, plant.z));
 		}
 		
 		System.out.println("seg-gen complete");

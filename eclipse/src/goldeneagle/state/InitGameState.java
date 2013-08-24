@@ -13,6 +13,7 @@ public class InitGameState extends GameState {
 		rl = new ResourceLoader();
 		rl.Add("./assets/tiles/atlas.jpg");
 		rl.Add("./assets/entities/tree.png");
+		rl.Add("./assets/entities/bush.png");
 		rl.Start();
 	}
 

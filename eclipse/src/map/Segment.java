@@ -66,7 +66,7 @@ public class Segment {
 		return trees;
 	}
 	
-	public List<Vec3> addPlants(){
+	public List<Vec3> getPlants(){
 		return plants;
 	}
 	
