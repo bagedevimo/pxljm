@@ -5,7 +5,7 @@ import goldeneagle.entities.PlayerEntity;
 public class Wood extends Item{
 
 	public Wood() {
-		texturePath = "./assets/entities/berrys.png";
+		texturePath = "./assets/entities/sticks.png";
 	}
 	
 	@Override

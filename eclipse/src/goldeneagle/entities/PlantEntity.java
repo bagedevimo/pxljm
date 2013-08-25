@@ -78,6 +78,7 @@ public class PlantEntity extends Entity implements Collidable {
 
 	@Override
 	public Bound getCollisionBound() {
-		return new BoundingSphere(this, this.radius);
+		return new BoundingSphere(this, this.radius/10);
 	}
+
 }
