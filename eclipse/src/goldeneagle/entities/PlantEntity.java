@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 import goldeneagle.BoundingSphere;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.Scene;
+import goldeneagle.scene.SceneManager;
 import goldeneagle.scene.ShadowCaster;
 import goldeneagle.Bound;
 import goldeneagle.ResourceCache;
@@ -22,7 +23,7 @@ public class PlantEntity extends Entity implements Collidable {
 		this.setLinear(new Vec3(xPos_, yPos_, 0), Vec3.zero);
 		this.radius = radius;
 		setBound(new BoundingSphere(this, radius));
-		setHeight(0.5);
+		setHeight(0.1);
 		
 		ShadowCaster sc = new ShadowCaster();
 		sc.addVertex(new Vec3(-0.5, -0.5, 0));
@@ -46,14 +47,13 @@ public class PlantEntity extends Entity implements Collidable {
 		
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.5f);
+
+		glMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, SceneManager.floatv(1, 1, 1, 1));
 		
 		Profiler.enter(PlantEntity);
 		
 		glBegin(GL_POLYGON);
-		
-		glColor3d(1, 1, 1);
 		glNormal3d(0, 0, 1);
-		
 		glTexCoord2d(0, 0);
 		glVertex3d(-this.radius, -this.radius, 0);
 		glTexCoord2d(1, 0);
