@@ -182,6 +182,7 @@ public class PlayerEntity extends Entity implements Collidable {
 			y = -(Math.cos(this.getRotation()) * speed);
 		}
 
+		Vec3 oldPosition = this.getPosition();
 		motion = this.getPosition().add(new Vec3(x, y, 0));
 
 		if (x == 0 && y == 0) {
@@ -198,11 +199,15 @@ public class PlayerEntity extends Entity implements Collidable {
 		List<Entity> ents = new ArrayList<Entity>();
 		scene.getEntities(ents, new BoundingSphere(this, 3));
 		for(Entity e : ents) {
-			if(e == this) continue;
+			if(e.equals(this)) continue;
 			if(e instanceof Collidable) {
+				
 				Collidable en = (Collidable)e;
-				if(this.getCollisionBound().intersects(en.getCollisionBound()))
-					this.setLinear(motion.neg(), Vec3.zero);
+				
+				if(this.getCollisionBound().intersects(en.getCollisionBound())) {
+					System.out.printf("Colliding with a %s\n", en.toString());	
+					this.setLinear(oldPosition, Vec3.zero);
+				}
 			}
 		}
 		
@@ -240,7 +245,7 @@ public class PlayerEntity extends Entity implements Collidable {
 
 	@Override
 	public Bound getCollisionBound() {
-		return new BoundingSphere(this, 1.8f);
+		return new BoundingSphere(this, 1f);
 	}
 
 	public void addItem(Item item) {
