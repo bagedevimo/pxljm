@@ -2,6 +2,7 @@ package goldeneagle;
 
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Frame;
+import goldeneagle.scene.Scene;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class ParticleEmitter extends Entity {
 	}
 
 	@Override
-	protected boolean update(double deltaTime) {
+	protected boolean update(double deltaTime, Scene scene) {
 		
 		if(this.getClock().get() - emitStart > (1f / emitRate)) {
 			emitStart = this.getClock().get();

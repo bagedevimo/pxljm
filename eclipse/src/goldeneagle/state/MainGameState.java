@@ -53,6 +53,9 @@ public class MainGameState extends GameState {
 		Light.PointLight l2 = new Light.PointLight(mf, Color.RED, 4, 6);
 		scene.addLight(l2);
 		
+		Light.PointLight lfollow = new Light.PointLight(player,  new Color(0.4f, 0.4f, 0.4f), 2, 0.8);
+		scene.addLight(lfollow);
+		
 //		ParticleEmitter pe = new ParticleEmitter(mf);
 //		scene.AddEntity(pe);
 	}	

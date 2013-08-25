@@ -66,13 +66,13 @@ public class SceneManager {
 		return buf;
 	}
 	
-	public static FloatBuffer floatv(double... ds) {
-		float[] fs = new float[ds.length];
-		for (int i = 0; i < ds.length; i++) {
-			fs[i] = (float) ds[i];
-		}
-		return floatv(fs);
-	}
+//	public static FloatBuffer floatv(double... ds) {
+//		float[] fs = new float[ds.length];
+//		for (int i = 0; i < ds.length; i++) {
+//			fs[i] = (float) ds[i];
+//		}
+//		return floatv(fs);
+//	}
 	
 	public static FloatBuffer floatv(float... ds) {
 		FloatBuffer buf = buftemp.asFloatBuffer();
@@ -90,7 +90,7 @@ public class SceneManager {
 		for(int d : ds)
 			buf.put(d);
 		buf.position(0);
-		return buf;		
+		return buf;	
 	}
 	
 	public static FloatBuffer floatv(Vec3 v) {

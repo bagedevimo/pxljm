@@ -8,20 +8,23 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 
 import goldeneagle.AudioEngine;
+import goldeneagle.Bound;
+import goldeneagle.BoundingBox;
+import goldeneagle.BoundingSphere;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.clock.DerivedClock;
 import goldeneagle.items.Item;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Frame;
+import goldeneagle.scene.Scene;
 import goldeneagle.scene.SceneManager;
 import goldeneagle.scene.ShadowCaster;
+import goldeneagle.state.Collidable;
 import goldeneagle.util.Profiler;
 
-public class PlayerEntity extends Entity {
+public class PlayerEntity extends Entity implements Collidable {
 	private static final int PlayerEntity_glBegin = Profiler.createSection("PlayerEntity_glBegin");
-	
-	
 
 	int nFrames = 21;
 	double frameWidth = 1.0f/nFrames;
@@ -146,7 +149,7 @@ public class PlayerEntity extends Entity {
 	}
 
 	@Override
-	public boolean update(double deltaTime) {
+	public boolean update(double deltaTime, Scene scene) {
 		Vec3 motion = new Vec3(0, 0, 0);
 		double rot = 0;
 		double rotSpeed = 2.5 * deltaTime;
@@ -192,6 +195,16 @@ public class PlayerEntity extends Entity {
 		
 		this.setLinear(motion, Vec3.zero);
 		
+		List<Entity> ents = new ArrayList<Entity>();
+		scene.getEntities(ents, new BoundingSphere(this, 3));
+		for(Entity e : ents) {
+			if(e instanceof Collidable) {
+				Collidable en = (Collidable)e;
+				if(this.getCollisionBound().intersects(en.getCollisionBound()))
+					this.setLinear(motion.neg(), Vec3.zero);
+			}
+		}
+		
 		if(this.getClock().get() - this.lastAttrUpdate > 1)
 			this.updateAttrs();
 		
@@ -222,5 +235,16 @@ public class PlayerEntity extends Entity {
 //		System.out.printf("Hydration: %f\tddHydration: %f\n", this.Hydration, this.Thirst);
 //		System.out.printf("Health: %f\tdHealth: %f\n",  this.Health, 0f);
 //		System.out.printf("Temperature: %f\tdTemperature: %f\n", this.Temp, 0f);
+	}
+
+	@Override
+	public Bound getCollisionBound() {
+		return new BoundingSphere(this, 1.8f);
+	}
+
+	public void addItem(Item item) {
+		inventory.add(item);
+		if(inventoryIndex < 0)
+			inventoryIndex++;
 	}
 }

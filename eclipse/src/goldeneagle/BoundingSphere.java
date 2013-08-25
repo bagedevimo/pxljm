@@ -22,7 +22,10 @@ public class BoundingSphere extends Bound {
 	public Vec3 intersects(BoundingSphere b) {
 		Vec3 collisionNorm = b.getPosition().sub(parent.getGlobalPosition());
 		if(radius + b.radius > collisionNorm.mag()){
-			return collisionNorm.unit();
+			if(collisionNorm.mag() > 0)
+				return collisionNorm.unit();
+			else
+				return null; //TODO what to return here?
 		}
 		return null;
 	}
