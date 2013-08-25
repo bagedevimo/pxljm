@@ -44,6 +44,7 @@ public class PickupEntity extends Entity implements Collidable{
 		List<Collidable> collided = scene.getCollisions(this);
 		for(Collidable e : collided){
 			if(e instanceof PlayerEntity){
+				System.out.println("Player Picked Up item");
 				((PlayerEntity)e).addItem(item);
 				return false;
 			}
