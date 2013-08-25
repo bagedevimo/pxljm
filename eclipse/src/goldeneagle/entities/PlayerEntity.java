@@ -242,4 +242,10 @@ public class PlayerEntity extends Entity implements Collidable {
 	public Bound getCollisionBound() {
 		return new BoundingSphere(this, 1.8f);
 	}
+
+	public void addItem(Item item) {
+		inventory.add(item);
+		if(inventoryIndex < 0)
+			inventoryIndex++;
+	}
 }

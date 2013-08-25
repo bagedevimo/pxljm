@@ -3,6 +3,7 @@ package map;
 import goldeneagle.BoundingBox;
 import goldeneagle.Vec3;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -52,10 +53,48 @@ public class MetaSegment {
 			}
 		}
 		
+		//assuming that there is only one change per segment
+		Point topRight = null, bottomLeft = null;
+		
+		for (int i = 0; i < Segment.size-1 && (topRight == null || bottomLeft == null); i++) {
+			if (topRight != null && tiles[i][0] != tiles[i+1][0]) {
+				topRight = new Point(i,0);
+			} if (bottomLeft != null && tiles[0][i] != tiles[0][i+1]) {
+				bottomLeft = new Point(0,i);
+			}
+		}
+		
+		for (int i = 0; i < Segment.size-1 && (topRight == null || bottomLeft == null); i++) {
+			if (topRight != null && tiles[i][Segment.size-1] != tiles[i+1][Segment.size-1]) {
+				topRight = new Point(i,Segment.size-1);
+			} if (bottomLeft != null && tiles[Segment.size-1][i] != tiles[Segment.size-1][i+1]) {
+				bottomLeft = new Point(Segment.size-1,i);
+			}
+		}
+		
+		if (topRight != null && bottomLeft != null) {
+			Point middle = new Point((topRight.x + bottomLeft.x)/2,(topRight.y + bottomLeft.y)/2);
+			
+		}
+		
+		
+		
+		
 		Segment seg = new Segment(xPos, yPos, tiles);
 		addFoliage(seg, biomes);
 		
 		return seg;
+	}
+	
+	private void asd(Point left, Point right, TileType[][] tiles, Random rand) {
+		Point middle = new Point((left.x + right.x)/2,(left.y + right.y)/2);
+		if (!middle.equals(right) && !middle.equals(left)) {
+			int deltaX = (int) ((rand.nextDouble() - 0.5) * middle.x);
+			int deltaY = (int) ((rand.nextDouble() - 0.5) * middle.y);
+			Point newMiddle = new Point(middle.x+deltaX, middle.y+deltaY);
+			
+			//TODO
+		}
 	}
 	
 	private void addFoliage(Segment seg, Biome[][] biomes){
@@ -113,10 +152,29 @@ public class MetaSegment {
 			plants.add(new Vec3(f.xPos, f.yPos, f.radius));
 		}
 		
+		List<Vec3> wood = getWood(trees);
+		List<Vec3> berries = getBerries(plants);
+		
 		seg.addPlants(plants);
 		seg.addTrees(trees);
+		seg.addWood(wood);
+		seg.addBerries(berries);
 	}
 	
+	private List<Vec3> getBerries(List<Vec3> plants) {
+		// TODO Auto-generated method stub
+		ArrayList<Vec3> berries = new ArrayList<Vec3>();
+		berries.add(new Vec3(10, 10));
+		return berries;
+	}
+
+	private List<Vec3> getWood(List<Vec3> trees) {
+		// TODO Auto-generated method stub
+		ArrayList<Vec3> wood = new ArrayList<Vec3>();
+		wood.add(new Vec3(10, 10));
+		return wood;
+	}
+
 	private double treeChance(Biome b){
 		switch(b) {
 		case SNOW: return 0.1;
