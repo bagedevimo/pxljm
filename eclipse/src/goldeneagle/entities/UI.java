@@ -57,8 +57,8 @@ public class UI extends Entity {
 		glNormal3d(0, 0, 1);
 		
 		glVertex3d(-1, thickness, 0);
-		glVertex3d(1, thickness, 0);
-		glVertex3d(1, thickness*2, 0);
+		glVertex3d(-1 + (double)(pe.getNumSticks() / 10.0), thickness, 0);
+		glVertex3d(-1 + (double)(pe.getNumSticks() / 10.0), thickness*2, 0);
 		glVertex3d(-1, thickness*2, 0);
 		
 		glEnd();

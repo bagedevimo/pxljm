@@ -26,6 +26,7 @@ public class Scene implements Iterable<Entity> {
 	private final Set<Light> lights;
 
 	private Queue<Entity> removeList;
+	private Queue<Entity> addList;
 
 	private Color ambient;
 
@@ -36,6 +37,7 @@ public class Scene implements Iterable<Entity> {
 		bounded_entities = new QuadTree<Entity>();
 		lights = new HashSet<Light>();
 		removeList = new LinkedList<Entity>();
+		addList = new LinkedList<Entity>();
 	}
 
 	public Frame getRoot() {
@@ -59,7 +61,11 @@ public class Scene implements Iterable<Entity> {
 		return this.unbounded_entities.iterator();
 	}
 
-	public void AddEntity(Entity entity) {
+	public void AddEntity(Entity e) {
+		this.addList.add(e);
+	}
+
+	private void _addEntity(Entity entity) {
 		if (entity.getBound() == null) {
 			unbounded_entities.add(entity);
 		} else {
@@ -76,6 +82,11 @@ public class Scene implements Iterable<Entity> {
 		for (Entity e : this.bounded_entities)
 			if (!e.update(deltaTime, this))
 				this.removeList.add(e);
+		
+		while(!this.addList.isEmpty()) {
+			Entity e = this.addList.remove();
+			this._addEntity(e);
+		}
 
 		while (!this.removeList.isEmpty()) {
 			Entity e = this.removeList.remove();
