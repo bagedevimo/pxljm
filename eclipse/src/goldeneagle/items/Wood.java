@@ -1,6 +1,7 @@
 package goldeneagle.items;
 
 import goldeneagle.entities.PlayerEntity;
+import goldeneagle.scene.Scene;
 
 public class Wood extends Item{
 
@@ -9,9 +10,8 @@ public class Wood extends Item{
 	}
 	
 	@Override
-	public void use(PlayerEntity player) {
-		// TODO Auto-generated method stub
-		
+	public void use(PlayerEntity player, Scene scene) {
+		player.addItem(new Fire());
 	}
 
 }

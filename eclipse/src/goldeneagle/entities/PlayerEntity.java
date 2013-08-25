@@ -191,7 +191,7 @@ public class PlayerEntity extends Entity implements Collidable {
 				if(this.getCollisionBound().intersects(en.getCollisionBound())) {
 					System.out.printf("Colliding with a %s\n", en.toString());	
 					this.setLinear(oldPosition, Vec3.zero);
-					if(en instanceof PlantEntity && Keyboard.isKeyDown(Keyboard.KEY_W))
+					if(en instanceof PlantEntity || en instanceof TreeEntity && Keyboard.isKeyDown(Keyboard.KEY_W))
 						this.isRummaging = true;
 					else
 						this.isRummaging = false;
@@ -247,11 +247,11 @@ public class PlayerEntity extends Entity implements Collidable {
 			inventoryIndex++;
 	}
 	
-	public void useItem() {
+	public void useItem(Scene scene) {
 		Item item = getItemAt(inventoryIndex);
 		if(inventory.get(item)==1)
 			inventory.remove(item);
-		item.use(this);
+		item.use(this, scene);
 	}
 	
 	public Item getItemAt(int index){
