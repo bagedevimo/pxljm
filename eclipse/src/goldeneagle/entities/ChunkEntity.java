@@ -15,8 +15,11 @@ import map.SegmentGenerator;
 import map.TileTextureLoader;
 import map.TileType;
 import goldeneagle.BoundingSphere;
+import goldeneagle.MovingFrame;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
+import goldeneagle.items.Berries;
+import goldeneagle.items.Wood;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.Scene;
@@ -39,7 +42,9 @@ public class ChunkEntity extends Entity {
 		this.setLinear(new Vec3(baseX, baseY), Vec3.zero);
 		this.childEntities = new ArrayList<Entity>();
 		
-		setBound(new BoundingSphere(this, 24));
+		MovingFrame mf = new MovingFrame(this);
+		mf.setLinear(new Vec3(16, 16), Vec3.zero);
+		setBound(new BoundingSphere(mf, 24));
 		
 		try {
 			ttl = new TileTextureLoader("./assets/tiles/tiletex_info.txt");
@@ -70,6 +75,20 @@ public class ChunkEntity extends Entity {
 		
 		for(Vec3 plant : seg.getPlants()) {
 			e = new PlantEntity(scene.getRoot(), this.getPosition().x+plant.x, this.getPosition().y+plant.y, plant.z);
+			this.childEntities.add(e);
+			scene.AddEntity(e);
+		}
+		
+		for(Vec3 berries : seg.getBerries()) {
+			Berries b = new Berries();
+			e = new PickupEntity(scene.getRoot(), this.getPosition().x+berries.x, this.getPosition().y+berries.y, b);
+			this.childEntities.add(e);
+			scene.AddEntity(e);
+		}
+		
+		for(Vec3 wood : seg.getWood()) {
+			Wood w = new Wood();
+			e = new PickupEntity(scene.getRoot(), this.getPosition().x+wood.x, this.getPosition().y+wood.y, w);
 			this.childEntities.add(e);
 			scene.AddEntity(e);
 		}
@@ -140,10 +159,10 @@ public class ChunkEntity extends Entity {
 				
 				double uvx = 0, uvy = 0;
 				int r = tilesR[i];
-	//			if(tileMaps.containsKey(tiles[i])) {
+				if(tileMaps.containsKey(tiles[i])) {
 					uvx = ((double)tileMaps.get(tiles[i]).get(r).x / 1024);
 					uvy = ((double)tileMaps.get(tiles[i]).get(r).y / 1024);
-	//			}
+				}
 				Profiler.exit(ChunkUV);
 				
 				Profiler.enter(actualDraw);
@@ -170,7 +189,7 @@ public class ChunkEntity extends Entity {
 	}
 
 	@Override
-	public boolean update(double deltaTime) {
+	public boolean update(double deltaTime, Scene scene) {
 		return true;
 	}
 

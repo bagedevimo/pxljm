@@ -1,16 +1,19 @@
 package goldeneagle.scene;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.awt.Color;
 
 import goldeneagle.*;
 import goldeneagle.clock.Clock;
+import goldeneagle.state.Collidable;
 import goldeneagle.util.*;
 
 public class Scene implements Iterable<Entity> {
@@ -67,11 +70,11 @@ public class Scene implements Iterable<Entity> {
 	public void Update(double deltaTime) {
 		Profiler.enter(updateProfile);
 		for (Entity e : this.unbounded_entities)
-			if (!e.update(deltaTime))
+			if (!e.update(deltaTime, this))
 				this.removeList.add(e);
 
 		for (Entity e : this.bounded_entities)
-			if (!e.update(deltaTime))
+			if (!e.update(deltaTime, this))
 				this.removeList.add(e);
 
 		while (!this.removeList.isEmpty()) {
@@ -111,5 +114,20 @@ public class Scene implements Iterable<Entity> {
 		// bounded lookup
 		bounded_entities.find(ents, b);
 	}
+	
+	public List<Collidable> getCollisions(Entity src){
+		List<Collidable> col = new ArrayList<Collidable>();
+		Collidable c = (Collidable)src;
+		List<Entity> sample = new ArrayList<Entity>();
+		this.getEntities(sample, new BoundingSphere(src, 2));
+		for (Entity e : sample) {
+			if (e instanceof Collidable && !e.equals(c)) {
+				if(((Collidable)e).getCollisionBound().intersects( c.getCollisionBound())){
+					col.add((Collidable)e);
+				}
+			}
+		}
+		return col;
+	} 
 
 }

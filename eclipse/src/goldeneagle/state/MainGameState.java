@@ -1,7 +1,9 @@
 package goldeneagle.state;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
@@ -10,8 +12,10 @@ import goldeneagle.MovingFrame;
 import goldeneagle.ParticleEmitter;
 import goldeneagle.Vec3;
 import goldeneagle.entities.ChunkEntity;
+import goldeneagle.entities.FireEntity;
 import goldeneagle.entities.PlayerEntity;
 import goldeneagle.scene.Camera;
+import goldeneagle.scene.Entity;
 import goldeneagle.scene.Light;
 import goldeneagle.scene.Scene;
 import goldeneagle.scene.SceneManager;
@@ -48,10 +52,25 @@ public class MainGameState extends GameState {
 		l.setPitch(-Math.PI / 6);
 		scene.addLight(l);
 		
+		List<Collidable> col;
+		do{
+			player.setLinear(player.getPosition().add(new Vec3(1, 1, 0)), Vec3.zero);
+			this.ensureChunks();
+			
+			col = scene.getCollisions(player);
+		}while(!col.isEmpty());
+		
 		MovingFrame mf = new MovingFrame(scene.getRoot());
 		mf.setLinear(new Vec3(playerSpawnX, playerSpawnY), Vec3.zero);
-		Light.PointLight l2 = new Light.PointLight(mf, Color.RED, 4, 6);
-		scene.addLight(l2);
+		
+		Light.PointLight lfollow = new Light.PointLight(player,  new Color(0.4f, 0.4f, 0.4f), 2, 0.8);
+		scene.addLight(lfollow);
+		
+
+
+		FireEntity fire = new FireEntity(mf, scene);
+		scene.AddEntity(fire);
+
 		
 //		ParticleEmitter pe = new ParticleEmitter(mf);
 //		scene.AddEntity(pe);
@@ -107,7 +126,6 @@ public class MainGameState extends GameState {
 					scene.RemoveEntity(chunk);
 				}
 			}
-				
 		}
 		
 //		int testRadius = 3;

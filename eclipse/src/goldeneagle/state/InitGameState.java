@@ -15,12 +15,15 @@ public class InitGameState extends GameState {
 		rl.Add("./assets/tiles/atlas.jpg");
 		rl.Add("./assets/entities/tree.png");
 		rl.Add("./assets/entities/bush.png");
-		rl.Add("./assets/sprites/character_walk.png");
+		rl.AddAnimation("character_walk", 21);
+		rl.AddAnimation("character_idle", 78);
+		rl.AddAnimation("character_rummage", 13);
+		rl.AddAnimation("fire", 7);
 		rl.Start();
 		
 		try {
 			ResourceCache.AddShaderProgram("test");
-			System.out.printf("ShaderProgram: %d\n", ResourceCache.GetProgram("test"));
+			System.out.printf("ShaderProgram: %d\n", ResourceCache.GetProgram("test")); 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

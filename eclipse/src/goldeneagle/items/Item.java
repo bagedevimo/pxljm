@@ -1,8 +1,14 @@
 package goldeneagle.items;
 
+import goldeneagle.entities.PlayerEntity;
+
 public abstract class Item {
 	
-	private String texturePath; 
+	protected String texturePath; 
 	
-	public Item() {}
+	public abstract void use(PlayerEntity player);
+	
+	public String getTexturePath(){
+		return texturePath;
+	}
 }

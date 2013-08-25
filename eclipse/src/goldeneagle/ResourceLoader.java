@@ -42,6 +42,13 @@ public class ResourceLoader extends Thread {
 			System.err.printf("Unknown extension: '%s'\n", ext);
 	}
 	
+	public void AddAnimation(String name, int nFrames) {
+		for(int i = 1; i <= nFrames; i++) {
+			String basePath = String.format("assets/sprites/%s/%s%04d.png", name, name, i);
+			this.Add(basePath);
+		}
+	}
+	
 	public void Start() {
 		this.nResources = this.loadQueue.size();
 		this.threadHandle = new Thread(this);

@@ -30,7 +30,7 @@ public class ResourceCache {
 	
 	public static int GetGLTexture(String path) throws Exception {
 		if(!textures.containsKey(path))
-			throw new Exception("Asset not found");
+			throw new Exception("Asset not found: " + path);
 		
 		ResourceInfo ri = textures.get(path);
 		if(!ri.isGLReady())

@@ -43,8 +43,8 @@ public abstract class Entity extends MovingFrame implements QuadTree.Element {
 		height = h;
 	}
 	
-	public final void doUpdate(double deltaTime) {
-		update(deltaTime);
+	public final void doUpdate(double deltaTime, Scene scene) {
+		update(deltaTime, scene);
 	}
 	
 	public final void doDraw() {
@@ -64,6 +64,6 @@ public abstract class Entity extends MovingFrame implements QuadTree.Element {
 		GL11.glPopMatrix();
 	}
 	
-	protected abstract boolean update(double deltaTime);
+	protected abstract boolean update(double deltaTime, Scene scene);
 	protected abstract void draw();
 }
