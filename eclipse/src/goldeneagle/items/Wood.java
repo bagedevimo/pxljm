@@ -1,5 +1,6 @@
 package goldeneagle.items;
 
+import goldeneagle.entities.FireEntity;
 import goldeneagle.entities.PlayerEntity;
 import goldeneagle.scene.Scene;
 
@@ -11,7 +12,7 @@ public class Wood extends Item{
 	
 	@Override
 	public void use(PlayerEntity player, Scene scene) {
-		player.addItem(new Fire());
+		scene.AddEntity(new FireEntity(scene.getRoot(), scene));
 	}
 
 }

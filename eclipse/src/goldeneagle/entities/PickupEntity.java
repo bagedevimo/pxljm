@@ -43,7 +43,7 @@ public class PickupEntity extends Entity implements Collidable{
 	public PickupEntity(Frame parent_, double xPos_, double yPos_, Item item_) {
 		super(parent_);
 		item = item_;
-		bound = new BoundingSphere(this, size);
+		bound = new BoundingSphere(this, 0.001);
 		
 		this.setLinear(new Vec3(xPos_, yPos_, 0), Vec3.zero);
 		this.setHeight(0.3);
@@ -51,19 +51,18 @@ public class PickupEntity extends Entity implements Collidable{
 	}
 	
 	protected boolean update(double deltaTime, Scene scene) {
-//		List<Collidable> collided = scene.getCollisions(this);
-//		for(Collidable e : collided){
-//			if(e instanceof PlayerEntity){
-//				for(int i=0; i<100; i++)
-//				System.out.println("Player Picked Up item");
-//				PlayerEntity p = (PlayerEntity)e;
-//				if(p.isRummaging){
-//					p.addItem(item);
-//					System.out.println("Player Picked Up item");
-//					return false;
-//				}
-//			}
-//		}
+		List<Entity> collided = new ArrayList<Entity>();
+		scene.getEntities(collided, bound);
+		for(Entity e : collided){
+			if(e instanceof PlayerEntity){
+				PlayerEntity p = (PlayerEntity)e;
+				if(p.isRummaging){
+					p.addItem(item);
+					System.out.println("Player Picked Up item");
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 
@@ -103,7 +102,7 @@ public class PickupEntity extends Entity implements Collidable{
 
 	@Override
 	public Bound getCollisionBound() {
-		return bound;
+		return new BoundingSphere(this, 0.01);
 	}
 
 }

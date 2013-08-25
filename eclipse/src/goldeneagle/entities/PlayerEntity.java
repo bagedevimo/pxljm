@@ -16,7 +16,9 @@ import goldeneagle.BoundingSphere;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.clock.DerivedClock;
+import goldeneagle.items.Berries;
 import goldeneagle.items.Item;
+import goldeneagle.items.Wood;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.Scene;
@@ -56,8 +58,8 @@ public class PlayerEntity extends Entity implements Collidable {
 	double NormalTemp = 37.0f;
 	double Temp = NormalTemp;
 	
-	private int inventoryIndex = -1;
-	private final Map<Item, Integer> inventory = new HashMap<Item, Integer>();
+	private static Wood wood = new Wood();
+	private int woodCount = 0;
 	
 	double lastStep;
 	double stepInterval;
@@ -141,6 +143,10 @@ public class PlayerEntity extends Entity implements Collidable {
 			rot = rotSpeed;
 		if (Keyboard.isKeyDown(Keyboard.KEY_D))
 			rot = -rotSpeed;
+		if (Keyboard.isKeyDown(Keyboard.KEY_E) && woodCount > 0){
+			wood.use(this, scene);
+			woodCount--;
+		}
 
 		this.setAngular(rot + this.getRotation(), 0);
 
@@ -236,31 +242,29 @@ public class PlayerEntity extends Entity implements Collidable {
 	}
 
 	public void addItem(Item item) {
-		if(inventory.containsKey(item)){
-			inventory.put(item, inventory.get(item)+1);
+		if(item instanceof Berries){
+			item.use(this, null);
 		} else {
-			inventory.put(item, 1);
+			woodCount++;
 		}
-		if(inventoryIndex < 0)
-			inventoryIndex++;
 	}
 	
-	public void useItem(Scene scene) {
-		Item item = getItemAt(inventoryIndex);
-		if(inventory.get(item)==1)
-			inventory.remove(item);
-		item.use(this, scene);
-	}
-	
-	public Item getItemAt(int index){
-		int i = 0;
-		for(Entry<Item, Integer> e : inventory.entrySet()){
-			if(index == i)
-				return e.getKey();
-			i++;
-		}
-		return null;
-	}
+//	public void useItem(Scene scene) {
+//		Item item = getItemAt(inventoryIndex);
+//		if(inventory.get(item)==1)
+//			inventory.remove(item);
+//		item.use(this, scene);
+//	}
+//	
+//	public Item getItemAt(int index){
+//		int i = 0;
+//		for(Entry<Item, Integer> e : inventory.entrySet()){
+//			if(index == i)
+//				return e.getKey();
+//			i++;
+//		}
+//		return null;
+//	}
 	
 	public void modifyEnergy(double amount){
 		this.Energy += amount;
