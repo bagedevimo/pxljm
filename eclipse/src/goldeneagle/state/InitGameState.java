@@ -19,7 +19,7 @@ public class InitGameState extends GameState {
 		rl.AddAnimation("character_walk", 21);
 		rl.AddAnimation("character_idle", 78);
 		rl.AddAnimation("character_rummage", 13);
-		rl.AddAnimation("fire", 78);
+		rl.AddAnimation("fire", 7);
 		rl.Start();
 		
 		try {

@@ -66,6 +66,7 @@ public class PlayerEntity extends Entity implements Collidable {
 		
 		idleAnimation = new Animation(this, "character_idle", 78);
 		walkingAnimation = new Animation(this, "character_walk", 21);
+		rummagingAnimation = new Animation(this, "character_rummage", 13, 24);
 		
 		setHeight(2);
 	
@@ -189,11 +190,12 @@ public class PlayerEntity extends Entity implements Collidable {
 				if(this.getCollisionBound().intersects(en.getCollisionBound())) {
 					System.out.printf("Colliding with a %s\n", en.toString());	
 					this.setLinear(oldPosition, Vec3.zero);
-					if(en instanceof PlantEntity)
+					if(en instanceof PlantEntity && Keyboard.isKeyDown(Keyboard.KEY_W))
 						this.isRummaging = true;
 					else
 						this.isRummaging = false;
-				}
+				} else
+					this.isRummaging = false;
 			}
 		}
 		

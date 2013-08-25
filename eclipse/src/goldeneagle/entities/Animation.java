@@ -18,6 +18,14 @@ public class Animation {
 		this.animationStart = this.animationClock.get();
 	}
 	
+	public Animation(Frame parent, String n, int f, int frameRate) {
+		name = n;
+		this.nFrames = f;
+		this.animationClock = new DerivedClock(parent.getClock(), 0);
+		this.animationStart = this.animationClock.get();
+		this.frameTime = 1.0f / (double)frameRate;
+	}
+	
 	public int getFrame() {
 		double dT = (this.animationClock.get() - this.animationStart);
 		int frame = (int)(dT / this.frameTime);
