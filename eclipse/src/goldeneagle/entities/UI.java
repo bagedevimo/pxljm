@@ -30,7 +30,7 @@ public class UI extends Entity {
 		
 		glBegin(GL_QUADS);
 		
-		glColor3d(1, 0, 0);
+		glColor3d(0, 1, 0);
 		glNormal3d(0, 0, 1);
 		
 		double thickness = 0.1;
@@ -40,12 +40,16 @@ public class UI extends Entity {
 		glVertex3d(-1 + ((pe.Nutrition / 200)*2), 0, 0);
 		glVertex3d(-1, 0, 0);
 		
-		glColor3d(0, 0, 1);
+		if(pe.Temp < 37)
+			glColor3d(0, 0, 1);
+		else
+			glColor3d(1, 0, 0);
+		
 		glNormal3d(0, 0, 1);
 		
 		glVertex3d(-1, 0, 0);
-		glVertex3d(1 + (pe.Temp-37), 0, 0);
-		glVertex3d(1 + (pe.Temp-37), thickness, 0);
+		glVertex3d(0 + (pe.Temp-37), 0, 0);
+		glVertex3d(0 + (pe.Temp-37), thickness, 0);
 		glVertex3d(-1, thickness, 0);
 		
 		glEnd();

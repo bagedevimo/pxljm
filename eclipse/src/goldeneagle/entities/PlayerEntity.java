@@ -229,6 +229,8 @@ public class PlayerEntity extends Entity implements Collidable {
 		else if(this.Thirst > this.DefaultThirst)
 			this.Thirst -= 0.0001;
 		
+		this.Temp += 0.01f;
+		
 		System.out.printf("Energy: %f\tdEnergy: %f\n", this.Energy, 0f);
 		System.out.printf("Nutrition: %f\tdNutrition: %f\n", this.Nutrition, this.Hunger);
 		System.out.printf("Hydration: %f\tddHydration: %f\n", this.Hydration, this.Thirst);
