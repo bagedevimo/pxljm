@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.lwjgl.input.Keyboard;
 
@@ -56,7 +57,7 @@ public class PlayerEntity extends Entity implements Collidable {
 	double Temp = NormalTemp;
 	
 	private int inventoryIndex = -1;
-	private final List<Item> inventory = new ArrayList<Item>();
+	private final Map<Item, Integer> inventory = new HashMap<Item, Integer>();
 	
 	double lastStep;
 	double stepInterval;
@@ -237,8 +238,49 @@ public class PlayerEntity extends Entity implements Collidable {
 	}
 
 	public void addItem(Item item) {
-		inventory.add(item);
+		if(inventory.containsKey(item)){
+			inventory.put(item, inventory.get(item)+1);
+		} else {
+			inventory.put(item, 1);
+		}
 		if(inventoryIndex < 0)
 			inventoryIndex++;
+	}
+	
+	public void useItem() {
+		Item item = getItemAt(inventoryIndex);
+		if(inventory.get(item)==1)
+			inventory.remove(item);
+		item.use(this);
+	}
+	
+	public Item getItemAt(int index){
+		int i = 0;
+		for(Entry<Item, Integer> e : inventory.entrySet()){
+			if(index == i)
+				return e.getKey();
+			i++;
+		}
+		return null;
+	}
+	
+	public void modifyEnergy(double amount){
+		this.Energy += amount;
+	}
+	
+	public void modifyHealth(double amount){
+		this.Health += amount;
+	}
+	
+	public void modifyNutrition(double amount){
+		this.Nutrition += amount;
+	}
+	
+	public void modifyHydration(double amount){
+		this.Hydration += amount;
+	}
+	
+	public void modifyTemperature(double amount){
+		this.Temp += amount;
 	}
 }
