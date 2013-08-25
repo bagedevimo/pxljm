@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
@@ -20,7 +21,7 @@ import org.lwjgl.opengl.GL11;
 
 enum ResourceType {
 	PNG,
-	JPG, VERT, FRAG
+	JPG, VERT, FRAG, TTF
 }
 
 public class ResourceLoader extends Thread {
@@ -28,6 +29,7 @@ public class ResourceLoader extends Thread {
 	private Queue<ResourceLoadUnit> loadQueue = new LinkedList<ResourceLoadUnit>();
 	private Thread threadHandle = null;
 	private int nResources = 0;
+	private boolean isStarted = false;
 	
 	public void Add(String path) {
 		System.out.printf("Loading: %s\n", path);
@@ -38,8 +40,11 @@ public class ResourceLoader extends Thread {
 			this.loadQueue.add(new ResourceLoadUnit(ResourceType.JPG, path));
 		else if(ext.equals("PNG"))
 			this.loadQueue.add(new ResourceLoadUnit(ResourceType.PNG, path));
+		else if(ext.equals("TTF") || ext.equals("OTF"))
+			this.loadQueue.add(new ResourceLoadUnit(ResourceType.TTF, path));
 		else
 			System.err.printf("Unknown extension: '%s'\n", ext);
+		
 	}
 	
 	public void AddAnimation(String name, int nFrames) {
@@ -52,6 +57,7 @@ public class ResourceLoader extends Thread {
 	public void Start() {
 		this.nResources = this.loadQueue.size();
 		this.threadHandle = new Thread(this);
+		this.isStarted = true;
 		this.threadHandle.start();
 	}
 	
@@ -60,7 +66,7 @@ public class ResourceLoader extends Thread {
 	}
 	
 	public double getProgress() {
-		return (this.loadQueue.size() / this.nResources);
+		return 1-((double)this.loadQueue.size() / (double)this.nResources);
 	}
 	
 	public void run() {
@@ -73,11 +79,15 @@ public class ResourceLoader extends Thread {
 					case PNG:
 							BufferedImage image = this.loadImage(rlu.Path);
 							ResourceCache.AddTexture(rlu.Path, this.loadTexture(image), image.getWidth(), image.getHeight());
+					case TTF:
+							File f = new File(rlu.Path);
+							ResourceCache.AddFontStream(rlu.Path, f);
 					break;
 				}
 				
 			} catch(IOException e) {
 				System.err.printf("Unable to load resource: %s", rlu.Path);
+				e.printStackTrace();
 			}
 			this.loadQueue.remove();
 		}
@@ -108,4 +118,8 @@ public class ResourceLoader extends Thread {
        {
            return ImageIO.read(new File(path));
        }
+
+	public boolean isStarted() {
+		return this.isStarted;
+	}
 }

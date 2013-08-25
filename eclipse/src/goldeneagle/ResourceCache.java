@@ -1,7 +1,11 @@
 package goldeneagle;
 
+import java.awt.FontFormatException;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -15,11 +19,15 @@ import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.*;
+import org.newdawn.slick.Font.*;
 
 public class ResourceCache {
 	private static final Map<String, ResourceInfo> textures = new HashMap<String, ResourceInfo>();
 	private static final Map<String, Integer> shaders = new HashMap<String, Integer>();
 	private static final Map<String, Integer> programs = new HashMap<String, Integer>();
+	private static final Map<String, File> fontStreams = new HashMap<String, File>();
 	
 	public static void AddTexture(String path, ByteBuffer texture, int width, int height) {
 		if(textures.containsKey(path))
@@ -198,4 +206,33 @@ public class ResourceCache {
 	private static String getLogInfo(int obj) {
 		return ARBShaderObjects.glGetInfoLogARB(obj, ARBShaderObjects.glGetObjectParameteriARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
 	}
+
+	public static void AddFontStream(String path, File is) {
+		System.out.printf("Adding %s to cache\n", path);
+		fontStreams.put(path, is);
+	}
+	
+//	public static TrueTypeFont GetFont(String path, int size) {
+//		if(!fontStreams.containsKey(path)) {
+//			System.err.println("Resource not found in cache: " + path);
+//			return null;
+//		}
+//		
+//		java.awt.Font f = null;
+//		try {
+//			f = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, fontStreams.get(path));
+//			f = f.deriveFont(size);
+//		} catch (FontFormatException e) {
+//			e.printStackTrace();
+//			System.exit(1);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//		UnicodeFont font = new UnicodeFont(f);
+//		font.getEffects()
+//		return font;
+//	}
 }
+
+

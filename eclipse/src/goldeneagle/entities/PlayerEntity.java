@@ -182,6 +182,7 @@ public class PlayerEntity extends Entity implements Collidable {
 		
 		List<Entity> ents = new ArrayList<Entity>();
 		scene.getEntities(ents, new BoundingSphere(this, 3));
+		boolean shouldRummage = false;
 		for(Entity e : ents) {
 			if(e.equals(this)) continue;
 			if(e instanceof Collidable) {
@@ -189,16 +190,13 @@ public class PlayerEntity extends Entity implements Collidable {
 				Collidable en = (Collidable)e;
 				
 				if(this.getCollisionBound().intersects(en.getCollisionBound())) {
-					//System.out.printf("Colliding with a %s\n", en.toString());	
 					this.setLinear(oldPosition, Vec3.zero);
-					if(en instanceof PlantEntity || en instanceof TreeEntity && Keyboard.isKeyDown(Keyboard.KEY_W))
-						this.isRummaging = true;
-					else
-						this.isRummaging = false;
-				} else
-					this.isRummaging = false;
+					if(en instanceof PlantEntity && Keyboard.isKeyDown(Keyboard.KEY_W))
+						shouldRummage = true;
+				}
 			}
 		}
+		this.isRummaging = shouldRummage;
 		
 		if(this.getClock().get() - this.lastAttrUpdate > 1)
 			this.updateAttrs();
