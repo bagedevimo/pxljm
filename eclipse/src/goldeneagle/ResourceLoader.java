@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
@@ -20,7 +21,7 @@ import org.lwjgl.opengl.GL11;
 
 enum ResourceType {
 	PNG,
-	JPG, VERT, FRAG
+	JPG, VERT, FRAG, TTF
 }
 
 public class ResourceLoader extends Thread {
@@ -38,8 +39,11 @@ public class ResourceLoader extends Thread {
 			this.loadQueue.add(new ResourceLoadUnit(ResourceType.JPG, path));
 		else if(ext.equals("PNG"))
 			this.loadQueue.add(new ResourceLoadUnit(ResourceType.PNG, path));
+		else if(ext.equals("TTF"))
+			this.loadQueue.add(new ResourceLoadUnit(ResourceType.TTF, path));
 		else
 			System.err.printf("Unknown extension: '%s'\n", ext);
+		
 	}
 	
 	public void AddAnimation(String name, int nFrames) {
@@ -73,6 +77,9 @@ public class ResourceLoader extends Thread {
 					case PNG:
 							BufferedImage image = this.loadImage(rlu.Path);
 							ResourceCache.AddTexture(rlu.Path, this.loadTexture(image), image.getWidth(), image.getHeight());
+					case TTF:
+							InputStream is = org.newdawn.slick.util.ResourceLoader.getResourceAsStream(rlu.Path);
+							ResourceCache.AddFontStream(rlu.Path, is);
 					break;
 				}
 				

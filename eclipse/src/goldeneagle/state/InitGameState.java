@@ -19,6 +19,7 @@ public class InitGameState extends GameState {
 		rl.AddAnimation("character_idle", 78);
 		rl.AddAnimation("character_rummage", 13);
 		rl.AddAnimation("fire", 7);
+		rl.Add("assets/fonts/KozGoPro-ExtraLight.ttf");
 		rl.Start();
 		
 		try {

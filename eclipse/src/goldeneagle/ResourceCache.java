@@ -1,7 +1,10 @@
 package goldeneagle;
 
+import java.awt.FontFormatException;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -15,11 +18,15 @@ import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.Font.*;
 
 public class ResourceCache {
 	private static final Map<String, ResourceInfo> textures = new HashMap<String, ResourceInfo>();
 	private static final Map<String, Integer> shaders = new HashMap<String, Integer>();
 	private static final Map<String, Integer> programs = new HashMap<String, Integer>();
+	private static final Map<String, InputStream> fontStreams = new HashMap<String, InputStream>();
 	
 	public static void AddTexture(String path, ByteBuffer texture, int width, int height) {
 		if(textures.containsKey(path))
@@ -198,4 +205,17 @@ public class ResourceCache {
 	private static String getLogInfo(int obj) {
 		return ARBShaderObjects.glGetInfoLogARB(obj, ARBShaderObjects.glGetObjectParameteriARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
 	}
+
+	public static void AddFontStream(String path, InputStream is) {
+		fontStreams.put(path, is);
+	}
+	
+	public static TrueTypeFont GetFont(String path, int size) throws FontFormatException, IOException {
+		if(!fontStreams.containsKey(path))
+			return null;
+		
+		java.awt.Font f = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, fontStreams.get(path)).deriveFont(size);
+		return new TrueTypeFont(f, true);
+	}
 }
+

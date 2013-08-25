@@ -16,14 +16,15 @@ import goldeneagle.util.Profiler;
 public class FireEntity extends Entity {
 
 	Animation fire;
-	Light.PointLight fireLight;
+	Light.SpotLight fireLight;
 	
 	public FireEntity(Frame parent_, Scene scene) {
 		super(parent_);
 		
 		this.setHeight(0.1);
 
-		fireLight = new Light.PointLight(this, Color.ORANGE, 1, 2);
+		fireLight = new Light.SpotLight(this, Color.YELLOW, 3, 4, Math.PI/4, 5);
+		fireLight.setPitch(-(Math.PI/2));
 		scene.addLight(fireLight);
 		fire = new Animation(this, "fire", 7);
 	}
@@ -42,8 +43,6 @@ public class FireEntity extends Entity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		System.out.printf("rendering fire texture: :%d\n", texID);
 	
  		glBindTexture(GL_TEXTURE_2D, texID);
 		glEnable(GL_TEXTURE_2D);

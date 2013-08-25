@@ -22,13 +22,19 @@ public class PlantEntity extends Entity implements Collidable {
 		this.setLinear(new Vec3(xPos_, yPos_, 0), Vec3.zero);
 		this.radius = radius;
 		setBound(new BoundingSphere(this, radius));
-		setHeight(0.5);
+		setHeight(0.2);
 		
 		ShadowCaster sc = new ShadowCaster();
-		sc.addVertex(new Vec3(-0.5, -0.5, 0));
-		sc.addVertex(new Vec3(0.5, -0.5, 0));
-		sc.addVertex(new Vec3(0.5, 0.5, 0));
-		sc.addVertex(new Vec3(-0.5, 0.5, 0));
+		for(double a = Math.PI*2; a > 0; a -= (Math.PI/4)) {
+			double x = Math.sin(a) * this.radius * 0.5;
+			double y = Math.cos(a) * this.radius * 0.5;
+			System.out.printf("X: %.2f, Y: %.2f\n", x, y);
+			sc.addVertex(new Vec3(x, y, 0));
+		}
+//		sc.addVertex(new Vec3(-0.5, -0.5, 0));
+//		sc.addVertex(new Vec3(0.5, -0.5, 0));
+//		sc.addVertex(new Vec3(0.5, 0.5, 0));
+//		sc.addVertex(new Vec3(-0.5, 0.5, 0));
 		addShadowCaster(sc);
 	}
 
