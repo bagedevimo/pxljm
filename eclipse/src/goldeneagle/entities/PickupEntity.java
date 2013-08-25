@@ -25,9 +25,10 @@ import goldeneagle.items.Item;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Scene;
+import goldeneagle.state.Collidable;
 import goldeneagle.util.Profiler;
 
-public class PickupEntity extends Entity {
+public class PickupEntity extends Entity implements Collidable{
 
 	private static final int size = 32;
 	private final Item item;
@@ -40,9 +41,8 @@ public class PickupEntity extends Entity {
 	}
 	
 	protected boolean update(double deltaTime, Scene scene) {
-		List<Entity> collided = new ArrayList<Entity>();
-		scene.getEntities(collided, bound);
-		for(Entity e : collided){
+		List<Collidable> collided = scene.getCollisions(this);
+		for(Collidable e : collided){
 			if(e instanceof PlayerEntity){
 				((PlayerEntity)e).addItem(item);
 				return false;
@@ -84,6 +84,11 @@ public class PickupEntity extends Entity {
 
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_ALPHA_TEST);
+	}
+
+	@Override
+	public Bound getCollisionBound() {
+		return bound;
 	}
 
 }

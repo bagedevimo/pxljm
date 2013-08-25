@@ -1,7 +1,9 @@
 package goldeneagle.state;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
@@ -12,6 +14,7 @@ import goldeneagle.Vec3;
 import goldeneagle.entities.ChunkEntity;
 import goldeneagle.entities.PlayerEntity;
 import goldeneagle.scene.Camera;
+import goldeneagle.scene.Entity;
 import goldeneagle.scene.Light;
 import goldeneagle.scene.Scene;
 import goldeneagle.scene.SceneManager;
@@ -55,6 +58,21 @@ public class MainGameState extends GameState {
 		
 		Light.PointLight lfollow = new Light.PointLight(player,  new Color(0.4f, 0.4f, 0.4f), 2, 0.8);
 		scene.addLight(lfollow);
+		
+		
+		List<Collidable> col;
+		do{
+			player.setLinear(player.getGlobalPosition().add(new Vec3(1, 1, 0)), Vec3.zero);
+			this.ensureChunks();
+			
+			col = scene.getCollisions(player);
+			for(int i = 0; i < col.size(); i++){
+				System.out.println(col.get(i).getClass());
+				if(col.get(i) instanceof PlayerEntity){
+					col.remove(i--);
+				}
+			}
+		}while(!col.isEmpty());
 		
 //		ParticleEmitter pe = new ParticleEmitter(mf);
 //		scene.AddEntity(pe);
@@ -110,7 +128,6 @@ public class MainGameState extends GameState {
 					scene.RemoveEntity(chunk);
 				}
 			}
-				
 		}
 		
 //		int testRadius = 3;
