@@ -1,6 +1,7 @@
 package goldeneagle.items;
 
 import goldeneagle.entities.PlayerEntity;
+import goldeneagle.scene.Scene;
 
 public class Berries extends Item{
 
@@ -11,7 +12,7 @@ public class Berries extends Item{
 	}
 	
 	@Override
-	public void use(PlayerEntity player) {
+	public void use(PlayerEntity player, Scene scene) {
 		player.modifyNutrition(nutritionAmount);
 	}
 

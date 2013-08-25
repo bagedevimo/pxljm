@@ -66,7 +66,7 @@ public class PickupEntity extends Entity implements Collidable{
 //		
 //		glEnable(GL_ALPHA_TEST);
 //		glAlphaFunc(GL_GREATER, 0.5f);
-//		
+//
 //		glBegin(GL_POLYGON);
 //		
 //		glColor3d(1, 1, 1);
