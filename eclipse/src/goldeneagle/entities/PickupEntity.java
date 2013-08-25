@@ -45,8 +45,12 @@ public class PickupEntity extends Entity implements Collidable{
 		for(Collidable e : collided){
 			if(e instanceof PlayerEntity){
 				System.out.println("Player Picked Up item");
-				((PlayerEntity)e).addItem(item);
-				return false;
+				PlayerEntity p = (PlayerEntity)e;
+				if(p.isRummaging){
+					p.addItem(item);
+					System.out.println("Player Picked Up item");
+					return false;
+				}
 			}
 		}
 		return true;
