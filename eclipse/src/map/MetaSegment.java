@@ -15,7 +15,7 @@ public class MetaSegment {
 
 	private static final int TreeFill = (int)(Segment.size * Segment.size / 4);
 	private static final double TreeRadius = 5;
-	private static final int PlantFill = (int)(Segment.size * Segment.size / 2);
+	private static final int PlantFill = (int)(Segment.size * Segment.size / 4);
 	private static final double PlantRadius = 1;
 	
 	private List<Triangle> triList = new ArrayList<Triangle>();
@@ -141,8 +141,10 @@ public class MetaSegment {
 						break;
 					}
 				}
-				if(!collision)
+				if(!collision){
 					foliage.add(newF);
+					i = PlantFill - placePlantGroup(foliage, rand, x, y, PlantFill-i);
+				}
 			}
 		}
 		
@@ -161,6 +163,15 @@ public class MetaSegment {
 		seg.addBerries(berries);
 	}
 	
+	//returns the number  of bushes  remained t b planted
+	private int placePlantGroup(List<Foliage> foliage, Random rand, double x, double y, int num){
+		int numB = (int) (num * rand.nextDouble());
+		for(int i =0; i<numB; i++){
+			foliage.add(new Foliage(x+rand.nextGaussian()*PlantRadius*2, y+rand.nextGaussian()*PlantRadius*2, PlantRadius + ((PlantRadius / 3) * rand.nextGaussian())));
+		}
+		return num - numB;
+	}
+	
 	private List<Vec3> getBerries(List<Vec3> plants) {
 		// TODO Auto-generated method stub
 		ArrayList<Vec3> berries = new ArrayList<Vec3>();
@@ -171,7 +182,7 @@ public class MetaSegment {
 	private List<Vec3> getWood(List<Vec3> trees) {
 		// TODO Auto-generated method stub
 		ArrayList<Vec3> wood = new ArrayList<Vec3>();
-		wood.add(new Vec3(10, 10));
+		wood.add(new Vec3(10, 20));
 		return wood;
 	}
 
