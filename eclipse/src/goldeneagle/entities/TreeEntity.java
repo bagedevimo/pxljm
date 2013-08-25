@@ -1,6 +1,9 @@
 package goldeneagle.entities;
 
 import static org.lwjgl.opengl.GL11.*;
+
+import org.lwjgl.input.Keyboard;
+
 import goldeneagle.BoundingSphere;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.Scene;
