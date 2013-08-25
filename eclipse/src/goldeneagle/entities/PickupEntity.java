@@ -32,7 +32,7 @@ import goldeneagle.util.Profiler;
 
 public class PickupEntity extends Entity implements Collidable{
 
-	private static final int size = 32;
+	private static final int size = 2;
 	private final Item item;
 	private Bound bound; 
 	
