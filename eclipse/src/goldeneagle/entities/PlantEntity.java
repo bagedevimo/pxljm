@@ -28,7 +28,6 @@ public class PlantEntity extends Entity implements Collidable {
 		for(double a = Math.PI*2; a > 0; a -= (Math.PI/4)) {
 			double x = Math.sin(a) * this.radius * 0.5;
 			double y = Math.cos(a) * this.radius * 0.5;
-			System.out.printf("X: %.2f, Y: %.2f\n", x, y);
 			sc.addVertex(new Vec3(x, y, 0));
 		}
 //		sc.addVertex(new Vec3(-0.5, -0.5, 0));
