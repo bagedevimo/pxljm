@@ -40,9 +40,9 @@ public class PlayerEntity extends Entity implements Collidable {
 	double MaxHealth = 100;
 	double Health = MaxHealth;
 	
-	double MaxNutrition = 100;
+	double MaxNutrition = 200;
 	double Nutrition = MaxNutrition;
-	double DefaultHunger = 0.01;
+	double DefaultHunger = 4;
 	double Hunger = DefaultHunger;
 	
 	double MaxHydration = 100;
@@ -223,11 +223,11 @@ public class PlayerEntity extends Entity implements Collidable {
 		else if(this.Thirst > this.DefaultThirst)
 			this.Thirst -= 0.0001;
 		
-//		System.out.printf("Energy: %f\tdEnergy: %f\n", this.Energy, 0f);
-//		System.out.printf("Nutrition: %f\tdNutrition: %f\n", this.Nutrition, this.Hunger);
-//		System.out.printf("Hydration: %f\tddHydration: %f\n", this.Hydration, this.Thirst);
-//		System.out.printf("Health: %f\tdHealth: %f\n",  this.Health, 0f);
-//		System.out.printf("Temperature: %f\tdTemperature: %f\n", this.Temp, 0f);
+		System.out.printf("Energy: %f\tdEnergy: %f\n", this.Energy, 0f);
+		System.out.printf("Nutrition: %f\tdNutrition: %f\n", this.Nutrition, this.Hunger);
+		System.out.printf("Hydration: %f\tddHydration: %f\n", this.Hydration, this.Thirst);
+		System.out.printf("Health: %f\tdHealth: %f\n",  this.Health, 0f);
+		System.out.printf("Temperature: %f\tdTemperature: %f\n", this.Temp, 0f);
 	}
 
 	@Override

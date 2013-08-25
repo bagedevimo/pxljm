@@ -11,9 +11,7 @@ import org.lwjgl.input.Keyboard;
 import goldeneagle.MovingFrame;
 import goldeneagle.ParticleEmitter;
 import goldeneagle.Vec3;
-import goldeneagle.entities.ChunkEntity;
-import goldeneagle.entities.FireEntity;
-import goldeneagle.entities.PlayerEntity;
+import goldeneagle.entities.*;
 import goldeneagle.scene.Camera;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Light;
@@ -38,6 +36,11 @@ public class MainGameState extends GameState {
 		cam.bindFrame(offset);
 		cam.setRadius(11);
 		
+		MovingFrame uiOffset = new MovingFrame(cam);
+		uiOffset.setLinear(new Vec3(-6, -6, 0), Vec3.zero);
+		UI ui = new UI(uiOffset, player);
+		scene.AddEntity(ui);
+		
 		int playerSpawnX = 4112;
 		int playerSpawnY = 4112;
 		
@@ -58,8 +61,7 @@ public class MainGameState extends GameState {
 		
 		Light.PointLight lfollow = new Light.PointLight(player,  new Color(0.4f, 0.4f, 0.4f), 2, 0.8);
 		scene.addLight(lfollow);
-		
-
+	
 
 		FireEntity fire = new FireEntity(mf, scene);
 		scene.AddEntity(fire);
