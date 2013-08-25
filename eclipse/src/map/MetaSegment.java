@@ -110,7 +110,7 @@ public class MetaSegment {
 			double x = rand.nextDouble() * Segment.size;
 			double y = rand.nextDouble() * Segment.size;
 			if (treeChance(biomes[(int)x][(int)y]) > rand.nextDouble()){
-				Foliage newF = new Foliage(x, y, TreeRadius + ((TreeRadius / 3) * rand.nextGaussian()));
+				Foliage newF = new Foliage(x, y, Math.max(1.5, TreeRadius + ((TreeRadius / 3) * rand.nextGaussian())));
 				boolean collision = false;
 				for(int j=0; j<foliage.size(); j++){
 					if(foliage.get(j).collision(newF)){

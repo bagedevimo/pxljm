@@ -68,6 +68,7 @@ public class ChunkEntity extends Entity {
 		
 		Entity e;
 		for(Vec3 tree : seg.getTrees()) {
+			System.out.println("ADDED MY TREEES MOTHER FUCKA");
 			e = new TreeEntity(scene.getRoot(), this.getPosition().x+tree.x, this.getPosition().y+tree.y, tree.z);
 			this.childEntities.add(e);
 			scene.AddEntity(e);

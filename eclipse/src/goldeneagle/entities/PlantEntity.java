@@ -15,6 +15,7 @@ import goldeneagle.util.Profiler;
 
 public class PlantEntity extends Entity implements Collidable {
 	private final double radius;
+	private final Bound collisionBound;
 	
 	static final int PlantEntity = Profiler.createSection("PlantEntity");
 	
@@ -22,6 +23,7 @@ public class PlantEntity extends Entity implements Collidable {
 		super(parent_);
 		this.setLinear(new Vec3(xPos_, yPos_, 0), Vec3.zero);
 		this.radius = radius;
+		this.collisionBound = new BoundingSphere(this, this.radius/10);
 		setBound(new BoundingSphere(this, radius));
 		setHeight(0.1);
 		

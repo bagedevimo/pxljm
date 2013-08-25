@@ -38,6 +38,7 @@ public class PickupEntity extends Entity implements Collidable{
 		super(parent_);
 		item = item_;
 		bound = new BoundingSphere(this, size);
+		setHeight(0.2);
 	}
 	
 	protected boolean update(double deltaTime, Scene scene) {
