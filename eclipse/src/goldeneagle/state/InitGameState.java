@@ -23,7 +23,7 @@ public class InitGameState extends GameState {
 		
 		try {
 			ResourceCache.AddShaderProgram("test");
-			System.out.printf("ShaderProgram: %d\n", ResourceCache.GetProgram("test"));
+			System.out.printf("ShaderProgram: %d\n", ResourceCache.GetProgram("test")); 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

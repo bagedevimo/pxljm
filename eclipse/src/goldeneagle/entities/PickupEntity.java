@@ -25,9 +25,10 @@ import goldeneagle.items.Item;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Scene;
+import goldeneagle.state.Collidable;
 import goldeneagle.util.Profiler;
 
-public class PickupEntity extends Entity {
+public class PickupEntity extends Entity implements Collidable{
 
 	private static final int size = 32;
 	private final Item item;
@@ -40,9 +41,8 @@ public class PickupEntity extends Entity {
 	}
 	
 	protected boolean update(double deltaTime, Scene scene) {
-		List<Entity> collided = new ArrayList<Entity>();
-		scene.getEntities(collided, bound);
-		for(Entity e : collided){
+		List<Collidable> collided = scene.getCollisions(this);
+		for(Collidable e : collided){
 			if(e instanceof PlayerEntity){
 				((PlayerEntity)e).addItem(item);
 				return false;
@@ -53,37 +53,41 @@ public class PickupEntity extends Entity {
 
 	@Override
 	protected void draw() {
-		int texID = -1;
-		try {
-			texID = ResourceCache.GetGLTexture(item.getTexturePath());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	
- 		glBindTexture(GL_TEXTURE_2D, texID);
-		glEnable(GL_TEXTURE_2D);
-		
-		glEnable(GL_ALPHA_TEST);
-		glAlphaFunc(GL_GREATER, 0.5f);
-		
-		glBegin(GL_POLYGON);
-		
-		glColor3d(1, 1, 1);
-		glNormal3d(0, 0, 1);
-		
-		glTexCoord2d(0, 0);
-		glVertex3d(-size, -size, 0);
-		glTexCoord2d(1, 0);
-		glVertex3d(size, -size, 0);
-		glTexCoord2d(1, 1);
-		glVertex3d(size, size, 0);
-		glTexCoord2d(0, 1);
-		glVertex3d(-size, size, 0);
-		
-		glEnd();	
+//		int texID = -1;
+//		try {
+//			texID = ResourceCache.GetGLTexture(item.getTexturePath());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	
+// 		glBindTexture(GL_TEXTURE_2D, texID);
+//		glEnable(GL_TEXTURE_2D);
+//		
+//		glEnable(GL_ALPHA_TEST);
+//		glAlphaFunc(GL_GREATER, 0.5f);
+//		
+//		glBegin(GL_POLYGON);
+//		
+//		glColor3d(1, 1, 1);
+//		glNormal3d(0, 0, 1);
+//		
+//		glTexCoord2d(0, 0);
+//		glVertex3d(-size, -size, 0);
+//		glTexCoord2d(1, 0);
+//		glVertex3d(size, -size, 0);
+//		glTexCoord2d(1, 1);
+//		glVertex3d(size, size, 0);
+//		glTexCoord2d(0, 1);
+//		glVertex3d(-size, size, 0);
+//		
+//		glEnd();	
+//
+//		glDisable(GL_TEXTURE_2D);
+	}
 
-		glDisable(GL_TEXTURE_2D);
-		glDisable(GL_ALPHA_TEST);
+	@Override
+	public Bound getCollisionBound() {
+		return bound;
 	}
 
 }

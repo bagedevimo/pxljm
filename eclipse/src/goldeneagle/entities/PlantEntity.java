@@ -80,4 +80,5 @@ public class PlantEntity extends Entity implements Collidable {
 	public Bound getCollisionBound() {
 		return new BoundingSphere(this, this.radius/10);
 	}
+
 }
