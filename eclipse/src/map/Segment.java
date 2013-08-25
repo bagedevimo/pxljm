@@ -14,10 +14,10 @@ public class Segment {
 	public final long id;
 	private final TileType[][] tiles;
 	
-	private List<Vec3> trees;
-	private List<Vec3> plants;
-	private List<Vec3> wood;
-	private List<Vec3> berries;
+	private List<Vec3> trees = new ArrayList<Vec3>();
+	private List<Vec3> plants = new ArrayList<Vec3>();
+	private List<Vec3> wood = new ArrayList<Vec3>();
+	private List<Vec3> berries = new ArrayList<Vec3>();
 	
 	private final List<Entity> entities;
 
@@ -33,8 +33,8 @@ public class Segment {
 			tiles = t;
 		else {
 			tiles = new TileType[size][size];
-			for(int xs = x; xs < size; xs++)
-				for(int ys = y; ys < size; ys++)
+			for(int xs = 0; xs < size; xs++)
+				for(int ys = 0; ys < size; ys++)
 					tiles[xs][ys] = TileType.UNKNOWN;
 		}
 		entities = new ArrayList<Entity>();

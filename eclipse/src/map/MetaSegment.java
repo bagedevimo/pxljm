@@ -152,7 +152,7 @@ public class MetaSegment {
 			plants.add(new Vec3(f.xPos, f.yPos, f.radius));
 		}
 		
-		List<Vec3> wood = getTrees(trees);
+		List<Vec3> wood = getWood(trees);
 		List<Vec3> berries = getBerries(plants);
 		
 		seg.addPlants(plants);
@@ -163,12 +163,16 @@ public class MetaSegment {
 	
 	private List<Vec3> getBerries(List<Vec3> plants) {
 		// TODO Auto-generated method stub
-		return new ArrayList<Vec3>();
+		ArrayList<Vec3> berries = new ArrayList<Vec3>();
+		berries.add(new Vec3(10, 10));
+		return berries;
 	}
 
-	private List<Vec3> getTrees(List<Vec3> trees) {
+	private List<Vec3> getWood(List<Vec3> trees) {
 		// TODO Auto-generated method stub
-		return new ArrayList<Vec3>();
+		ArrayList<Vec3> wood = new ArrayList<Vec3>();
+		wood.add(new Vec3(10, 10));
+		return wood;
 	}
 
 	private double treeChance(Biome b){
