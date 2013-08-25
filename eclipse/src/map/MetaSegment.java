@@ -159,8 +159,8 @@ public class MetaSegment {
 			plants.add(new Vec3(f.xPos, f.yPos, f.radius));
 		}
 		
-		List<Vec3> wood = getWood(trees);
-		List<Vec3> berries = getBerries(plants);
+		List<Vec3> wood = getWood(trees, rand);
+		List<Vec3> berries = getBerries(plants, rand);
 		
 		seg.addPlants(plants);
 		seg.addTrees(trees);
@@ -177,17 +177,22 @@ public class MetaSegment {
 		return num - numB;
 	}
 	
-	private List<Vec3> getBerries(List<Vec3> plants) {
-		// TODO Auto-generated method stub
+	private List<Vec3> getBerries(List<Vec3> plants, Random rand) {
 		ArrayList<Vec3> berries = new ArrayList<Vec3>();
+		for(Vec3 v : plants){
+			if(rand.nextDouble() > 0.85)
+				berries.add(new Vec3(v.x, v.y, 0));
+		}
 		berries.add(new Vec3(Segment.size/2+4, Segment.size/2+4));
 		return berries;
 	}
 
-	private List<Vec3> getWood(List<Vec3> trees) {
-		// TODO Auto-generated method stub
+	private List<Vec3> getWood(List<Vec3> trees, Random rand) {
 		ArrayList<Vec3> wood = new ArrayList<Vec3>();
-		wood.add(new Vec3(10, 20));
+		for(Vec3 v : trees){
+			if(rand.nextDouble() > 0.05)
+				wood.add(new Vec3(v.x, v.y, 0));
+		}
 		return wood;
 	}
 

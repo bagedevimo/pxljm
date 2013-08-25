@@ -42,28 +42,22 @@ public class PickupEntity extends Entity implements Collidable{
 		bound = new BoundingSphere(this, size);
 		setHeight(1);
 		
-		ShadowCaster sc = new ShadowCaster();
-		sc.addVertex(new Vec3(-0.5, -0.5, 0));
-		sc.addVertex(new Vec3(0.5, -0.5, 0));
-		sc.addVertex(new Vec3(0.5, 0.5, 0));
-		sc.addVertex(new Vec3(-0.5, 0.5, 0));
-		addShadowCaster(sc);
 	}
 	
 	protected boolean update(double deltaTime, Scene scene) {
-		List<Collidable> collided = scene.getCollisions(this);
-		for(Collidable e : collided){
-			if(e instanceof PlayerEntity){
-				for(int i=0; i<100; i++)
-				System.out.println("Player Picked Up item");
-				PlayerEntity p = (PlayerEntity)e;
-				if(p.isRummaging){
-					p.addItem(item);
-					System.out.println("Player Picked Up item");
-					return false;
-				}
-			}
-		}
+//		List<Collidable> collided = scene.getCollisions(this);
+//		for(Collidable e : collided){
+//			if(e instanceof PlayerEntity){
+//				for(int i=0; i<100; i++)
+//				System.out.println("Player Picked Up item");
+//				PlayerEntity p = (PlayerEntity)e;
+//				if(p.isRummaging){
+//					p.addItem(item);
+//					System.out.println("Player Picked Up item");
+//					return false;
+//				}
+//			}
+//		}
 		return true;
 	}
 

@@ -29,6 +29,8 @@ public class LoadGameState extends GameState {
 		rl.Add("./assets/tiles/atlas.jpg");
 		rl.Add("./assets/entities/tree.png");
 		rl.Add("./assets/entities/bush.png");
+		rl.Add("./assets/entities/sticks.png");
+		rl.Add("./assets/entities/berrys.png");
 		rl.AddAnimation("character_walk", 21);
 		rl.AddAnimation("character_idle", 78);
 		rl.AddAnimation("character_rummage", 13);
