@@ -52,6 +52,15 @@ public class UI extends Entity {
 		glVertex3d(0 + (pe.Temp-37), thickness, 0);
 		glVertex3d(-1, thickness, 0);
 		
+		glColor3d(0.3, 0.3, 0.2);
+		
+		glNormal3d(0, 0, 1);
+		
+		glVertex3d(-1, thickness, 0);
+		glVertex3d(1, thickness, 0);
+		glVertex3d(1, thickness*2, 0);
+		glVertex3d(-1, thickness*2, 0);
+		
 		glEnd();
 		glDisable(GL_ALPHA_TEST);
 		glEnable(GL_LIGHTING);
