@@ -189,7 +189,7 @@ public class PlayerEntity extends Entity implements Collidable {
 				Collidable en = (Collidable)e;
 				
 				if(this.getCollisionBound().intersects(en.getCollisionBound())) {
-					System.out.printf("Colliding with a %s\n", en.toString());	
+					//System.out.printf("Colliding with a %s\n", en.toString());	
 					this.setLinear(oldPosition, Vec3.zero);
 					if(en instanceof PlantEntity || en instanceof TreeEntity && Keyboard.isKeyDown(Keyboard.KEY_W))
 						this.isRummaging = true;

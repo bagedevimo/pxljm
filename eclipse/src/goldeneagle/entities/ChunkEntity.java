@@ -68,7 +68,6 @@ public class ChunkEntity extends Entity {
 		
 		Entity e;
 		for(Vec3 tree : seg.getTrees()) {
-			System.out.println("ADDED MY TREEES MOTHER FUCKA");
 			e = new TreeEntity(scene.getRoot(), this.getPosition().x+tree.x, this.getPosition().y+tree.y, tree.z);
 			this.childEntities.add(e);
 			scene.AddEntity(e);
@@ -81,6 +80,7 @@ public class ChunkEntity extends Entity {
 		}
 		
 		for(Vec3 berries : seg.getBerries()) {
+			System.out.println("added berries");
 			Berries b = new Berries();
 			e = new PickupEntity(scene.getRoot(), this.getPosition().x+berries.x, this.getPosition().y+berries.y, b);
 			this.childEntities.add(e);

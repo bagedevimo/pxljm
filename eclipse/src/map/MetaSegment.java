@@ -180,7 +180,7 @@ public class MetaSegment {
 	private List<Vec3> getBerries(List<Vec3> plants) {
 		// TODO Auto-generated method stub
 		ArrayList<Vec3> berries = new ArrayList<Vec3>();
-		berries.add(new Vec3(10, 10));
+		berries.add(new Vec3(Segment.size/2+4, Segment.size/2+4));
 		return berries;
 	}
 
