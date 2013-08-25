@@ -21,10 +21,12 @@ import java.util.List;
 import goldeneagle.Bound;
 import goldeneagle.BoundingSphere;
 import goldeneagle.ResourceCache;
+import goldeneagle.Vec3;
 import goldeneagle.items.Item;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.Entity;
 import goldeneagle.scene.Scene;
+import goldeneagle.scene.ShadowCaster;
 import goldeneagle.state.Collidable;
 import goldeneagle.util.Profiler;
 
@@ -38,13 +40,21 @@ public class PickupEntity extends Entity implements Collidable{
 		super(parent_);
 		item = item_;
 		bound = new BoundingSphere(this, size);
-		setHeight(0.2);
+		setHeight(1);
+		
+		ShadowCaster sc = new ShadowCaster();
+		sc.addVertex(new Vec3(-0.5, -0.5, 0));
+		sc.addVertex(new Vec3(0.5, -0.5, 0));
+		sc.addVertex(new Vec3(0.5, 0.5, 0));
+		sc.addVertex(new Vec3(-0.5, 0.5, 0));
+		addShadowCaster(sc);
 	}
 	
 	protected boolean update(double deltaTime, Scene scene) {
 		List<Collidable> collided = scene.getCollisions(this);
 		for(Collidable e : collided){
 			if(e instanceof PlayerEntity){
+				for(int i=0; i<100; i++)
 				System.out.println("Player Picked Up item");
 				PlayerEntity p = (PlayerEntity)e;
 				if(p.isRummaging){
@@ -59,36 +69,36 @@ public class PickupEntity extends Entity implements Collidable{
 
 	@Override
 	protected void draw() {
-//		int texID = -1;
-//		try {
-//			texID = ResourceCache.GetGLTexture(item.getTexturePath());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	
-// 		glBindTexture(GL_TEXTURE_2D, texID);
-//		glEnable(GL_TEXTURE_2D);
-//		
-//		glEnable(GL_ALPHA_TEST);
-//		glAlphaFunc(GL_GREATER, 0.5f);
-//
-//		glBegin(GL_POLYGON);
-//		
-//		glColor3d(1, 1, 1);
-//		glNormal3d(0, 0, 1);
-//		
-//		glTexCoord2d(0, 0);
-//		glVertex3d(-size, -size, 0);
-//		glTexCoord2d(1, 0);
-//		glVertex3d(size, -size, 0);
-//		glTexCoord2d(1, 1);
-//		glVertex3d(size, size, 0);
-//		glTexCoord2d(0, 1);
-//		glVertex3d(-size, size, 0);
-//		
-//		glEnd();	
-//
-//		glDisable(GL_TEXTURE_2D);
+		int texID = -1;
+		try {
+			texID = ResourceCache.GetGLTexture(item.getTexturePath());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+ 		glBindTexture(GL_TEXTURE_2D, texID);
+		glEnable(GL_TEXTURE_2D);
+		
+		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GREATER, 0.5f);
+
+		glBegin(GL_POLYGON);
+		
+		glColor3d(1, 1, 1);
+		glNormal3d(0, 0, 1);
+		
+		glTexCoord2d(0, 0);
+		glVertex3d(-size, -size, 0);
+		glTexCoord2d(1, 0);
+		glVertex3d(size, -size, 0);
+		glTexCoord2d(1, 1);
+		glVertex3d(size, size, 0);
+		glTexCoord2d(0, 1);
+		glVertex3d(-size, size, 0);
+		
+		glEnd();	
+
+		glDisable(GL_TEXTURE_2D);
 	}
 
 	@Override

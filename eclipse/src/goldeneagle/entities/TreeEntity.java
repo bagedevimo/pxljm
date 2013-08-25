@@ -45,8 +45,6 @@ public class TreeEntity extends Entity implements Collidable{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println("DRAWING");
 	
  		glBindTexture(GL_TEXTURE_2D, texID);
 		glEnable(GL_TEXTURE_2D);

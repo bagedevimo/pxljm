@@ -190,7 +190,6 @@ public class PlayerEntity extends Entity implements Collidable {
 				Collidable en = (Collidable)e;
 				
 				if(this.getCollisionBound().intersects(en.getCollisionBound())) {
-				
 					this.setLinear(oldPosition, Vec3.zero);
 					if(en instanceof PlantEntity && Keyboard.isKeyDown(Keyboard.KEY_W))
 						shouldRummage = true;
