@@ -4,6 +4,7 @@ import goldeneagle.clock.SystemClock;
 import goldeneagle.util.*;
 import goldeneagle.scene.SceneManager;
 import goldeneagle.state.GameState;
+import goldeneagle.state.InitGameState;
 import goldeneagle.state.LoadGameState;
 
 import java.awt.FontFormatException;
@@ -43,7 +44,7 @@ public class PxlGame {
 			System.exit(1);
 		}
 
-		gameStates.push(new LoadGameState());
+		gameStates.push(new InitGameState());
 		
 		double lastFPS = sysclock.get();
 		int fps = 0;

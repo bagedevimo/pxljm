@@ -1,6 +1,9 @@
 package goldeneagle.entities;
 
 import static org.lwjgl.opengl.GL11.*;
+
+import org.lwjgl.input.Keyboard;
+
 import goldeneagle.BoundingSphere;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.Scene;
@@ -64,6 +67,6 @@ public class TreeEntity extends Entity{
 
 	@Override
 	public boolean update(double deltaTime, Scene scene) {
-		 return true;
-	}
+		return true;
+	 }
 }
