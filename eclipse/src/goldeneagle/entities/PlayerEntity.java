@@ -218,6 +218,10 @@ public class PlayerEntity extends Entity implements Collidable {
 		return (int) (this.getPosition().y / 32);
 	}
 	
+	public int getNumSticks() {
+		return woodCount;
+	}
+	
 	private void updateAttrs() {
 		this.lastAttrUpdate = this.getClock().get();
 		

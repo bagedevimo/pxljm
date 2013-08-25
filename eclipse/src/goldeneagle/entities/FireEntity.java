@@ -27,6 +27,7 @@ public class FireEntity extends Entity {
 		fireLight.setPitch(-(Math.PI/2));
 		scene.addLight(fireLight);
 		fire = new Animation(this, "fire", 7);
+		System.out.println("CREATED FIRE");
 	}
 
 	@Override

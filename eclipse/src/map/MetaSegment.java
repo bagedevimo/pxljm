@@ -190,7 +190,7 @@ public class MetaSegment {
 	private List<Vec3> getWood(List<Vec3> trees, Random rand) {
 		ArrayList<Vec3> wood = new ArrayList<Vec3>();
 		for(Vec3 v : trees){
-			if(rand.nextDouble() < 0.0001)
+			if(rand.nextDouble() < 0.05)
 				wood.add(new Vec3(v.x, v.y, 0));
 		}
 		return wood;
