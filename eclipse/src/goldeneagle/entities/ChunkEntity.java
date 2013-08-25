@@ -74,13 +74,14 @@ public class ChunkEntity extends Entity {
 		}
 		
 		for(Vec3 plant : seg.getPlants()) {
+			System.out.printf("Plants: x: %f\ty: %f\n", plant.x, plant.y);
 			e = new PlantEntity(scene.getRoot(), this.getPosition().x+plant.x, this.getPosition().y+plant.y, plant.z);
 			this.childEntities.add(e);
 			scene.AddEntity(e);
 		}
 		
 		for(Vec3 berries : seg.getBerries()) {
-			System.out.println("added berries");
+			System.out.printf("Berries: x: %f\ty: %f\n", berries.x, berries.y);
 			Berries b = new Berries();
 			e = new PickupEntity(scene.getRoot(), this.getPosition().x+berries.x, this.getPosition().y+berries.y, b);
 			this.childEntities.add(e);

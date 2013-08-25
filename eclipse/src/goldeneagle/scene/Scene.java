@@ -128,6 +128,5 @@ public class Scene implements Iterable<Entity> {
 			}
 		}
 		return col;
-	} 
-
+	}
 }

@@ -180,7 +180,7 @@ public class MetaSegment {
 	private List<Vec3> getBerries(List<Vec3> plants, Random rand) {
 		ArrayList<Vec3> berries = new ArrayList<Vec3>();
 		for(Vec3 v : plants){
-			if(rand.nextDouble() > 0.85)
+			if(rand.nextDouble() > 0.001)
 				berries.add(new Vec3(v.x, v.y, 0));
 		}
 		berries.add(new Vec3(Segment.size/2+4, Segment.size/2+4));
@@ -190,7 +190,7 @@ public class MetaSegment {
 	private List<Vec3> getWood(List<Vec3> trees, Random rand) {
 		ArrayList<Vec3> wood = new ArrayList<Vec3>();
 		for(Vec3 v : trees){
-			if(rand.nextDouble() > 0.05)
+			if(rand.nextDouble() > 0.001)
 				wood.add(new Vec3(v.x, v.y, 0));
 		}
 		return wood;
