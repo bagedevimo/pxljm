@@ -19,7 +19,7 @@ public class PlantEntity extends Entity{
 		this.setLinear(new Vec3(xPos_, yPos_, 0), Vec3.zero);
 		this.radius = radius;
 		setBound(new BoundingSphere(this, radius));
-		setHeight(0.5);
+		setHeight(0.1);
 		
 		ShadowCaster sc = new ShadowCaster();
 		sc.addVertex(new Vec3(-0.5, -0.5, 0));

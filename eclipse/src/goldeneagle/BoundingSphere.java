@@ -91,6 +91,6 @@ public class BoundingSphere extends Bound {
 			double distance = a.center().dist(bb.center());
 			return !(distance > (a.getRadius() + bb.getRadius())) && distance <= Math.abs(a.getRadius() - bb.getRadius());
 		} else
-			throw new InvalidBoundException();
+			throw new InvalidBoundException(b.getClass().getCanonicalName());
 	}
 }

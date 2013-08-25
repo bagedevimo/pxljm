@@ -14,28 +14,31 @@ import goldeneagle.clock.Clock;
 import goldeneagle.util.*;
 
 public class Scene implements Iterable<Entity> {
-	private static final int updateProfile = Profiler.createSection("Scene.update");
+	private static final int updateProfile = Profiler
+			.createSection("Scene.update");
 	private final Clock clock;
 	private final Frame root;
-	private final Set<Entity> entities;
+	private final QuadTree<Entity> bounded_entities;
+	private final Set<Entity> unbounded_entities;
 	private final Set<Light> lights;
-	
+
 	private Queue<Entity> removeList;
-	
+
 	private Color ambient;
-	
+
 	public Scene(Clock clock_) {
 		clock = clock_;
 		root = new Frame.Root(clock);
-		entities = new HashSet<Entity>();
+		unbounded_entities = new HashSet<Entity>();
+		bounded_entities = new QuadTree<Entity>();
 		lights = new HashSet<Light>();
 		removeList = new LinkedList<Entity>();
 	}
-	
+
 	public Frame getRoot() {
 		return root;
 	}
-	
+
 	public Clock getClock() {
 		return clock;
 	}
@@ -43,58 +46,70 @@ public class Scene implements Iterable<Entity> {
 	public Color getAmbient() {
 		return ambient;
 	}
-	
+
 	public void setAmbient(Color c) {
 		ambient = c;
 	}
-	
+
 	@Override
 	public Iterator<Entity> iterator() {
-		return this.entities.iterator();
+		return this.unbounded_entities.iterator();
 	}
 
 	public void AddEntity(Entity entity) {
-		this.entities.add(entity);
+		if (entity.getBound() == null) {
+			unbounded_entities.add(entity);
+		} else {
+			bounded_entities.add(entity);
+		}
 	}
 
 	public void Update(double deltaTime) {
 		Profiler.enter(updateProfile);
-		for(Entity e : this.entities)
-			if(!e.update(deltaTime))
+		for (Entity e : this.unbounded_entities)
+			if (!e.update(deltaTime))
 				this.removeList.add(e);
-		
-		while(!this.removeList.isEmpty()) {
+
+		for (Entity e : this.bounded_entities)
+			if (!e.update(deltaTime))
+				this.removeList.add(e);
+
+		while (!this.removeList.isEmpty()) {
 			Entity e = this.removeList.remove();
-			if(this.entities.contains(e))
-				this.entities.remove(e);
+			this.unbounded_entities.remove(e);
+			if (e.getBound() != null && bounded_entities.contains(e)) {
+				bounded_entities.remove(e);
+			}
 		}
 		Profiler.exit(updateProfile);
 	}
-	
+
 	public void RemoveEntity(Entity e) {
+		if (e == null)
+			return;
 		this.removeList.add(e);
 	}
-	
+
 	public boolean hasEntity(Entity e) {
-		return this.entities.contains(e) && !this.removeList.contains(e);
+		return (unbounded_entities.contains(e) || (e.getBound() != null && bounded_entities
+				.contains(e))) && !removeList.contains(e);
 	}
-	
+
 	public void addLight(Light l) {
 		lights.add(l);
 	}
-	
+
 	public Set<Light> getLights() {
 		return Collections.unmodifiableSet(lights);
 	}
-	
+
 	public void getEntities(Collection<Entity> ents, Bound b) {
-		// TODO quadtree
-		for (Entity e : entities) {
-			// TODO bound intersect niceness
-			if (e.getBound() == null || b.intersects(e.getBound()) != null) {
-				ents.add(e);
-			}
+		// add all entitities of unknown bound
+		for (Entity e : unbounded_entities) {
+			ents.add(e);
 		}
+		// bounded lookup
+		bounded_entities.find(ents, b);
 	}
 
 }

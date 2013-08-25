@@ -14,6 +14,7 @@ import map.Segment;
 import map.SegmentGenerator;
 import map.TileTextureLoader;
 import map.TileType;
+import goldeneagle.BoundingSphere;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.scene.Entity;
@@ -37,6 +38,8 @@ public class ChunkEntity extends Entity {
 		super(parent_);
 		this.setLinear(new Vec3(baseX, baseY), Vec3.zero);
 		this.childEntities = new ArrayList<Entity>();
+		
+		setBound(new BoundingSphere(this, 24));
 		
 		try {
 			ttl = new TileTextureLoader("./assets/tiles/tiletex_info.txt");
