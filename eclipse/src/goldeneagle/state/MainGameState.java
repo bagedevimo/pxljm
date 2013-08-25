@@ -51,14 +51,7 @@ public class MainGameState extends GameState {
 		Light.SpotLight l = new Light.SpotLight(player, Color.YELLOW, 1, 10, Math.PI / 6, 2);
 		l.setPitch(-Math.PI / 6);
 		scene.addLight(l);
-		
-		List<Collidable> col;
-		do{
-			player.setLinear(player.getPosition().add(new Vec3(1, 1, 0)), Vec3.zero);
-			this.ensureChunks();
-			
-			col = scene.getCollisions(player);
-		}while(!col.isEmpty());
+
 		
 		MovingFrame mf = new MovingFrame(scene.getRoot());
 		mf.setLinear(new Vec3(playerSpawnX, playerSpawnY), Vec3.zero);

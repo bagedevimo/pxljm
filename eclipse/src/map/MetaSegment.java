@@ -53,30 +53,30 @@ public class MetaSegment {
 			}
 		}
 		
-		//assuming that there is only one change per segment
-		Point topRight = null, bottomLeft = null;
-		
-		for (int i = 0; i < Segment.size-1 && (topRight == null || bottomLeft == null); i++) {
-			if (topRight != null && tiles[i][0] != tiles[i+1][0]) {
-				topRight = new Point(i,0);
-			} if (bottomLeft != null && tiles[0][i] != tiles[0][i+1]) {
-				bottomLeft = new Point(0,i);
-			}
-		}
-		
-		for (int i = 0; i < Segment.size-1 && (topRight == null || bottomLeft == null); i++) {
-			if (topRight != null && tiles[i][Segment.size-1] != tiles[i+1][Segment.size-1]) {
-				topRight = new Point(i,Segment.size-1);
-			} if (bottomLeft != null && tiles[Segment.size-1][i] != tiles[Segment.size-1][i+1]) {
-				bottomLeft = new Point(Segment.size-1,i);
-			}
-		}
-		
-		if (topRight != null && bottomLeft != null) {
-			Point middle = new Point((topRight.x + bottomLeft.x)/2,(topRight.y + bottomLeft.y)/2);
-			
-		}
-		
+//		//assuming that there is only one change per segment
+		//trying here to change the lines to more jaggeded
+//		Point topRight = null, bottomLeft = null;
+//		
+//		for (int i = 0; i < Segment.size-1 && (topRight == null || bottomLeft == null); i++) {
+//			if (topRight != null && tiles[i][0] != tiles[i+1][0]) {
+//				topRight = new Point(i,0);
+//			} if (bottomLeft != null && tiles[0][i] != tiles[0][i+1]) {
+//				bottomLeft = new Point(0,i);
+//			}
+//		}
+//		
+//		for (int i = 0; i < Segment.size-1 && (topRight == null || bottomLeft == null); i++) {
+//			if (topRight != null && tiles[i][Segment.size-1] != tiles[i+1][Segment.size-1]) {
+//				topRight = new Point(i,Segment.size-1);
+//			} if (bottomLeft != null && tiles[Segment.size-1][i] != tiles[Segment.size-1][i+1]) {
+//				bottomLeft = new Point(Segment.size-1,i);
+//			}
+//		}
+//		
+//		if (topRight != null && bottomLeft != null) {
+//			Point middle = new Point((topRight.x + bottomLeft.x)/2,(topRight.y + bottomLeft.y)/2);
+//		}
+//		
 		
 		
 		
@@ -85,22 +85,25 @@ public class MetaSegment {
 		
 		return seg;
 	}
-	
-	private void asd(Point left, Point right, TileType[][] tiles, Random rand) {
-		Point middle = new Point((left.x + right.x)/2,(left.y + right.y)/2);
-		if (!middle.equals(right) && !middle.equals(left)) {
-			int deltaX = (int) ((rand.nextDouble() - 0.5) * middle.x);
-			int deltaY = (int) ((rand.nextDouble() - 0.5) * middle.y);
-			Point newMiddle = new Point(middle.x+deltaX, middle.y+deltaY);
-			
-			//TODO
-		}
-	}
+//	
+//	private void asd(Point left, Point right, TileType[][] tiles, Random rand) {
+//		Point middle = new Point((left.x + right.x)/2,(left.y + right.y)/2);
+//		if (!middle.equals(right) && !middle.equals(left)) {
+//			int deltaX = (int) ((rand.nextDouble() - 0.5) * middle.x);
+//			int deltaY = (int) ((rand.nextDouble() - 0.5) * middle.y);
+//			Point newMiddle = new Point(middle.x+deltaX, middle.y+deltaY);
+//			
+//			//TODO
+//		}
+//	}
 	
 	private void addFoliage(Segment seg, Biome[][] biomes){
 		Random rand = new Random(seg.id);
 		
 		List<Foliage> foliage = new ArrayList<Foliage>();
+		
+		//HACKYHACKYHACKY
+		Foliage center = new Foliage(Segment.size, Segment.size, 7);
 		
 		//Trees
 		for(int i=0; i<TreeFill; i++){
@@ -123,6 +126,7 @@ public class MetaSegment {
 		List<Vec3> trees = new ArrayList<Vec3>();
 		for(int i=0; i<foliage.size(); i++){
 			Foliage f = foliage.get(i);
+			if((seg.xPos!=127 && seg.yPos != 127) || !f.collision(center))
 			trees.add(new Vec3(f.xPos, f.yPos, f.radius));
 		}
 		
@@ -151,6 +155,7 @@ public class MetaSegment {
 		List<Vec3> plants = new ArrayList<Vec3>();
 		for(int i=0; i<foliage.size(); i++){
 			Foliage f = foliage.get(i);
+			if((seg.xPos!=127 && seg.yPos != 127) || !f.collision(center))
 			plants.add(new Vec3(f.xPos, f.yPos, f.radius));
 		}
 		

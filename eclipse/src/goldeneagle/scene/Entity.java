@@ -6,8 +6,9 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import goldeneagle.*;
+import goldeneagle.util.QuadTree;
 
-public abstract class Entity extends MovingFrame {
+public abstract class Entity extends MovingFrame implements QuadTree.Element {
 
 	private BoundingSphere bound = null;
 	private double height = 0;
@@ -25,7 +26,8 @@ public abstract class Entity extends MovingFrame {
 		return scasters.remove(sc);
 	}
 	
-	public BoundingSphere getBound() {
+	@Override
+	public Bound getBound() {
 		return bound;
 	}
 	
