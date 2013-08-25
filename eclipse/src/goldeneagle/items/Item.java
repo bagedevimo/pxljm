@@ -12,4 +12,8 @@ public abstract class Item {
 	public String getTexturePath(){
 		return texturePath;
 	}
+	
+	public void drawOnScreen(){
+		
+	}
 }
