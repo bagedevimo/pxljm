@@ -6,6 +6,8 @@ import goldeneagle.InvalidBoundException;
 import goldeneagle.Vec3;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,7 +18,7 @@ import java.util.Set;
 
 public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 
-	public static final int MAX_LEAF_ELEMENTS = 8;
+	public static final int MAX_LEAF_ELEMENTS = 16;
 	public static final String INDENT_STRING = "    ";
 
 	public static interface Element {
@@ -57,7 +59,8 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 		private int count = 0;
 
 		// up to pow(2, n) children
-		private Map<Integer, Node<U>> children = new HashMap<Integer, Node<U>>();
+		@SuppressWarnings("unchecked")
+		private Node<U>[] children = new Node[4];
 
 		public Node(Node<U> parent_, BoundingBox aabb_) {
 			parent = parent_;
@@ -82,8 +85,9 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 
 		public int countRecursively() {
 			int c = elements.size();
-			for (Node<U> nu : children.values()) {
-				c += nu.count();
+			for (Node<U> nu : children) {
+				if (nu != null)
+					c += nu.count();
 			}
 			return c;
 		}
@@ -91,11 +95,11 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 		private int childID(Vec3 v) {
 			Vec3 center = this.bound.center();
 			int cid = 0;
-			if(v.x >= center.x)
+			if (v.x >= center.x)
 				cid |= 1;
-			if(v.y >= center.y)
+			if (v.y >= center.y)
 				cid |= 2;
-			
+
 			return cid;
 		}
 
@@ -109,7 +113,7 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 				count -= temp.length;
 				for (Object o : temp) {
 					@SuppressWarnings("unchecked")
-					U u2 = (U)o;
+					U u2 = (U) o;
 					try {
 						add(u2);
 					} catch (OutOfBoundsException e) {
@@ -128,49 +132,54 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 				for (U u : this) {
 					elements2.add(u);
 				}
-				children.clear();
+				Arrays.fill(children, null);
 				elements = elements2;
 			}
 		}
 
 		public boolean add(U u) throws OutOfBoundsException {
 			Bound a = u.getBound();
-			try {
-				if (!this.bound.contains(a)) throw new OutOfBoundsException();
-			} catch (InvalidBoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			if (isleaf && elements.size() < MAX_LEAF_ELEMENTS) {
-				if (!elements.add(u)) return false;
+			if (!this.bound.contains(a))
+				throw new OutOfBoundsException();
+			if (isleaf && count < MAX_LEAF_ELEMENTS) {
+				if (!elements.add(u))
+					return false;
 			} else {
-				// not a leaf or should not be. add to appropriate child node, or this if none.
+				// not a leaf or should not be. add to appropriate child node,
+				// or this if none.
 				unleafify();
 				final int cid_min = childID(a.min());
 				final int cid_max = childID(a.max());
 				if (cid_min != cid_max) {
 					// element spans multiple child nodes. add to this.
-					if (!elements.add(u)) return false;
+					if (!elements.add(u))
+						return false;
 				} else {
-					// element is contained in one child node. add to it, creating if necessary.
-					Node<U> child = children.get(cid_min);
+					// element is contained in one child node. add to it,
+					// creating if necessary.
+					Node<U> child = children[cid_min];
 					if (child == null) {
 						Vec3 centre = this.bound.center();
-						// this always points to a corner of the current node's aabb
+						// this always points to a corner of the current node's
+						// aabb
 						Vec3 vr = this.bound.max().sub(centre);
-						if((cid_min & 1) == 0)
+						if ((cid_min & 1) == 0)
 							vr = new Vec3(-vr.x, vr.y);
-						if((cid_min & 2) == 0)
+						if ((cid_min & 2) == 0)
 							vr = new Vec3(vr.x, -vr.y);
-						
-						child = new Node<U>(this, BoundingBox.fromExtremes(centre, centre.add(vr)));
-						children.put(cid_min, child);
+
+						child = new Node<U>(this, BoundingBox.fromExtremes(
+								centre, centre.add(vr)));
+						children[cid_min] = child;
 					}
 					try {
-						if (!child.add(u)) return false;
+						if (!child.add(u))
+							return false;
 					} catch (OutOfBoundsException e) {
-						// child doesnt want to accept it (fp inaccuracies maybe?)
-						if (!elements.add(u)) return false;
+						// child doesnt want to accept it (fp inaccuracies
+						// maybe?)
+						if (!elements.add(u))
+							return false;
 					}
 				}
 			}
@@ -179,53 +188,86 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 		}
 
 		public void putChild(Node<U> child) {
-			if (child == null) throw new NullPointerException();
+			if (child == null)
+				throw new NullPointerException();
 			Integer cid = childID(child.getAABB().center());
-			children.put(cid, child);
+			children[cid] = child;
 			count += child.count();
 			unleafify();
 		}
 
 		public boolean remove(U u) {
-			// TODO SPTree.Node remove
-			return false;
+			Bound a = u.getBound();
+			if (!this.bound.contains(a))
+				return false;
+			final int cid_min = childID(a.min());
+			final int cid_max = childID(a.max());
+			if (this.elements.remove(u)) {
+				// remove from this node succeeded
+			} else {
+				if (this.isleaf)
+					return false;
+				// split across children => should be in this node
+				if (cid_min != cid_max)
+					return false;
+				// remove from child
+				Node<U> child = children[cid_min];
+				// child doesnt exist
+				if (child == null)
+					return false;
+				if (!child.remove(u))
+					return false;
+			}
+			count--;
+			if (count <= MAX_LEAF_ELEMENTS)
+				leafify();
+			return true;
 		}
 
 		public boolean contains(U u) {
 			Bound a = u.getBound();
 			try {
-				if (!this.bound.contains(a)) return false;
+				if (!this.bound.contains(a))
+					return false;
 			} catch (InvalidBoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if (elements.contains(u)) return true;
-			if (isleaf) return false;
+			if (elements.contains(u))
+				return true;
+			if (isleaf)
+				return false;
 			final int cid_min = childID(a.min());
 			final int cid_max = childID(a.max());
 			// if split across children, should be in elements
-			if (cid_min != cid_max) return false;
-			Node<U> child = children.get(cid_min);
+			if (cid_min != cid_max)
+				return false;
+			Node<U> child = children[cid_min];
 			// if the child it would be in doesnt exist
-			if (child == null) return false;
+			if (child == null)
+				return false;
 			return child.contains(u);
 		}
 
-		public void find(List<? super U> lu, Bound a) {
+		public void find(Collection<? super U> lu, Bound a) {
 			if (bound.intersects(a)) {
 				for (U u : elements) {
-					if (u.getBound().intersects(a)) lu.add(u);
+					if (u.getBound().intersects(a))
+						lu.add(u);
 				}
-				if (isleaf) return;
+				if (isleaf)
+					return;
 				final int cid_min = childID(a.min());
 				final int cid_max = childID(a.max());
-				if (cid_min ==cid_max) {
+				if (cid_min == cid_max) {
 					// a is contained in one child
-					Node<U> child = children.get(cid_min);
-					if (child != null) child.find(lu, a);
+					Node<U> child = children[cid_min];
+					if (child != null)
+						child.find(lu, a);
 				} else {
-					for (Node<U> nu : children.values()) {
-						nu.find(lu, a);
+					for (Node<U> nu : children) {
+						if (nu != null)
+							nu.find(lu, a);
 					}
 				}
 			}
@@ -236,16 +278,19 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 			for (U u : elements) {
 				System.out.println(indent + indent_delta + u);
 			}
-			for (Node<U> nu : children.values()) {
-				nu.print(indent, indent_delta);
+			for (Node<U> nu : children) {
+				if (nu != null)
+					nu.print(indent + indent_delta, indent_delta);
 			}
 		}
 
 		public int height() {
 			int h = 0;
-			for (Node<U> nu : children.values()) {
-				int hn = nu.height();
-				h = Math.max(h, hn);
+			for (Node<U> nu : children) {
+				if (nu != null) {
+					int hn = nu.height();
+					h = Math.max(h, hn);
+				}
 			}
 			return h + 1;
 		}
@@ -253,9 +298,11 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 		public double heightAvg() {
 			double h = 0;
 			int i = 0;
-			for (Node<U> nu : children.values()) {
-				h += nu.heightAvg();
-				i++;
+			for (Node<U> nu : children) {
+				if (nu != null) {
+					h += nu.heightAvg();
+					i++;
+				}
 			}
 			return 1 + (i > 0 ? h / i : 0);
 		}
@@ -268,7 +315,8 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 		private class NodeIterator implements Iterator<U> {
 
 			private Iterator<U> it_el = elements.iterator();
-			private Iterator<Node<U>> it_ch = children.values().iterator();
+			private Iterator<Node<U>> it_ch = Arrays.asList(children)
+					.iterator();
 			private U next_u = null;
 
 			public NodeIterator() {
@@ -279,8 +327,13 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 				// this is depth-first
 				try {
 					while (true) {
-						if (it_el.hasNext()) return it_el.next();
-						it_el = it_ch.next().iterator();
+						if (it_el.hasNext())
+							return it_el.next();
+						Node<U> ch = null;
+						do {
+							ch = it_ch.next();
+						} while (ch == null);
+						it_el = ch.iterator();
 					}
 				} catch (NoSuchElementException e) {
 					return null;
@@ -315,15 +368,17 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 	public QuadTree() {
 		root = new Node<T>(null, BoundingBox.fromExtremes(Vec3.zero, Vec3.one));
 	}
-	
+
 	public QuadTree(Vec3 root_p0, Vec3 root_p1) {
 		// TODO what happens if you have a non-regular root node?
-		if (root_p0 == null || root_p1 == null) throw new NullPointerException("Cut it out!");
+		if (root_p0 == null || root_p1 == null)
+			throw new NullPointerException("Cut it out!");
 		root = new Node<T>(null, BoundingBox.fromExtremes(root_p0, root_p1));
 	}
 
 	public boolean add(T t) {
-		if (t == null) throw new NullPointerException("Boo!");
+		if (t == null)
+			throw new NullPointerException("Boo!");
 		try {
 			return root.add(t);
 		} catch (OutOfBoundsException e) {
@@ -334,14 +389,18 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 			Vec3 vr = a.max().sub(a.min());
 			// vector from centre of current root to centre of new element
 			Vec3 vct = t.getBound().center().sub(a.center());
-			// vector from centre of current root to corner nearest centre of new element
+			// vector from centre of current root to corner nearest centre of
+			// new element
 			Vec3 corner = vr.mul(0.5);
-			if(vct.x < 0) corner = new Vec3(-corner.x, corner.y);
-			if(vct.y < 0) corner = new Vec3(corner.x, -corner.y);
-			
+			if (vct.x < 0)
+				corner = new Vec3(-corner.x, corner.y);
+			if (vct.y < 0)
+				corner = new Vec3(corner.x, -corner.y);
+
 			// centre of new root
 			Vec3 newcentre = a.center().add(corner);
-			root = new Node<T>(null, BoundingBox.fromExtremes(newcentre.sub(vr), newcentre.add(vr)));
+			root = new Node<T>(null, BoundingBox.fromExtremes(
+					newcentre.sub(vr), newcentre.add(vr)));
 			if (oldroot.count() > 0) {
 				// only preserve the old root if it had elements
 				oldroot.setParent(root);
@@ -352,19 +411,20 @@ public class QuadTree<T extends QuadTree.Element> implements Iterable<T> {
 	}
 
 	public boolean remove(T t) {
-
-		return false;
+		if (t == null)
+			throw new NullPointerException("Boo!");
+		// TODO root reduction?
+		return root.remove(t);
 	}
 
 	public boolean contains(T t) {
 		return root.contains(t);
 	}
 
-	public List<T> find(BoundingBox a) {
-		if (a == null) throw new NullPointerException("Game over.");
-		List<T> lt = new ArrayList<T>();
-		root.find(lt, a);
-		return lt;
+	public void find(Collection<T> ts, Bound a) {
+		if (a == null || ts == null)
+			throw new NullPointerException("Game over.");
+		root.find(ts, a);
 	}
 
 	public void print() {

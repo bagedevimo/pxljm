@@ -14,6 +14,8 @@ import map.Segment;
 import map.SegmentGenerator;
 import map.TileTextureLoader;
 import map.TileType;
+import goldeneagle.BoundingSphere;
+import goldeneagle.MovingFrame;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
 import goldeneagle.items.Berries;
@@ -40,6 +42,10 @@ public class ChunkEntity extends Entity {
 		this.setLinear(new Vec3(baseX, baseY), Vec3.zero);
 		this.childEntities = new ArrayList<Entity>();
 		
+		MovingFrame mf = new MovingFrame(this);
+		mf.setLinear(new Vec3(16, 16), Vec3.zero);
+		setBound(new BoundingSphere(mf, 24));
+		
 		try {
 			ttl = new TileTextureLoader("./assets/tiles/tiletex_info.txt");
 		} catch (IOException e) {
@@ -62,6 +68,7 @@ public class ChunkEntity extends Entity {
 		
 		Entity e;
 		for(Vec3 tree : seg.getTrees()) {
+			System.out.println("ADDED MY TREEES MOTHER FUCKA");
 			e = new TreeEntity(scene.getRoot(), this.getPosition().x+tree.x, this.getPosition().y+tree.y, tree.z);
 			this.childEntities.add(e);
 			scene.AddEntity(e);

@@ -20,7 +20,7 @@ public class FireEntity extends Entity {
 	
 	public FireEntity(Frame parent_, Scene scene) {
 		super(parent_);
-		
+
 		this.setHeight(0.1);
 
 		fireLight = new Light.SpotLight(this, Color.YELLOW, 3, 4, Math.PI/4, 5);
@@ -43,22 +43,21 @@ public class FireEntity extends Entity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	
- 		glBindTexture(GL_TEXTURE_2D, texID);
+
+		glBindTexture(GL_TEXTURE_2D, texID);
 		glEnable(GL_TEXTURE_2D);
-		
-		
-//		glMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE,
-//				SceneManager.floatv(1f, 0f, 0f, 1f));
-		
+
+		glMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE,
+				SceneManager.floatv(1f, 1f, 1f, 1f));
+
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.5f);
-		
+
 		glBegin(GL_POLYGON);
-		
+
 		glColor3d(1, 1, 1);
 		glNormal3d(0, 0, 1);
-		
+
 		double size = 1.0f;
 		glTexCoord2d(0, 0);
 		glVertex3d(-size, -size, 0);
@@ -68,12 +67,12 @@ public class FireEntity extends Entity {
 		glVertex3d(size, size, 0);
 		glTexCoord2d(0, 1);
 		glVertex3d(-size, size, 0);
-		
+
 		glEnd();
-		
+
 		glDisable(GL_ALPHA_TEST);
 		glDisable(GL_TEXTURE_2D);
-	
+
 	}
 
 }

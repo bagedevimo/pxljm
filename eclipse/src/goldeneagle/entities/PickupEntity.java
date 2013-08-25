@@ -38,6 +38,7 @@ public class PickupEntity extends Entity implements Collidable{
 		super(parent_);
 		item = item_;
 		bound = new BoundingSphere(this, size);
+		setHeight(0.2);
 	}
 	
 	protected boolean update(double deltaTime, Scene scene) {
@@ -45,8 +46,12 @@ public class PickupEntity extends Entity implements Collidable{
 		for(Collidable e : collided){
 			if(e instanceof PlayerEntity){
 				System.out.println("Player Picked Up item");
-				((PlayerEntity)e).addItem(item);
-				return false;
+				PlayerEntity p = (PlayerEntity)e;
+				if(p.isRummaging){
+					p.addItem(item);
+					System.out.println("Player Picked Up item");
+					return false;
+				}
 			}
 		}
 		return true;
@@ -66,7 +71,7 @@ public class PickupEntity extends Entity implements Collidable{
 //		
 //		glEnable(GL_ALPHA_TEST);
 //		glAlphaFunc(GL_GREATER, 0.5f);
-//		
+//
 //		glBegin(GL_POLYGON);
 //		
 //		glColor3d(1, 1, 1);

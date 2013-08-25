@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 import goldeneagle.BoundingSphere;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.Scene;
+import goldeneagle.scene.SceneManager;
 import goldeneagle.scene.ShadowCaster;
 import goldeneagle.Bound;
 import goldeneagle.ResourceCache;
@@ -14,6 +15,7 @@ import goldeneagle.util.Profiler;
 
 public class PlantEntity extends Entity implements Collidable {
 	private final double radius;
+	private final Bound collisionBound;
 	
 	static final int PlantEntity = Profiler.createSection("PlantEntity");
 	
@@ -21,8 +23,9 @@ public class PlantEntity extends Entity implements Collidable {
 		super(parent_);
 		this.setLinear(new Vec3(xPos_, yPos_, 0), Vec3.zero);
 		this.radius = radius;
+		this.collisionBound = new BoundingSphere(this, this.radius/10);
 		setBound(new BoundingSphere(this, radius));
-		setHeight(0.2);
+		setHeight(0.2);		
 		
 		ShadowCaster sc = new ShadowCaster();
 		for(double a = Math.PI*2; a > 0; a -= (Math.PI/4)) {
@@ -51,14 +54,13 @@ public class PlantEntity extends Entity implements Collidable {
 		
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.5f);
+
+		glMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, SceneManager.floatv(1, 1, 1, 1));
 		
 		Profiler.enter(PlantEntity);
 		
 		glBegin(GL_POLYGON);
-		
-		glColor3d(1, 1, 1);
 		glNormal3d(0, 0, 1);
-		
 		glTexCoord2d(0, 0);
 		glVertex3d(-this.radius, -this.radius, 0);
 		glTexCoord2d(1, 0);

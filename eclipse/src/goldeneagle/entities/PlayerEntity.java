@@ -246,11 +246,11 @@ public class PlayerEntity extends Entity implements Collidable {
 			inventoryIndex++;
 	}
 	
-	public void useItem() {
+	public void useItem(Scene scene) {
 		Item item = getItemAt(inventoryIndex);
 		if(inventory.get(item)==1)
 			inventory.remove(item);
-		item.use(this);
+		item.use(this, scene);
 	}
 	
 	public Item getItemAt(int index){
