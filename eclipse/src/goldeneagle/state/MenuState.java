@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.*;
 import java.awt.Color;
 
 import goldeneagle.ResourceCache;
+import goldeneagle.Vec3;
 import goldeneagle.entities.BackgroundImageEntity;
 import goldeneagle.entities.ButtonEntity;
 import goldeneagle.scene.Camera;
@@ -23,6 +24,10 @@ public class MenuState extends GameState {
 	double fadeInDelta = 0.01;
 	private int n = 3;
 	Color ambient = Color.BLACK;
+	ButtonEntity startButton, quitButton;
+	
+	int currentlySelected = 0;
+	
 	@Override
 	protected void init() {
 		scene = new Scene(getClock());
@@ -39,8 +44,19 @@ public class MenuState extends GameState {
 		BackgroundImageEntity bg = new BackgroundImageEntity(scene.getRoot(), "assets/menu/bg.jpg");
 		scene.AddEntity(bg);
 		
-		ButtonEntity startButton = new ButtonEntity(scene.getRoot(), 256, 256, "assets/menu/start.png", "assets/menu/start_hover.png");
+		ButtonEntity logo = new ButtonEntity(scene.getRoot(), 256, 256, "assets/menu/once.png", "assets/menu/once.png");
+		logo.setLinear(new Vec3(-Display.getWidth() + 100, -Display.getHeight() + 100, 0), Vec3.zero);
+		scene.AddEntity(logo);
+		
+		startButton = new ButtonEntity(scene.getRoot(), 256, 256, "assets/menu/start.png", "assets/menu/start_hover.png");
+		startButton.setLinear(new Vec3(-Display.getWidth() + 512 + 150 , -Display.getHeight() + 100, 0), Vec3.zero);
 		scene.AddEntity(startButton);
+		startButton.setActive(true);
+		
+		quitButton = new ButtonEntity(scene.getRoot(), 256, 256, "assets/menu/exit.png", "assets/menu/exit_hover.png");
+		quitButton.setLinear(new Vec3(-Display.getWidth() + 512 + 150 + 256 , -Display.getHeight() + 100, 0), Vec3.zero);
+		scene.AddEntity(quitButton);
+		startButton.setActive(false);
 	}
 
 	@Override
@@ -55,6 +71,23 @@ public class MenuState extends GameState {
 		else if(ambient != Color.WHITE)
 			n--;
 		scene.setAmbient(ambient);
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+			currentlySelected = 0;
+			startButton.setActive(true);
+			quitButton.setActive(false);
+		} else if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+			currentlySelected = 1;
+			startButton.setActive(false);
+			quitButton.setActive(true);
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
+			if(currentlySelected == 0)
+				this.nextState = new LoadGameState();
+			else
+				System.exit(0);
+		}
 	}
 
 	@Override

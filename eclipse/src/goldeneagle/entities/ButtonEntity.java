@@ -30,6 +30,7 @@ public class ButtonEntity extends Entity {
 
 	private int Width = 0, Height = 0;
 	private String Normal, Hover;
+	private boolean isSelected = false;
 	
 	public ButtonEntity(Frame parent, int width, int height, String normal, String hover) {
 		super(parent);
@@ -38,6 +39,8 @@ public class ButtonEntity extends Entity {
 		this.Height = height;
 		this.Normal = normal;
 		this.Hover = hover;
+		
+		this.setHeight(1);
 	}
 
 	@Override
@@ -45,12 +48,16 @@ public class ButtonEntity extends Entity {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
+	public void setActive(boolean n) {
+		this.isSelected = n;
+	}
 
 	@Override
 	protected void draw() {
 		int texID = -1;
 		try {
-			texID = ResourceCache.GetGLTexture(this.Normal);
+			texID = ResourceCache.GetGLTexture(!this.isSelected ? this.Normal : this.Hover);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

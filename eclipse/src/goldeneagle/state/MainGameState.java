@@ -36,7 +36,7 @@ public class MainGameState extends GameState {
 		MovingFrame offset = new MovingFrame(player);
 		offset.setLinear(new Vec3(0, 4, 0), Vec3.zero);
 		cam.bindFrame(offset);
-		cam.setRadius(14);
+		cam.setRadius(11);
 		
 		int playerSpawnX = 4112;
 		int playerSpawnY = 4112;

@@ -11,6 +11,9 @@ public class InitGameState extends GameState {
 		rl.Add("assets/menu/bg.jpg");
 		rl.Add("assets/menu/start.png");
 		rl.Add("assets/menu/start_hover.png");
+		rl.Add("assets/menu/exit.png");
+		rl.Add("assets/menu/exit_hover.png");
+		rl.Add("assets/menu/once.png");
 	}
 
 	@Override
