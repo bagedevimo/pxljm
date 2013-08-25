@@ -3,13 +3,14 @@ package goldeneagle.entities;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
 
 import goldeneagle.AudioEngine;
 import goldeneagle.Bound;
-import goldeneagle.BoundingBox;
 import goldeneagle.BoundingSphere;
 import goldeneagle.ResourceCache;
 import goldeneagle.Vec3;
@@ -19,25 +20,21 @@ import goldeneagle.scene.Entity;
 import goldeneagle.scene.Frame;
 import goldeneagle.scene.Scene;
 import goldeneagle.scene.SceneManager;
-import goldeneagle.scene.ShadowCaster;
 import goldeneagle.state.Collidable;
 import goldeneagle.util.Profiler;
 
 public class PlayerEntity extends Entity implements Collidable {
 	private static final int PlayerEntity_glBegin = Profiler.createSection("PlayerEntity_glBegin");
-
-	int nFrames = 21;
-	double frameWidth = 1.0f/nFrames;
-
-	DerivedClock animationClock;
-	double animationStart;
-	double walkFrameTime = 1/20f;
-	double runFrameTime = 1/30f;
+	
+	Animation walkingAnimation;
+	Animation idleAnimation;
+	Animation rummagingAnimation;
 	
 	double lastAttrUpdate;
 	
 	boolean isMoving = false;
 	boolean isRunning = false;
+	boolean isRummaging = false;
 
 	double MaxHealth = 100;
 	double Health = MaxHealth;
@@ -67,48 +64,34 @@ public class PlayerEntity extends Entity implements Collidable {
 	public PlayerEntity(Frame parent_) {
 		super(parent_);
 		
+		idleAnimation = new Animation(this, "character_idle", 78);
+		walkingAnimation = new Animation(this, "character_walk", 21);
+		
 		setHeight(2);
-		
-		animationClock = new DerivedClock(this.getClock(), 0);
-		animationStart = this.animationClock.get();
-		
-		lastStep = this.animationClock.get();
+	
 		stepInterval = 0.8;
 		
 		this.lastAttrUpdate = this.getClock().get();
 		
 	}
-	
-	private double getFrameTime() {
-		if(this.isRunning)
-			return runFrameTime;
-		return walkFrameTime;
-	}
 
 	@Override
 	public void draw() {				
-		int texID = -1;
 		
-		double dT = (this.animationClock.get() - this.animationStart);
-		int frame = (int)(dT / getFrameTime());
-		if(frame >= nFrames) {
-			this.animationStart = this.animationClock.get();
-			dT = (this.animationClock.get() - this.animationStart);
-			frame = (int)(dT / getFrameTime());
-		}
+		Animation currentAnimation = (this.isMoving ? walkingAnimation : idleAnimation);
+		if(this.isRummaging)
+			currentAnimation = rummagingAnimation;
 		
-		
-		if((this.animationClock.get() - this.lastStep) > this.stepInterval && this.isMoving) {
-			this.lastStep = animationClock.get();
-			AudioEngine.PlayEffect("step", this.getGlobalPosition());
-			System.out.println("step");
-		}
+//		if((this.animationClock.get() - this.lastStep) > this.stepInterval && this.isMoving) {
+//			this.lastStep = animationClock.get();
+//			AudioEngine.PlayEffect("step", this.getGlobalPosition());
+//			System.out.println("step");
+//		}
 			
-		
+		int texID = -1;
 		try {
-			texID = ResourceCache.GetGLTexture("./assets/sprites/character_walk.png");
+			texID = ResourceCache.GetGLTexture(currentAnimation.getFrameTexture());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
@@ -129,16 +112,14 @@ public class PlayerEntity extends Entity implements Collidable {
 		glColor3d(1, 1, 1);
 		glNormal3d(0, 0, 1);
 		
-		double u = frameWidth*frame;
-		
 		double size = 1.8f;
-		glTexCoord2d(u, 0);
+		glTexCoord2d(0, 1);
 		glVertex3d(-size, -size, 0);
-		glTexCoord2d(u+frameWidth, 0);
+		glTexCoord2d(1, 1);
 		glVertex3d(size, -size, 0);
-		glTexCoord2d(u+frameWidth, 1);
+		glTexCoord2d(1, 0);
 		glVertex3d(size, size, 0);
-		glTexCoord2d(u, 1);
+		glTexCoord2d(0, 0);
 		glVertex3d(-size, size, 0);
 		
 		glEnd();
@@ -186,14 +167,15 @@ public class PlayerEntity extends Entity implements Collidable {
 		motion = this.getPosition().add(new Vec3(x, y, 0));
 
 		if (x == 0 && y == 0) {
-			this.animationClock.pause();
+			this.walkingAnimation.pause();
+			this.idleAnimation.play();
 			this.isMoving = false;
 		} else {
-			this.animationClock.play();
+			this.walkingAnimation.play();
+			this.idleAnimation.pause();
 			this.isMoving = true;
 		}
 			
-		
 		this.setLinear(motion, Vec3.zero);
 		
 		List<Entity> ents = new ArrayList<Entity>();
@@ -207,6 +189,10 @@ public class PlayerEntity extends Entity implements Collidable {
 				if(this.getCollisionBound().intersects(en.getCollisionBound())) {
 					System.out.printf("Colliding with a %s\n", en.toString());	
 					this.setLinear(oldPosition, Vec3.zero);
+					if(en instanceof PlantEntity)
+						this.isRummaging = true;
+					else
+						this.isRummaging = false;
 				}
 			}
 		}
