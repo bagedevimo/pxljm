@@ -198,6 +198,7 @@ public class PlayerEntity extends Entity implements Collidable {
 		List<Entity> ents = new ArrayList<Entity>();
 		scene.getEntities(ents, new BoundingSphere(this, 3));
 		for(Entity e : ents) {
+			if(e == this) continue;
 			if(e instanceof Collidable) {
 				Collidable en = (Collidable)e;
 				if(this.getCollisionBound().intersects(en.getCollisionBound()))
