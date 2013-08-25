@@ -12,6 +12,7 @@ import goldeneagle.MovingFrame;
 import goldeneagle.ParticleEmitter;
 import goldeneagle.Vec3;
 import goldeneagle.entities.ChunkEntity;
+import goldeneagle.entities.FireEntity;
 import goldeneagle.entities.PlayerEntity;
 import goldeneagle.scene.Camera;
 import goldeneagle.scene.Entity;
@@ -51,15 +52,6 @@ public class MainGameState extends GameState {
 		l.setPitch(-Math.PI / 6);
 		scene.addLight(l);
 		
-		MovingFrame mf = new MovingFrame(scene.getRoot());
-		mf.setLinear(new Vec3(playerSpawnX, playerSpawnY), Vec3.zero);
-		Light.PointLight l2 = new Light.PointLight(mf, Color.RED, 4, 6);
-		scene.addLight(l2);
-		
-		Light.PointLight lfollow = new Light.PointLight(player,  new Color(0.4f, 0.4f, 0.4f), 2, 0.8);
-		scene.addLight(lfollow);
-		
-		
 		List<Collidable> col;
 		do{
 			player.setLinear(player.getGlobalPosition().add(new Vec3(1, 1, 0)), Vec3.zero);
@@ -73,6 +65,18 @@ public class MainGameState extends GameState {
 				}
 			}
 		}while(!col.isEmpty());
+		
+		MovingFrame mf = new MovingFrame(scene.getRoot());
+		mf.setLinear(new Vec3(playerSpawnX, playerSpawnY), Vec3.zero);
+		
+		Light.PointLight lfollow = new Light.PointLight(player,  new Color(0.4f, 0.4f, 0.4f), 2, 0.8);
+		scene.addLight(lfollow);
+		
+
+
+		FireEntity fire = new FireEntity(mf, scene);
+		scene.AddEntity(fire);
+
 		
 //		ParticleEmitter pe = new ParticleEmitter(mf);
 //		scene.AddEntity(pe);

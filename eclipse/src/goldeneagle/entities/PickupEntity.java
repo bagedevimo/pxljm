@@ -53,37 +53,36 @@ public class PickupEntity extends Entity implements Collidable{
 
 	@Override
 	protected void draw() {
-		int texID = -1;
-		try {
-			texID = ResourceCache.GetGLTexture(item.getTexturePath());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	
- 		glBindTexture(GL_TEXTURE_2D, texID);
-		glEnable(GL_TEXTURE_2D);
-		
-		glEnable(GL_ALPHA_TEST);
-		glAlphaFunc(GL_GREATER, 0.5f);
-		
-		glBegin(GL_POLYGON);
-		
-		glColor3d(1, 1, 1);
-		glNormal3d(0, 0, 1);
-		
-		glTexCoord2d(0, 0);
-		glVertex3d(-size, -size, 0);
-		glTexCoord2d(1, 0);
-		glVertex3d(size, -size, 0);
-		glTexCoord2d(1, 1);
-		glVertex3d(size, size, 0);
-		glTexCoord2d(0, 1);
-		glVertex3d(-size, size, 0);
-		
-		glEnd();	
-
-		glDisable(GL_TEXTURE_2D);
-		glDisable(GL_ALPHA_TEST);
+//		int texID = -1;
+//		try {
+//			texID = ResourceCache.GetGLTexture(item.getTexturePath());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	
+// 		glBindTexture(GL_TEXTURE_2D, texID);
+//		glEnable(GL_TEXTURE_2D);
+//		
+//		glEnable(GL_ALPHA_TEST);
+//		glAlphaFunc(GL_GREATER, 0.5f);
+//		
+//		glBegin(GL_POLYGON);
+//		
+//		glColor3d(1, 1, 1);
+//		glNormal3d(0, 0, 1);
+//		
+//		glTexCoord2d(0, 0);
+//		glVertex3d(-size, -size, 0);
+//		glTexCoord2d(1, 0);
+//		glVertex3d(size, -size, 0);
+//		glTexCoord2d(1, 1);
+//		glVertex3d(size, size, 0);
+//		glTexCoord2d(0, 1);
+//		glVertex3d(-size, size, 0);
+//		
+//		glEnd();	
+//
+//		glDisable(GL_TEXTURE_2D);
 	}
 
 	@Override

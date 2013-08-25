@@ -12,7 +12,7 @@ import goldeneagle.scene.Entity;
 import goldeneagle.state.Collidable;
 import goldeneagle.util.Profiler;
 
-public class PlantEntity extends Entity {
+public class PlantEntity extends Entity implements Collidable {
 	private final double radius;
 	
 	static final int PlantEntity = Profiler.createSection("PlantEntity");
@@ -76,8 +76,9 @@ public class PlantEntity extends Entity {
 		return true;
 	}
 
-//	@Override
-//	public Bound getCollisionBound() {
-//		return new BoundingSphere(this, this.radius/10);
-//	}
+	@Override
+	public Bound getCollisionBound() {
+		return new BoundingSphere(this, this.radius/10);
+	}
+
 }
